@@ -811,15 +811,16 @@ export function TransformationPage({ onNavigate, onGoHome }: TransformationProps
               width: '100%',
               overflowX: 'auto',
               WebkitOverflowScrolling: 'touch',
-              paddingBottom: '16px',
-              margin: '30px 0 20px 0',
+              paddingTop: '40px',
+              paddingBottom: '20px',
+              margin: '20px 0',
             }}
             className="no-scrollbar"
           >
             <div
               style={{
                 position: 'relative',
-                height: '480px',
+                height: '520px',
                 minWidth: '1150px',
                 width: '100%',
               }}
@@ -844,14 +845,14 @@ export function TransformationPage({ onNavigate, onGoHome }: TransformationProps
                 </defs>
 
                 {/* Main Rising Trend Line */}
-                <line x1="10%" y1="78%" x2="90%" y2="20%" stroke="url(#arcLineGrad)" strokeWidth="2.5" />
+                <line x1="10%" y1="78%" x2="90%" y2="24%" stroke="url(#arcLineGrad)" strokeWidth="2.5" />
 
                 {/* Vertical Connector Stem Lines from Nodes to Cards */}
                 <line x1="10%" y1="78%" x2="10%" y2="58%" stroke="rgba(103, 223, 203, 0.5)" strokeWidth="1.5" strokeDasharray="3 3" />
                 <line x1="30%" y1="65%" x2="30%" y2="72%" stroke="rgba(103, 223, 203, 0.5)" strokeWidth="1.5" strokeDasharray="3 3" />
                 <line x1="50%" y1="50%" x2="50%" y2="34%" stroke="rgba(103, 223, 203, 0.5)" strokeWidth="1.5" strokeDasharray="3 3" />
                 <line x1="70%" y1="35%" x2="70%" y2="44%" stroke="rgba(103, 223, 203, 0.5)" strokeWidth="1.5" strokeDasharray="3 3" />
-                <line x1="90%" y1="20%" x2="90%" y2="12%" stroke="rgba(103, 223, 203, 0.5)" strokeWidth="1.5" strokeDasharray="3 3" />
+                <line x1="90%" y1="24%" x2="90%" y2="15%" stroke="rgba(103, 223, 203, 0.5)" strokeWidth="1.5" strokeDasharray="3 3" />
 
                 {/* Glowing Node Dots */}
                 {[
@@ -859,7 +860,7 @@ export function TransformationPage({ onNavigate, onGoHome }: TransformationProps
                   { cx: '30%', cy: '63%' },
                   { cx: '50%', cy: '50%' },
                   { cx: '70%', cy: '35%' },
-                  { cx: '90%', cy: '20%' },
+                  { cx: '90%', cy: '24%' },
                 ].map((node, i) => (
                   <g key={i}>
                     <circle cx={node.cx} cy={node.cy} r="18" fill="rgba(103, 223, 203, 0.25)" filter="blur(6px)" />
@@ -872,7 +873,7 @@ export function TransformationPage({ onNavigate, onGoHome }: TransformationProps
               <div style={{ position: 'absolute', top: '82%', left: '4%', fontSize: '10.5px', fontWeight: 800, color: 'rgba(255, 255, 255, 0.45)', letterSpacing: '0.16em', textTransform: 'uppercase' }}>
                 COMPLEXITY
               </div>
-              <div style={{ position: 'absolute', top: '28%', left: '80%', fontSize: '10.5px', fontWeight: 800, color: '#67DFCB', letterSpacing: '0.16em', textTransform: 'uppercase' }}>
+              <div style={{ position: 'absolute', top: '30%', left: '80%', fontSize: '10.5px', fontWeight: 800, color: '#67DFCB', letterSpacing: '0.16em', textTransform: 'uppercase' }}>
                 MEASURABLE IMPROVEMENT
               </div>
 
@@ -1027,7 +1028,7 @@ export function TransformationPage({ onNavigate, onGoHome }: TransformationProps
                 style={{
                   position: 'absolute',
                   left: '81%',
-                  top: '-12%',
+                  top: '2%',
                   width: '210px',
                   backgroundColor: '#67DFCB',
                   border: 'none',
