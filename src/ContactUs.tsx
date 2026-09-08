@@ -411,8 +411,8 @@ export function ContactUsPage({ onNavigate, onGoHome }: ContactUsProps) {
                     </div>
                     <div>
                       <div style={{ fontSize: '11px', fontWeight: 700, color: '#64748B', letterSpacing: '0.06em', textTransform: 'uppercase', marginBottom: '2px' }}>Email</div>
-                      <a href="mailto:Info@agiledonetech.com" style={{ fontSize: '15.5px', fontWeight: 700, color: '#0B1739', textDecoration: 'none' }}>
-                        Info@agiledonetech.com
+                      <a href="mailto:info@ajildone.com" style={{ fontSize: '15.5px', fontWeight: 700, color: '#0B1739', textDecoration: 'none' }}>
+                        info@ajildone.com
                       </a>
                     </div>
                   </div>
@@ -859,8 +859,8 @@ export function ContactUsPage({ onNavigate, onGoHome }: ContactUsProps) {
 
                     <div style={{ fontSize: '13.5px', color: '#475569' }}>
                       Prefer email?{' '}
-                      <a href="mailto:Info@agiledonetech.com" style={{ color: '#2563EB', fontWeight: 700, textDecoration: 'none' }}>
-                        Info@agiledonetech.com
+                      <a href="mailto:info@ajildone.com" style={{ color: '#2563EB', fontWeight: 700, textDecoration: 'none' }}>
+                        info@ajildone.com
                       </a>
                     </div>
                   </div>
@@ -935,8 +935,8 @@ export function ContactUsPage({ onNavigate, onGoHome }: ContactUsProps) {
 
               {/* Bottom Info & Sub-badge */}
               <div>
-                <a href="mailto:Info@agiledonetech.com" style={{ fontSize: '16px', fontWeight: 700, color: '#5EEAD4', textDecoration: 'none', display: 'block', marginBottom: '4px' }}>
-                  Info@agiledonetech.com
+                <a href="mailto:info@ajildone.com" style={{ fontSize: '16px', fontWeight: 700, color: '#5EEAD4', textDecoration: 'none', display: 'block', marginBottom: '4px' }}>
+                  info@ajildone.com
                 </a>
                 <div style={{ fontSize: '16px', fontWeight: 700, color: '#FFFFFF', marginBottom: '12px' }}>
                   +1 202-251-3193
@@ -1297,7 +1297,7 @@ export function ContactUsPage({ onNavigate, onGoHome }: ContactUsProps) {
 
             {/* Secondary Outlined Pill Button */}
             <a
-              href="mailto:Info@agiledonetech.com"
+              href="mailto:info@ajildone.com"
               style={{
                 backgroundColor: 'rgba(255, 255, 255, 0.08)',
                 border: '1.5px solid rgba(255, 255, 255, 0.45)',
@@ -1319,7 +1319,7 @@ export function ContactUsPage({ onNavigate, onGoHome }: ContactUsProps) {
                 e.currentTarget.style.color = '#FFFFFF';
               }}
             >
-              Info@agiledonetech.com
+              info@ajildone.com
             </a>
           </div>
 

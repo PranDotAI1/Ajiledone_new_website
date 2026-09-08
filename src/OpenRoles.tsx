@@ -1015,7 +1015,7 @@ export const OpenRolesPage: React.FC<OpenRolesPageProps> = ({ onNavigate }) => {
               </button>
 
               <a
-                href="mailto:info@agiledonetech.com"
+                href="mailto:info@ajildone.com"
                 style={{
                   color: '#52E0CB',
                   fontSize: '14px',
@@ -1026,7 +1026,7 @@ export const OpenRolesPage: React.FC<OpenRolesPageProps> = ({ onNavigate }) => {
                 onMouseEnter={(e) => e.currentTarget.style.opacity = '0.8'}
                 onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
               >
-                info@agiledonetech.com
+                info@ajildone.com
               </a>
             </div>
           </div>

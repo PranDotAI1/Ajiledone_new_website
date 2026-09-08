@@ -1009,7 +1009,7 @@ export function ProductsPage({ onNavigate, onGoHome }: ProductsPageProps) {
                 </button>
 
                 <a
-                  href="mailto:info@agiledonetech.com"
+                  href="mailto:info@ajildone.com"
                   style={{
                     backgroundColor: 'rgba(255, 255, 255, 0.08)',
                     color: '#FFFFFF',
@@ -1032,7 +1032,7 @@ export function ProductsPage({ onNavigate, onGoHome }: ProductsPageProps) {
                     e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.4)';
                   }}
                 >
-                  info@agiledonetech.com
+                  info@ajildone.com
                 </a>
               </div>
 
