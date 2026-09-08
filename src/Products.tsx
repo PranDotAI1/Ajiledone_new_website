@@ -144,7 +144,7 @@ export function ProductsPage({ onNavigate, onGoHome }: ProductsPageProps) {
                 maxWidth: '520px',
                 fontWeight: 400
               }}>
-                Three enterprise-grade platforms across hospital operations, diagnostics and multi-jurisdictional tax — each built on the same engineering standard we bring to client transformation.
+                Two enterprise-grade platforms across hospital operations and diagnostics — each built on the same engineering standard we bring to client transformation.
               </p>
 
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', alignItems: 'center' }}>
@@ -211,7 +211,7 @@ export function ProductsPage({ onNavigate, onGoHome }: ProductsPageProps) {
                 marginBottom: '16px',
                 textTransform: 'uppercase'
               }}>
-                THREE PRODUCTS
+                TWO PRODUCTS
               </div>
 
               <div style={{
@@ -285,41 +285,6 @@ export function ProductsPage({ onNavigate, onGoHome }: ProductsPageProps) {
                   <div>
                     <h3 style={{ fontSize: '18px', fontWeight: 800, margin: '0 0 4px 0', color: hoveredProductCard === 2 ? '#0A1128' : '#FFFFFF' }}>Biosynthesis LMIS</h3>
                     <p style={{ fontSize: '12px', fontWeight: 500, margin: 0, color: hoveredProductCard === 2 ? '#0A1128' : '#FFFFFF', opacity: hoveredProductCard === 2 ? 0.9 : 0.8 }}>Laboratory Information Management</p>
-                  </div>
-                </div>
-
-                {/* Quick Card 03 - Audit Pro (Spans full row) */}
-                <div
-                  onClick={scrollToProducts}
-                  onMouseEnter={() => setHoveredProductCard(3)}
-                  onMouseLeave={() => setHoveredProductCard(null)}
-                  style={{
-                    gridColumn: 'span 2',
-                    backgroundColor: hoveredProductCard === 3 ? '#67DFCB' : 'rgba(255, 255, 255, 0.08)',
-                    backdropFilter: 'blur(10px)',
-                    border: hoveredProductCard === 3 ? '1px solid #67DFCB' : '1px solid rgba(255, 255, 255, 0.2)',
-                    color: hoveredProductCard === 3 ? '#0A1128' : '#FFFFFF',
-                    borderRadius: '20px',
-                    padding: '24px 20px',
-                    position: 'relative',
-                    overflow: 'hidden',
-                    cursor: 'pointer',
-                    transition: 'all 0.25s cubic-bezier(0.16, 1, 0.3, 1)',
-                    minHeight: '120px',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'space-between',
-                    transform: hoveredProductCard === 3 ? 'translateY(-3px)' : 'translateY(0)',
-                    boxShadow: hoveredProductCard === 3 ? '0 12px 28px rgba(103, 223, 203, 0.3)' : 'none'
-                  }}
-                >
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <span style={{ fontSize: '12px', fontWeight: 800, opacity: hoveredProductCard === 3 ? 0.7 : 0.6, letterSpacing: '0.08em', color: hoveredProductCard === 3 ? '#0A1128' : '#FFFFFF' }}>03</span>
-                    <ArrowRight size={16} color={hoveredProductCard === 3 ? '#0A1128' : '#67DFCB'} />
-                  </div>
-                  <div>
-                    <h3 style={{ fontSize: '19px', fontWeight: 800, margin: '0 0 4px 0', color: hoveredProductCard === 3 ? '#0A1128' : '#FFFFFF' }}>Audit Pro</h3>
-                    <p style={{ fontSize: '12px', fontWeight: 500, margin: 0, color: hoveredProductCard === 3 ? '#0A1128' : '#FFFFFF', opacity: hoveredProductCard === 3 ? 0.9 : 0.8 }}>Tax, Compliance & Audit Platform</p>
                   </div>
                 </div>
 
@@ -631,132 +596,7 @@ export function ProductsPage({ onNavigate, onGoHome }: ProductsPageProps) {
               </div>
             </div>
 
-            {/* CARD 03: Audit Pro (Clean White) */}
-            <div
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'translateY(-10px) scale(1.03)';
-                e.currentTarget.style.boxShadow = '0 28px 60px rgba(15, 23, 42, 0.15)';
-                e.currentTarget.style.borderColor = '#CBD5E1';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'translateY(0) scale(1)';
-                e.currentTarget.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.04)';
-                e.currentTarget.style.borderColor = '#E2E8F0';
-              }}
-              style={{
-                backgroundColor: '#FFFFFF',
-                color: '#0A1128',
-                borderRadius: '24px',
-                padding: '44px 40px',
-                position: 'relative',
-                overflow: 'hidden',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-between',
-                border: '1px solid #E2E8F0',
-                boxShadow: '0 10px 30px rgba(0, 0, 0, 0.04)',
-                minHeight: '520px',
-                cursor: 'pointer',
-                transition: 'all 0.35s cubic-bezier(0.16, 1, 0.3, 1)'
-              }}
-            >
-              {/* Outlined Watermark */}
-              <div style={{
-                position: 'absolute',
-                top: '20px',
-                right: '28px',
-                fontSize: '110px',
-                fontWeight: 900,
-                color: 'transparent',
-                WebkitTextStroke: '2px rgba(148, 163, 184, 0.25)',
-                lineHeight: 1,
-                pointerEvents: 'none',
-                userSelect: 'none'
-              }}>
-                03
-              </div>
 
-              <div style={{ position: 'relative', zIndex: 1 }}>
-                {/* Category Pill */}
-                <div style={{ marginBottom: '20px' }}>
-                  <span style={{
-                    fontSize: '10.5px',
-                    fontWeight: 800,
-                    letterSpacing: '0.08em',
-                    backgroundColor: '#EFF6FF',
-                    color: '#1F5AF4',
-                    borderRadius: '20px',
-                    padding: '5px 14px',
-                    display: 'inline-block',
-                    textTransform: 'uppercase'
-                  }}>
-                    TAX, COMPLIANCE &amp; AUDIT
-                  </span>
-                </div>
-
-                <h3 style={{ fontSize: '38px', fontWeight: 800, margin: '0 0 16px 0', letterSpacing: '-0.02em', color: '#0A1128' }}>
-                  Audit Pro
-                </h3>
-
-                <p style={{ fontSize: '15px', color: '#64748B', lineHeight: 1.6, marginBottom: '36px', maxWidth: '440px', fontWeight: 400 }}>
-                  An AI-powered multi-jurisdictional tax optimization, statutory compliance, audit preparation and financial document processing platform.
-                </p>
-
-                {/* Pill Badges Grid */}
-                <div style={{ marginBottom: '36px' }}>
-                  <div style={{ fontSize: '11px', fontWeight: 800, color: '#1F5AF4', letterSpacing: '0.08em', marginBottom: '14px', textTransform: 'uppercase', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                    <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#1F5AF4', display: 'inline-block' }} />
-                    3 REGIONS
-                  </div>
-                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-                    {['India · GST, TDS, ITR-6', 'USA · IRS, SALT, Nexus', 'Canada · CRA, T2, GST/HST', '4-tier RBAC', 'AI document OCR', 'Audit readiness'].map((module, idx) => (
-                      <span key={idx} style={{
-                        fontSize: '12px',
-                        fontWeight: 600,
-                        backgroundColor: '#F8FAFC',
-                        color: '#334155',
-                        border: '1px solid #E2E8F0',
-                        borderRadius: '20px',
-                        padding: '6px 14px'
-                      }}>
-                        {module}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              <div style={{ position: 'relative', zIndex: 1 }}>
-                <button
-                  onClick={() => setSelectedDemoProduct('Audit Pro')}
-                  style={{
-                    backgroundColor: '#0A1128',
-                    color: '#FFFFFF',
-                    border: 'none',
-                    borderRadius: '50px',
-                    padding: '12px 26px',
-                    fontSize: '14px',
-                    fontWeight: 800,
-                    cursor: 'pointer',
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '8px',
-                    transition: 'all 0.2s ease'
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = '#1F5AF4';
-                    e.currentTarget.style.color = '#FFFFFF';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = '#0A1128';
-                    e.currentTarget.style.color = '#FFFFFF';
-                  }}
-                >
-                  <span>Explore Audit Pro</span>
-                  <ArrowRight size={15} />
-                </button>
-              </div>
-            </div>
 
           </div>
 
@@ -795,7 +635,7 @@ export function ProductsPage({ onNavigate, onGoHome }: ProductsPageProps) {
             </p>
           </div>
 
-          {/* 3 Column Audience Cards Grid */}
+          {/* 2 Column Audience Cards Grid */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '24px' }}>
 
             {/* Column 1 - HMIS */}
@@ -852,37 +692,6 @@ export function ProductsPage({ onNavigate, onGoHome }: ProductsPageProps) {
                   display: 'inline-block'
                 }}>
                   Biosynthesis LMIS
-                </span>
-              </div>
-            </div>
-
-            {/* Column 3 - Audit Pro */}
-            <div style={{
-              backgroundColor: '#F0F4FA',
-              color: '#0A1128',
-              borderRadius: '20px',
-              padding: '36px 28px',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-between',
-              minHeight: '220px',
-              border: '1px solid #E2E8F0'
-            }}>
-              <h3 style={{ fontSize: '20px', fontWeight: 800, margin: '0 0 24px 0', lineHeight: 1.3, color: '#0A1128' }}>
-                CPAs, auditors &amp; finance teams
-              </h3>
-              <div>
-                <span style={{
-                  fontSize: '11.5px',
-                  fontWeight: 700,
-                  backgroundColor: '#FFFFFF',
-                  color: '#1F5AF4',
-                  borderRadius: '20px',
-                  padding: '4px 14px',
-                  display: 'inline-block',
-                  border: '1px solid #CBD5E1'
-                }}>
-                  Audit Pro
                 </span>
               </div>
             </div>
@@ -947,7 +756,7 @@ export function ProductsPage({ onNavigate, onGoHome }: ProductsPageProps) {
 
               {/* Product Pills Selector (Excluding BartPay) */}
               <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '12px', marginBottom: '40px' }}>
-                {['HMIS', 'Biosynthesis LMIS', 'Audit Pro'].map((prod) => (
+                {['HMIS', 'Biosynthesis LMIS'].map((prod) => (
                   <span
                     key={prod}
                     onClick={() => setSelectedDemoProduct(prod)}
@@ -1009,7 +818,7 @@ export function ProductsPage({ onNavigate, onGoHome }: ProductsPageProps) {
                 </button>
 
                 <a
-                  href="mailto:info@ajildone.com"
+                  href="mailto:info@ajiledone.com"
                   style={{
                     backgroundColor: 'rgba(255, 255, 255, 0.08)',
                     color: '#FFFFFF',
@@ -1032,7 +841,7 @@ export function ProductsPage({ onNavigate, onGoHome }: ProductsPageProps) {
                     e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.4)';
                   }}
                 >
-                  info@ajildone.com
+                  info@ajiledone.com
                 </a>
               </div>
 

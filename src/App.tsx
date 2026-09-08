@@ -776,68 +776,13 @@ function MegaMenuDropdown({
                   </div>
                   <ArrowRight size={15} style={{ color: '#265CF4', position: 'absolute', bottom: '18px', right: '18px' }} />
                 </div>
-
-                {/* Product Card 4: Audit Pro (Clean White Background #FFFFFF) */}
-                <div
-                  className="mega-card-item"
-                  onClick={() => {
-                    onNavigate('#contact');
-                  }}
-                  style={{
-                    background: '#FFFFFF',
-                    border: '1px solid #E2E8F0',
-                    borderRadius: '16px',
-                    padding: '20px',
-                    display: 'flex',
-                    alignItems: 'flex-start',
-                    gap: '16px',
-                    cursor: 'pointer',
-                    position: 'relative',
-                    transition: 'all 0.25s ease',
-                  }}
-                >
-                  <div
-                    style={{
-                      width: '42px',
-                      height: '42px',
-                      borderRadius: '10px',
-                      background: '#DBEAFE',
-                      color: '#265CF4',
-                      fontSize: '15px',
-                      fontWeight: 900,
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      flexShrink: 0,
-                    }}
-                  >
-                    AP
-                  </div>
-                  <div style={{ flex: 1, paddingRight: '20px' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-                      <span style={{ fontSize: '10px', fontWeight: 800, color: '#265CF4', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
-                        TAX, COMPLIANCE & AUDIT
-                      </span>
-                      <span style={{ background: '#0B1739', color: '#FFFFFF', fontSize: '9.5px', fontWeight: 800, padding: '2px 8px', borderRadius: '10px' }}>
-                        NEW v2.6
-                      </span>
-                    </div>
-                    <h4 style={{ fontSize: '18px', fontWeight: 800, color: '#0B1739', margin: '0 0 6px' }}>
-                      Audit Pro
-                    </h4>
-                    <p style={{ fontSize: '12.5px', color: '#64748B', lineHeight: '1.45', margin: 0 }}>
-                      India, USA and Canada in one compliance workspace.
-                    </p>
-                  </div>
-                  <ArrowRight size={15} style={{ color: '#265CF4', position: 'absolute', bottom: '18px', right: '18px' }} />
-                </div>
               </div>
 
               {/* Right Column Featured Card with Exact Figma Ambient Glow Blur #67DFCB 20% layer blur 90 */}
               <div
                 className="mega-card-item"
                 onClick={() => {
-                  onNavigate('#contact');
+                  onNavigate('products-lmis');
                 }}
                 style={{
                   background: '#06102B',
@@ -872,13 +817,13 @@ function MegaMenuDropdown({
                     LATEST RELEASE
                   </div>
                   <h3 style={{ fontSize: '20px', fontWeight: 800, color: '#FFFFFF', lineHeight: '1.25', margin: '0 0 20px' }}>
-                    Canada region engine goes live in Audit Pro.
+                    Biosynthesis LMIS v2.5 engine goes live.
                   </h3>
                   <div style={{ fontSize: '11px', fontWeight: 600, color: 'rgba(255, 255, 255, 0.6)', marginBottom: '8px' }}>
-                    v2.6 &bull; 14 AUG 2026
+                    v2.5 &bull; 14 AUG 2026
                   </div>
                   <p style={{ fontSize: '12.5px', color: 'rgba(255, 255, 255, 0.85)', lineHeight: '1.5', margin: 0 }}>
-                    T2 returns, capital cost allowance, GST/HST and provincial allocation.
+                    Automated sample tracking, HL7 integration, and real-time lab analytics.
                   </p>
                 </div>
 
@@ -1936,17 +1881,7 @@ function App() {
                         <ArrowRight size={15} style={{ color: '#265CF4' }} />
                       </div>
 
-                      {/* Audit Pro */}
-                      <div onClick={() => { handleNavigate('#contact'); setMobileOpen(false); }} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', cursor: 'pointer' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-                          <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: '#DBEAFE', color: '#265CF4', fontSize: '14px', fontWeight: 900, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>AP</div>
-                          <div>
-                            <div style={{ fontSize: '15px', fontWeight: 800, color: '#0B1739' }}>Audit Pro</div>
-                            <div style={{ fontSize: '12.5px', color: '#64748B' }}>Tax, Compliance &amp; Audit</div>
-                          </div>
-                        </div>
-                        <ArrowRight size={15} style={{ color: '#265CF4' }} />
-                      </div>
+
 
                       <div onClick={() => { handleNavigate('products'); setMobileOpen(false); }} style={{ color: '#265CF4', fontSize: '14px', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '6px', marginTop: '4px', cursor: 'pointer' }}>
                         All products <ArrowRight size={14} />
