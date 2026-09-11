@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { ArrowRight, ChevronRight, Check } from 'lucide-react';
 
 interface SAPTransformationProps {
@@ -10,12 +10,22 @@ export const SAPTransformationPage: React.FC<SAPTransformationProps> = ({ onNavi
   const [hoveredAccordion, setHoveredAccordion] = useState<number | null>(null);
   const [activeConnectedPill, setActiveConnectedPill] = useState<number | null>(3);
   const [hoveredCapabilityCol, setHoveredCapabilityCol] = useState<number | null>(null);
-  const [activeOpportunityCard, setActiveOpportunityCard] = useState<number>(0);
+  
+  // Opportunity Section (Scroll-triggered only)
+  const opportunityRef = useRef<HTMLDivElement>(null);
+  const [activeOpportunityCard, setActiveOpportunityCard] = useState<number>(-1);
   const [hoveredOpportunityCard, setHoveredOpportunityCard] = useState<number | null>(null);
+  
   const [hoveredItemCard, setHoveredItemCard] = useState<string | null>(null);
   const [hoveredOracleCap, setHoveredOracleCap] = useState<number | null>(null);
+  
+  // ServiceNow Section (Scroll-triggered only)
+  const serviceNowRef = useRef<HTMLDivElement>(null);
   const [hoveredServiceNowCard, setHoveredServiceNowCard] = useState<number | null>(null);
-  const [activeServiceNowCard, setActiveServiceNowCard] = useState<number>(0);
+  const [activeServiceNowCard, setActiveServiceNowCard] = useState<number>(-1);
+  
+  // Ecosystem Section (Scroll-triggered only)
+  const ecosystemRef = useRef<HTMLDivElement>(null);
   const [activeEcosystemStep, setActiveEcosystemStep] = useState<number>(0);
   const [hoveredEcosystemBtn, setHoveredEcosystemBtn] = useState<boolean>(false);
   const [hoveredEcosystemPill, setHoveredEcosystemPill] = useState<number | null>(null);
@@ -44,7 +54,7 @@ export const SAPTransformationPage: React.FC<SAPTransformationProps> = ({ onNavi
     }
   }, []);
 
-  // Sequential top-to-bottom propagation loop every 2.4s for hero stack
+  // Sequential top-to-bottom propagation loop every 2.4s for hero stack (Hero stays animated)
   useEffect(() => {
     const timer = setInterval(() => {
       setActiveAccordion((prev) => (prev + 1) % 7);
@@ -52,28 +62,117 @@ export const SAPTransformationPage: React.FC<SAPTransformationProps> = ({ onNavi
     return () => clearInterval(timer);
   }, []);
 
-  // Sequential left-to-right propagation loop every 2.0s for opportunity cards
+  // Opportunity section scroll-triggered sequence
   useEffect(() => {
-    const timer = setInterval(() => {
-      setActiveOpportunityCard((prev) => (prev + 1) % 7);
-    }, 2000);
-    return () => clearInterval(timer);
+    let timeouts: ReturnType<typeof setTimeout>[] = [];
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          timeouts.forEach(clearTimeout);
+          timeouts = [];
+          for (let i = 0; i < 7; i++) {
+            timeouts.push(setTimeout(() => setActiveOpportunityCard(i), 80 + i * 160));
+          }
+        } else {
+          timeouts.forEach(clearTimeout);
+          timeouts = [];
+          setActiveOpportunityCard(-1);
+        }
+      },
+      {
+        threshold: 0.15,
+        rootMargin: '0px 0px -40px 0px',
+      }
+    );
+
+    const el = opportunityRef.current;
+    if (el) {
+      observer.observe(el);
+    }
+
+    return () => {
+      timeouts.forEach(clearTimeout);
+      if (el) {
+        observer.unobserve(el);
+      }
+    };
   }, []);
 
-  // Sequential 1-to-10 propagation loop every 2.2s for ServiceNow workflow cards
+  // ServiceNow section scroll-triggered sequence
   useEffect(() => {
-    const timer = setInterval(() => {
-      setActiveServiceNowCard((prev) => (prev + 1) % 10);
-    }, 2200);
-    return () => clearInterval(timer);
+    let timeouts: ReturnType<typeof setTimeout>[] = [];
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          timeouts.forEach(clearTimeout);
+          timeouts = [];
+          for (let i = 0; i < 10; i++) {
+            timeouts.push(setTimeout(() => setActiveServiceNowCard(i), 80 + i * 140));
+          }
+        } else {
+          timeouts.forEach(clearTimeout);
+          timeouts = [];
+          setActiveServiceNowCard(-1);
+        }
+      },
+      {
+        threshold: 0.15,
+        rootMargin: '0px 0px -40px 0px',
+      }
+    );
+
+    const el = serviceNowRef.current;
+    if (el) {
+      observer.observe(el);
+    }
+
+    return () => {
+      timeouts.forEach(clearTimeout);
+      if (el) {
+        observer.unobserve(el);
+      }
+    };
   }, []);
 
-  // Sequential line-by-line text reveal loop every 1.8s for ONE ECOSYSTEM section
+  // ONE ECOSYSTEM section scroll-triggered sequence
   useEffect(() => {
-    const timer = setInterval(() => {
-      setActiveEcosystemStep((prev) => (prev + 1) % 6);
-    }, 1800);
-    return () => clearInterval(timer);
+    let timeouts: ReturnType<typeof setTimeout>[] = [];
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          timeouts.forEach(clearTimeout);
+          timeouts = [];
+          timeouts.push(setTimeout(() => setActiveEcosystemStep(1), 100));
+          timeouts.push(setTimeout(() => setActiveEcosystemStep(2), 350));
+          timeouts.push(setTimeout(() => setActiveEcosystemStep(3), 600));
+          timeouts.push(setTimeout(() => setActiveEcosystemStep(4), 850));
+          timeouts.push(setTimeout(() => setActiveEcosystemStep(5), 1100));
+        } else {
+          timeouts.forEach(clearTimeout);
+          timeouts = [];
+          setActiveEcosystemStep(0);
+        }
+      },
+      {
+        threshold: 0.15,
+        rootMargin: '0px 0px -40px 0px',
+      }
+    );
+
+    const el = ecosystemRef.current;
+    if (el) {
+      observer.observe(el);
+    }
+
+    return () => {
+      timeouts.forEach(clearTimeout);
+      if (el) {
+        observer.unobserve(el);
+      }
+    };
   }, []);
 
   const opportunityCards = [
@@ -772,7 +871,7 @@ export const SAPTransformationPage: React.FC<SAPTransformationProps> = ({ onNavi
 
       {/* 3. THE OPPORTUNITY / RETHINK HOW THE ENTERPRISE OPERATES TOGETHER */}
       <section style={{ padding: '100px 0 110px', background: '#FFFFFF' }}>
-        <div className="section-container">
+        <div ref={opportunityRef} className="section-container">
           <div style={{ marginBottom: '48px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '16px' }}>
               <div style={{ width: '24px', height: '2px', backgroundColor: '#265CF4', borderRadius: '1px' }} />
@@ -831,7 +930,7 @@ export const SAPTransformationPage: React.FC<SAPTransformationProps> = ({ onNavi
               {opportunityCards.map((card, idx) => {
                 const currentActiveIdx =
                   hoveredOpportunityCard !== null ? hoveredOpportunityCard : activeOpportunityCard;
-                const isRevealed = idx <= currentActiveIdx;
+                const isRevealed = currentActiveIdx >= 0 && idx <= currentActiveIdx;
 
                 return (
                   <div
@@ -846,8 +945,8 @@ export const SAPTransformationPage: React.FC<SAPTransformationProps> = ({ onNavi
                       cursor: 'pointer',
                       opacity: isRevealed ? 1 : 0,
                       pointerEvents: isRevealed ? 'auto' : 'none',
-                      transform: isRevealed ? 'translateY(0)' : 'translateY(14px)',
-                      transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                      transform: isRevealed ? 'translateY(0) scale(1)' : 'translateY(22px) scale(0.92)',
+                      transition: 'opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
                     }}
                   >
                     <div
@@ -917,9 +1016,11 @@ export const SAPTransformationPage: React.FC<SAPTransformationProps> = ({ onNavi
                   left: 0,
                   height: '3px',
                   backgroundColor: '#52E0CB',
-                  width: `${(((hoveredOpportunityCard !== null ? hoveredOpportunityCard : activeOpportunityCard) + 1) / 7) * 100}%`,
+                  width: activeOpportunityCard === -1 && hoveredOpportunityCard === null
+                    ? '0%'
+                    : `${(((hoveredOpportunityCard !== null ? hoveredOpportunityCard : activeOpportunityCard) + 1) / 7) * 100}%`,
                   borderRadius: '2px',
-                  transition: 'width 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                  transition: 'width 0.45s cubic-bezier(0.16, 1, 0.3, 1)',
                 }}
               />
             </div>
@@ -1385,7 +1486,7 @@ export const SAPTransformationPage: React.FC<SAPTransformationProps> = ({ onNavi
           position: 'relative',
         }}
       >
-        <div className="section-container">
+        <div ref={serviceNowRef} className="section-container">
           {/* Header */}
           <div
             style={{
@@ -1694,7 +1795,7 @@ export const SAPTransformationPage: React.FC<SAPTransformationProps> = ({ onNavi
           }}
         />
 
-        <div className="section-container" style={{ position: 'relative', zIndex: 2 }}>
+        <div ref={ecosystemRef} className="section-container" style={{ position: 'relative', zIndex: 2 }}>
           {/* Line 0: Top Tag — ONE ECOSYSTEM, END TO END — */}
           <div
             style={{

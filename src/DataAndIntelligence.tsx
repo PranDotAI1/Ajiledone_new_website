@@ -269,26 +269,37 @@ export const DataAndIntelligencePage: React.FC<DataAndIntelligencePageProps> = (
   useEffect(() => {
     let t1: NodeJS.Timeout, t2: NodeJS.Timeout, t3: NodeJS.Timeout, t4: NodeJS.Timeout, t5: NodeJS.Timeout;
 
-    const runWhereCycle = () => {
+    const runWhereSequence = () => {
       setWhereStep(0);
-      t1 = setTimeout(() => setWhereStep(1), 500);  // Tag & Line 1
-      t2 = setTimeout(() => setWhereStep(2), 1300); // Line 2
-      t3 = setTimeout(() => setWhereStep(3), 2100); // Accent Cyan Bar
-      t4 = setTimeout(() => setWhereStep(4), 2900); // 4 Pills
-      t5 = setTimeout(() => setWhereStep(5), 3700); // CTA Button
+      t1 = setTimeout(() => setWhereStep(1), 300);  // Tag & Line 1
+      t2 = setTimeout(() => setWhereStep(2), 700); // Line 2
+      t3 = setTimeout(() => setWhereStep(3), 1100); // Accent Cyan Bar
+      t4 = setTimeout(() => setWhereStep(4), 1500); // 4 Pills
+      t5 = setTimeout(() => setWhereStep(5), 1900); // CTA Button
     };
 
-    runWhereCycle();
-    const interval = setInterval(runWhereCycle, 9200);
-
-    return () => {
-      clearTimeout(t1);
-      clearTimeout(t2);
-      clearTimeout(t3);
-      clearTimeout(t4);
-      clearTimeout(t5);
-      clearInterval(interval);
-    };
+    const targetEl = document.getElementById('where-data-meets-business') || document.querySelector('section');
+    if (targetEl) {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          if (entries[0].isIntersecting) {
+            observer.unobserve(entries[0].target);
+            runWhereSequence();
+          }
+        },
+        { threshold: 0.15 }
+      );
+      observer.observe(targetEl);
+      return () => {
+        clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); clearTimeout(t4); clearTimeout(t5);
+        observer.disconnect();
+      };
+    } else {
+      runWhereSequence();
+      return () => {
+        clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); clearTimeout(t4); clearTimeout(t5);
+      };
+    }
   }, []);
 
   useEffect(() => {

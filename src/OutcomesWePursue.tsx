@@ -80,28 +80,27 @@ export const OutcomesWePursuePage: React.FC<OutcomesWePursuePageProps> = ({ onNa
     if (!testElement) return;
 
     let testTimer: any = null;
-    const startTestLoop = () => {
+    const startTestSequence = () => {
       if (testTimer) clearInterval(testTimer);
       let step = 0;
       setTestSeqStep(0);
 
       testTimer = setInterval(() => {
         step++;
-        if (step > 12) {
-          step = 0; // Loop back continuously after holding
+        setTestSeqStep(step);
+        if (step >= 4) {
+          clearInterval(testTimer);
+          testTimer = null;
         }
-        setTestSeqStep(step > 4 ? 4 : step);
-      }, 1000);
+      }, 700);
     };
 
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            startTestLoop();
-          } else {
-            if (testTimer) clearInterval(testTimer);
-            setTestSeqStep(0);
+            observer.unobserve(entry.target);
+            startTestSequence();
           }
         });
       },

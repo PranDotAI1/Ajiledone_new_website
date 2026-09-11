@@ -112,24 +112,22 @@ export const ManufacturingPage: React.FC<ManufacturingPageProps> = ({ onNavigate
     };
   }, []);
 
-  // Infinite looping animation sequence for Section 2 (11.5s total cycle)
+  // Scroll-triggered animation sequence for Section 2 (plays once on scroll)
   useEffect(() => {
     let active = true;
     let cleanupCurrent: (() => void) | undefined;
-    let intervalId: ReturnType<typeof setInterval> | undefined;
 
-    const startLoop = () => {
+    const startSequence = () => {
       if (!active) return;
+      if (cleanupCurrent) cleanupCurrent();
       cleanupCurrent = playConnectSequence();
     };
 
     const node = connectSectionRef.current;
     if (!node) {
-      startLoop();
-      intervalId = setInterval(startLoop, 11500);
+      startSequence();
       return () => {
         active = false;
-        if (intervalId) clearInterval(intervalId);
         if (cleanupCurrent) cleanupCurrent();
       };
     }
@@ -137,15 +135,13 @@ export const ManufacturingPage: React.FC<ManufacturingPageProps> = ({ onNavigate
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {
-          startLoop();
-          if (!intervalId) {
-            intervalId = setInterval(startLoop, 11500);
-          }
+          startSequence();
         } else {
-          if (intervalId) {
-            clearInterval(intervalId);
-            intervalId = undefined;
+          if (cleanupCurrent) {
+            cleanupCurrent();
+            cleanupCurrent = undefined;
           }
+          setConnectStep(0);
         }
       },
       { threshold: 0.15 }
@@ -156,7 +152,6 @@ export const ManufacturingPage: React.FC<ManufacturingPageProps> = ({ onNavigate
     return () => {
       active = false;
       observer.disconnect();
-      if (intervalId) clearInterval(intervalId);
       if (cleanupCurrent) cleanupCurrent();
     };
   }, [playConnectSequence]);

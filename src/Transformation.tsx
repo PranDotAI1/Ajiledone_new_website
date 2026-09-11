@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { ArrowRight, ChevronRight, CheckCircle2, Zap, ShieldCheck, TrendingUp, Layers, Cpu } from 'lucide-react';
 
 interface TransformationProps {
@@ -17,6 +17,48 @@ export function TransformationPage({ onNavigate, onGoHome }: TransformationProps
       setSeqStep((prev) => (prev + 1) % 3);
     }, 1600);
     return () => clearInterval(timer);
+  }, []);
+
+  // Methodology Arc Section (Scroll-triggered sequential reveal)
+  const arcSectionRef = useRef<HTMLDivElement>(null);
+  const [arcStep, setArcStep] = useState<number>(0);
+
+  useEffect(() => {
+    let timeouts: ReturnType<typeof setTimeout>[] = [];
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          timeouts.forEach(clearTimeout);
+          timeouts = [];
+          timeouts.push(setTimeout(() => setArcStep(1), 80));
+          timeouts.push(setTimeout(() => setArcStep(2), 350));
+          timeouts.push(setTimeout(() => setArcStep(3), 620));
+          timeouts.push(setTimeout(() => setArcStep(4), 890));
+          timeouts.push(setTimeout(() => setArcStep(5), 1160));
+        } else {
+          timeouts.forEach(clearTimeout);
+          timeouts = [];
+          setArcStep(0);
+        }
+      },
+      {
+        threshold: 0.15,
+        rootMargin: '0px 0px -40px 0px',
+      }
+    );
+
+    const el = arcSectionRef.current;
+    if (el) {
+      observer.observe(el);
+    }
+
+    return () => {
+      timeouts.forEach(clearTimeout);
+      if (el) {
+        observer.unobserve(el);
+      }
+    };
   }, []);
 
   const categories = [
@@ -788,7 +830,7 @@ export function TransformationPage({ onNavigate, onGoHome }: TransformationProps
           }}
         />
 
-        <div className="section-container" style={{ position: 'relative', zIndex: 2, maxWidth: '1440px', margin: '0 auto', padding: '0 32px' }}>
+        <div ref={arcSectionRef} className="section-container" style={{ position: 'relative', zIndex: 2, maxWidth: '1440px', margin: '0 auto', padding: '0 32px' }}>
           {/* Section Header */}
           <div style={{ textAlign: 'left', marginBottom: '80px', maxWidth: '720px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '16px' }}>
@@ -844,36 +886,117 @@ export function TransformationPage({ onNavigate, onGoHome }: TransformationProps
                   </linearGradient>
                 </defs>
 
-                {/* Main Rising Trend Line */}
-                <line x1="10%" y1="78%" x2="90%" y2="24%" stroke="url(#arcLineGrad)" strokeWidth="2.5" />
+                {/* Animated Rising Trend Line Segments with Smooth Reveal */}
+                {[
+                  { x1: '10%', y1: '78%', x2: '30%', y2: '63%', step: 2 },
+                  { x1: '30%', y1: '63%', x2: '50%', y2: '50%', step: 3 },
+                  { x1: '50%', y1: '50%', x2: '70%', y2: '35%', step: 4 },
+                  { x1: '70%', y1: '35%', x2: '90%', y2: '24%', step: 5 },
+                ].map((seg, sIdx) => {
+                  const isLineActive = arcStep >= seg.step;
+                  return (
+                    <line
+                      key={sIdx}
+                      x1={seg.x1}
+                      y1={seg.y1}
+                      x2={seg.x2}
+                      y2={seg.y2}
+                      stroke="url(#arcLineGrad)"
+                      strokeWidth="2.5"
+                      style={{
+                        opacity: isLineActive ? 1 : 0,
+                        transition: 'opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1)',
+                      }}
+                    />
+                  );
+                })}
 
                 {/* Vertical Connector Stem Lines from Nodes to Cards */}
-                <line x1="10%" y1="78%" x2="10%" y2="58%" stroke="rgba(103, 223, 203, 0.5)" strokeWidth="1.5" strokeDasharray="3 3" />
-                <line x1="30%" y1="65%" x2="30%" y2="72%" stroke="rgba(103, 223, 203, 0.5)" strokeWidth="1.5" strokeDasharray="3 3" />
-                <line x1="50%" y1="50%" x2="50%" y2="34%" stroke="rgba(103, 223, 203, 0.5)" strokeWidth="1.5" strokeDasharray="3 3" />
-                <line x1="70%" y1="35%" x2="70%" y2="44%" stroke="rgba(103, 223, 203, 0.5)" strokeWidth="1.5" strokeDasharray="3 3" />
-                <line x1="90%" y1="24%" x2="90%" y2="15%" stroke="rgba(103, 223, 203, 0.5)" strokeWidth="1.5" strokeDasharray="3 3" />
+                <line
+                  x1="10%" y1="78%" x2="10%" y2="58%"
+                  stroke="rgba(103, 223, 203, 0.5)" strokeWidth="1.5" strokeDasharray="3 3"
+                  style={{ opacity: arcStep >= 1 ? 1 : 0, transition: 'opacity 0.4s ease' }}
+                />
+                <line
+                  x1="30%" y1="65%" x2="30%" y2="72%"
+                  stroke="rgba(103, 223, 203, 0.5)" strokeWidth="1.5" strokeDasharray="3 3"
+                  style={{ opacity: arcStep >= 2 ? 1 : 0, transition: 'opacity 0.4s ease' }}
+                />
+                <line
+                  x1="50%" y1="50%" x2="50%" y2="34%"
+                  stroke="rgba(103, 223, 203, 0.5)" strokeWidth="1.5" strokeDasharray="3 3"
+                  style={{ opacity: arcStep >= 3 ? 1 : 0, transition: 'opacity 0.4s ease' }}
+                />
+                <line
+                  x1="70%" y1="35%" x2="70%" y2="44%"
+                  stroke="rgba(103, 223, 203, 0.5)" strokeWidth="1.5" strokeDasharray="3 3"
+                  style={{ opacity: arcStep >= 4 ? 1 : 0, transition: 'opacity 0.4s ease' }}
+                />
+                <line
+                  x1="90%" y1="24%" x2="90%" y2="15%"
+                  stroke="rgba(103, 223, 203, 0.5)" strokeWidth="1.5" strokeDasharray="3 3"
+                  style={{ opacity: arcStep >= 5 ? 1 : 0, transition: 'opacity 0.4s ease' }}
+                />
 
-                {/* Glowing Node Dots */}
+                {/* Glowing Node Dots Appearing Sequentially */}
                 {[
                   { cx: '10%', cy: '78%' },
                   { cx: '30%', cy: '63%' },
                   { cx: '50%', cy: '50%' },
                   { cx: '70%', cy: '35%' },
                   { cx: '90%', cy: '24%' },
-                ].map((node, i) => (
-                  <g key={i}>
-                    <circle cx={node.cx} cy={node.cy} r="18" fill="rgba(103, 223, 203, 0.25)" filter="blur(6px)" />
-                    <circle cx={node.cx} cy={node.cy} r="7.5" fill="#67DFCB" />
-                  </g>
-                ))}
+                ].map((node, i) => {
+                  const isNodeRevealed = arcStep >= i + 1;
+                  return (
+                    <g
+                      key={i}
+                      style={{
+                        opacity: isNodeRevealed ? 1 : 0,
+                        transform: isNodeRevealed ? 'scale(1)' : 'scale(0)',
+                        transformOrigin: `${node.cx} ${node.cy}`,
+                        transition: 'opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+                      }}
+                    >
+                      <circle cx={node.cx} cy={node.cy} r="18" fill="rgba(103, 223, 203, 0.25)" filter="blur(6px)" />
+                      <circle cx={node.cx} cy={node.cy} r="7.5" fill="#67DFCB" />
+                    </g>
+                  );
+                })}
               </svg>
 
               {/* Axis Text Labels */}
-              <div style={{ position: 'absolute', top: '82%', left: '4%', fontSize: '10.5px', fontWeight: 800, color: 'rgba(255, 255, 255, 0.45)', letterSpacing: '0.16em', textTransform: 'uppercase' }}>
+              <div
+                style={{
+                  position: 'absolute',
+                  top: '82%',
+                  left: '4%',
+                  fontSize: '10.5px',
+                  fontWeight: 800,
+                  color: 'rgba(255, 255, 255, 0.45)',
+                  letterSpacing: '0.16em',
+                  textTransform: 'uppercase',
+                  opacity: arcStep >= 1 ? 1 : 0,
+                  transform: arcStep >= 1 ? 'translateY(0)' : 'translateY(8px)',
+                  transition: 'opacity 0.5s ease, transform 0.5s ease',
+                }}
+              >
                 COMPLEXITY
               </div>
-              <div style={{ position: 'absolute', top: '30%', left: '80%', fontSize: '10.5px', fontWeight: 800, color: '#67DFCB', letterSpacing: '0.16em', textTransform: 'uppercase' }}>
+              <div
+                style={{
+                  position: 'absolute',
+                  top: '30%',
+                  left: '80%',
+                  fontSize: '10.5px',
+                  fontWeight: 800,
+                  color: '#67DFCB',
+                  letterSpacing: '0.16em',
+                  textTransform: 'uppercase',
+                  opacity: arcStep >= 5 ? 1 : 0,
+                  transform: arcStep >= 5 ? 'translateY(0)' : 'translateY(8px)',
+                  transition: 'opacity 0.5s ease, transform 0.5s ease',
+                }}
+              >
                 MEASURABLE IMPROVEMENT
               </div>
 
@@ -893,15 +1016,22 @@ export function TransformationPage({ onNavigate, onGoHome }: TransformationProps
                   backdropFilter: 'blur(16px)',
                   boxShadow: '0 10px 28px rgba(0,0,0,0.35)',
                   zIndex: 3,
-                  transition: 'all 0.3s ease',
+                  opacity: arcStep >= 1 ? 1 : 0,
+                  transform: arcStep >= 1 ? 'translateY(0) scale(1)' : 'translateY(22px) scale(0.92)',
+                  transition: 'opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease',
+                  cursor: 'pointer',
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-4px)';
-                  e.currentTarget.style.borderColor = '#67DFCB';
+                  if (arcStep >= 1) {
+                    e.currentTarget.style.transform = 'translateY(-4px)';
+                    e.currentTarget.style.borderColor = '#67DFCB';
+                  }
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'none';
-                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.14)';
+                  if (arcStep >= 1) {
+                    e.currentTarget.style.transform = 'translateY(0)';
+                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.14)';
+                  }
                 }}
               >
                 <div style={{ fontSize: '11px', fontWeight: 900, color: '#67DFCB', marginBottom: '4px' }}>
@@ -929,15 +1059,22 @@ export function TransformationPage({ onNavigate, onGoHome }: TransformationProps
                   backdropFilter: 'blur(16px)',
                   boxShadow: '0 10px 28px rgba(0,0,0,0.35)',
                   zIndex: 3,
-                  transition: 'all 0.3s ease',
+                  opacity: arcStep >= 2 ? 1 : 0,
+                  transform: arcStep >= 2 ? 'translateY(0) scale(1)' : 'translateY(22px) scale(0.92)',
+                  transition: 'opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease',
+                  cursor: 'pointer',
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-4px)';
-                  e.currentTarget.style.borderColor = '#67DFCB';
+                  if (arcStep >= 2) {
+                    e.currentTarget.style.transform = 'translateY(-4px)';
+                    e.currentTarget.style.borderColor = '#67DFCB';
+                  }
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'none';
-                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.14)';
+                  if (arcStep >= 2) {
+                    e.currentTarget.style.transform = 'translateY(0)';
+                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.14)';
+                  }
                 }}
               >
                 <div style={{ fontSize: '11px', fontWeight: 900, color: '#67DFCB', marginBottom: '4px' }}>
@@ -965,15 +1102,22 @@ export function TransformationPage({ onNavigate, onGoHome }: TransformationProps
                   color: '#FFFFFF',
                   boxShadow: '0 16px 40px rgba(38, 92, 244, 0.45)',
                   zIndex: 3,
-                  transition: 'all 0.3s ease',
+                  opacity: arcStep >= 3 ? 1 : 0,
+                  transform: arcStep >= 3 ? 'translateY(0) scale(1)' : 'translateY(22px) scale(0.92)',
+                  transition: 'opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease',
+                  cursor: 'pointer',
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-4px)';
-                  e.currentTarget.style.boxShadow = '0 20px 50px rgba(38, 92, 244, 0.65)';
+                  if (arcStep >= 3) {
+                    e.currentTarget.style.transform = 'translateY(-4px)';
+                    e.currentTarget.style.boxShadow = '0 20px 50px rgba(38, 92, 244, 0.65)';
+                  }
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'none';
-                  e.currentTarget.style.boxShadow = '0 16px 40px rgba(38, 92, 244, 0.45)';
+                  if (arcStep >= 3) {
+                    e.currentTarget.style.transform = 'translateY(0)';
+                    e.currentTarget.style.boxShadow = '0 16px 40px rgba(38, 92, 244, 0.45)';
+                  }
                 }}
               >
                 <div style={{ fontSize: '11px', fontWeight: 900, color: '#BAE6FD', marginBottom: '4px' }}>
@@ -1001,15 +1145,22 @@ export function TransformationPage({ onNavigate, onGoHome }: TransformationProps
                   backdropFilter: 'blur(16px)',
                   boxShadow: '0 10px 28px rgba(0,0,0,0.35)',
                   zIndex: 3,
-                  transition: 'all 0.3s ease',
+                  opacity: arcStep >= 4 ? 1 : 0,
+                  transform: arcStep >= 4 ? 'translateY(0) scale(1)' : 'translateY(22px) scale(0.92)',
+                  transition: 'opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease',
+                  cursor: 'pointer',
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-4px)';
-                  e.currentTarget.style.borderColor = '#67DFCB';
+                  if (arcStep >= 4) {
+                    e.currentTarget.style.transform = 'translateY(-4px)';
+                    e.currentTarget.style.borderColor = '#67DFCB';
+                  }
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'none';
-                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.14)';
+                  if (arcStep >= 4) {
+                    e.currentTarget.style.transform = 'translateY(0)';
+                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.14)';
+                  }
                 }}
               >
                 <div style={{ fontSize: '11px', fontWeight: 900, color: '#67DFCB', marginBottom: '4px' }}>
@@ -1037,15 +1188,22 @@ export function TransformationPage({ onNavigate, onGoHome }: TransformationProps
                   color: '#0B1739',
                   boxShadow: '0 16px 40px rgba(103, 223, 203, 0.45)',
                   zIndex: 3,
-                  transition: 'all 0.3s ease',
+                  opacity: arcStep >= 5 ? 1 : 0,
+                  transform: arcStep >= 5 ? 'translateY(0) scale(1)' : 'translateY(22px) scale(0.92)',
+                  transition: 'opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease',
+                  cursor: 'pointer',
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-4px)';
-                  e.currentTarget.style.boxShadow = '0 20px 50px rgba(103, 223, 203, 0.65)';
+                  if (arcStep >= 5) {
+                    e.currentTarget.style.transform = 'translateY(-4px)';
+                    e.currentTarget.style.boxShadow = '0 20px 50px rgba(103, 223, 203, 0.65)';
+                  }
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'none';
-                  e.currentTarget.style.boxShadow = '0 16px 40px rgba(103, 223, 203, 0.45)';
+                  if (arcStep >= 5) {
+                    e.currentTarget.style.transform = 'translateY(0)';
+                    e.currentTarget.style.boxShadow = '0 16px 40px rgba(103, 223, 203, 0.45)';
+                  }
                 }}
               >
                 <div style={{ fontSize: '11px', fontWeight: 900, color: '#265CF4', marginBottom: '4px' }}>

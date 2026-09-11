@@ -55,25 +55,43 @@ export const AIAndIntelligentEnterprisePage: React.FC<AIAndIntelligentEnterprise
   // Step 2: Strike complete -> text dims, headline reveals with fade & scale!
 
   useEffect(() => {
-    const runCycle = () => {
+    let t1: NodeJS.Timeout, t2: NodeJS.Timeout;
+
+    const runSequence = () => {
       setObjectiveStep(0);
-      const t1 = setTimeout(() => {
+      t1 = setTimeout(() => {
         setObjectiveStep(1);
-      }, 600);
+      }, 300);
 
-      const t2 = setTimeout(() => {
+      t2 = setTimeout(() => {
         setObjectiveStep(2);
-      }, 3000);
+      }, 1000);
+    };
 
+    const targetEl = document.querySelector('section');
+    if (targetEl) {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          if (entries[0].isIntersecting) {
+            observer.unobserve(entries[0].target);
+            runSequence();
+          }
+        },
+        { threshold: 0.15 }
+      );
+      observer.observe(targetEl);
+      return () => {
+        clearTimeout(t1);
+        clearTimeout(t2);
+        observer.disconnect();
+      };
+    } else {
+      runSequence();
       return () => {
         clearTimeout(t1);
         clearTimeout(t2);
       };
-    };
-
-    runCycle();
-    const interval = setInterval(runCycle, 8800);
-    return () => clearInterval(interval);
+    }
   }, []);
 
   useEffect(() => {

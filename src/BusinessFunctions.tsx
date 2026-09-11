@@ -78,28 +78,27 @@ export const BusinessFunctionsPage: React.FC<BusinessFunctionsPageProps> = ({ on
 
     let whyTimer: any = null;
 
-    const startWhyLoop = () => {
+    const startWhySequence = () => {
       if (whyTimer) clearInterval(whyTimer);
       let step = 0;
       setWhySeqStep(0);
 
       whyTimer = setInterval(() => {
         step++;
-        if (step > 8) {
-          step = 0; // Loop back continuously
+        setWhySeqStep(step);
+        if (step >= 4) {
+          clearInterval(whyTimer);
+          whyTimer = null;
         }
-        setWhySeqStep(step > 4 ? 4 : step);
-      }, 1000); // 1000ms timing per step; stays fully visible for 4s before loop
+      }, 700);
     };
 
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            startWhyLoop();
-          } else {
-            if (whyTimer) clearInterval(whyTimer);
-            setWhySeqStep(0);
+            observer.unobserve(entry.target);
+            startWhySequence();
           }
         });
       },

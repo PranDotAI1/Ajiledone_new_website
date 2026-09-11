@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   ArrowRight,
   Code,
@@ -44,25 +44,89 @@ export const DigitalEngineeringPage: React.FC<DigitalEngineeringProps> = ({ onNa
     return () => clearInterval(timer);
   }, []);
 
-  // Automated left-to-right sequential animation for Section 3 (Slower, elegant pacing)
+  // Section 3 (WHERE DIRECTION BECOMES DELIVERY) scroll-triggered animation only (Plays on scroll into view)
+  const deliveryCardsRef = useRef<HTMLDivElement>(null);
   const [deliverySeqStep, setDeliverySeqStep] = useState<number>(0);
+
   useEffect(() => {
-    const timer = setInterval(() => {
-      setDeliverySeqStep((prev) => (prev + 1) % 6);
-    }, 1400);
-    return () => clearInterval(timer);
+    let timeouts: ReturnType<typeof setTimeout>[] = [];
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          timeouts.forEach(clearTimeout);
+          timeouts = [];
+          timeouts.push(setTimeout(() => setDeliverySeqStep(1), 100));
+          timeouts.push(setTimeout(() => setDeliverySeqStep(2), 350));
+          timeouts.push(setTimeout(() => setDeliverySeqStep(3), 600));
+          timeouts.push(setTimeout(() => setDeliverySeqStep(4), 850));
+          timeouts.push(setTimeout(() => setDeliverySeqStep(5), 1100));
+        } else {
+          timeouts.forEach(clearTimeout);
+          timeouts = [];
+          setDeliverySeqStep(0);
+        }
+      },
+      {
+        threshold: 0.15,
+        rootMargin: '0px 0px -50px 0px',
+      }
+    );
+
+    const el = deliveryCardsRef.current;
+    if (el) {
+      observer.observe(el);
+    }
+
+    return () => {
+      timeouts.forEach(clearTimeout);
+      if (el) {
+        observer.unobserve(el);
+      }
+    };
   }, []);
 
   // Hover state for Section 3 process cards (statically null so all cards are colorless by default)
   const [hoveredProcessIdx, setHoveredProcessIdx] = useState<number | null>(null);
 
-  // Automated animation for Section 5 lower callout (Step 0 = blank start, Step 1 = headline text appears first, Step 2 = all 4 tabs appear all together, Step 3 = hold)
+  // Section 5 lower callout scroll-triggered animation only (Plays on scroll into view)
+  const calloutRef = useRef<HTMLDivElement>(null);
   const [calloutSeqStep, setCalloutSeqStep] = useState<number>(0);
+
   useEffect(() => {
-    const timer = setInterval(() => {
-      setCalloutSeqStep((prev) => (prev + 1) % 4);
-    }, 1600);
-    return () => clearInterval(timer);
+    let timeouts: ReturnType<typeof setTimeout>[] = [];
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          timeouts.forEach(clearTimeout);
+          timeouts = [];
+          timeouts.push(setTimeout(() => setCalloutSeqStep(1), 100));
+          timeouts.push(setTimeout(() => setCalloutSeqStep(2), 400));
+          timeouts.push(setTimeout(() => setCalloutSeqStep(3), 750));
+        } else {
+          timeouts.forEach(clearTimeout);
+          timeouts = [];
+          setCalloutSeqStep(0);
+        }
+      },
+      {
+        threshold: 0.2,
+        rootMargin: '0px 0px -50px 0px',
+      }
+    );
+
+    const el = calloutRef.current;
+    if (el) {
+      observer.observe(el);
+    }
+
+    return () => {
+      timeouts.forEach(clearTimeout);
+      if (el) {
+        observer.unobserve(el);
+      }
+    };
   }, []);
 
   // State for capability card hover & tag hover
@@ -777,7 +841,7 @@ export const DigitalEngineeringPage: React.FC<DigitalEngineeringProps> = ({ onNa
           background: '#FFFFFF',
         }}
       >
-        <div className="section-container">
+        <div ref={deliveryCardsRef} className="section-container">
           {/* Top Tag & Main Headline */}
           <div style={{ marginBottom: '44px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '16px' }}>
@@ -877,8 +941,10 @@ export const DigitalEngineeringPage: React.FC<DigitalEngineeringProps> = ({ onNa
                       flexDirection: 'column',
                       justifyContent: 'space-between',
                       opacity: isRevealed ? 1 : 0,
-                      transform: isRevealed ? (isHovered ? 'translateY(-6px)' : 'none') : 'translateX(-28px) scale(0.94)',
-                      transition: 'all 1.0s cubic-bezier(0.4, 0, 0.2, 1)',
+                      transform: isRevealed
+                        ? (isHovered ? 'translateY(-6px)' : 'translateY(0) scale(1)')
+                        : 'translateY(24px) scale(0.92)',
+                      transition: 'opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease',
                       boxShadow: isHovered
                         ? '0 16px 36px rgba(11, 23, 57, 0.25)'
                         : '0 2px 8px rgba(0, 0, 0, 0.02)',
@@ -922,8 +988,8 @@ export const DigitalEngineeringPage: React.FC<DigitalEngineeringProps> = ({ onNa
                         padding: '0 4px',
                         flexShrink: 0,
                         opacity: deliverySeqStep > cIdx + 1 ? 1 : 0,
-                        transform: deliverySeqStep > cIdx + 1 ? 'scale(1)' : 'scale(0.5)',
-                        transition: 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)',
+                        transform: deliverySeqStep > cIdx + 1 ? 'scale(1) translateX(0)' : 'scale(0.3) translateX(-10px)',
+                        transition: 'opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
                       }}
                     >
                       &rarr;
@@ -976,8 +1042,8 @@ export const DigitalEngineeringPage: React.FC<DigitalEngineeringProps> = ({ onNa
                         flexDirection: 'column',
                         alignItems: 'flex-start',
                         opacity: isPillRevealed ? 1 : 0,
-                        transform: isPillRevealed ? 'translateY(0)' : 'translateY(20px)',
-                        transition: 'all 0.9s cubic-bezier(0.4, 0, 0.2, 1)',
+                        transform: isPillRevealed ? 'translateY(0)' : 'translateY(16px)',
+                        transition: 'opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
                       }}
                     >
                       <div
@@ -1036,7 +1102,7 @@ export const DigitalEngineeringPage: React.FC<DigitalEngineeringProps> = ({ onNa
                     width: `${deliverySeqStep === 0 ? 0 : Math.min(100, deliverySeqStep * 25)}%`,
                     background: '#CBD5E1',
                     borderRadius: '2px',
-                    transition: 'width 1.2s cubic-bezier(0.4, 0, 0.2, 1)',
+                    transition: 'width 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
                   }}
                 />
               </div>
@@ -1069,7 +1135,7 @@ export const DigitalEngineeringPage: React.FC<DigitalEngineeringProps> = ({ onNa
                           background: '#94A3B8',
                           opacity: isDotRevealed ? 1 : 0,
                           transform: isDotRevealed ? 'scale(1)' : 'scale(0)',
-                          transition: 'all 0.8s ease',
+                          transition: 'opacity 0.5s ease, transform 0.5s ease',
                         }}
                       />
                     </div>
@@ -1145,7 +1211,7 @@ export const DigitalEngineeringPage: React.FC<DigitalEngineeringProps> = ({ onNa
           </div>
 
           {/* 6 Capability Cards Grid (3 Columns x 2 Rows) */}
-          <div className="responsive-3col-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '26px' }}>
+          <div className="responsive-3col-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '18px' }}>
             {[
               {
                 num: '01',
@@ -1212,11 +1278,11 @@ export const DigitalEngineeringPage: React.FC<DigitalEngineeringProps> = ({ onNa
                   style={{
                     background: '#FFFFFF',
                     border: '1px solid #E2E8F0',
-                    borderRadius: '20px',
+                    borderRadius: '16px',
                     overflow: 'hidden',
                     transition: 'all 0.35s cubic-bezier(0.4, 0, 0.2, 1)',
-                    transform: isHovered ? 'scale(1.04) translateY(-6px)' : 'none',
-                    boxShadow: isHovered ? '0 24px 48px rgba(11, 23, 57, 0.16)' : '0 6px 20px rgba(0, 0, 0, 0.03)',
+                    transform: isHovered ? 'scale(1.03) translateY(-4px)' : 'none',
+                    boxShadow: isHovered ? '0 20px 40px rgba(11, 23, 57, 0.14)' : '0 4px 16px rgba(0, 0, 0, 0.03)',
                     zIndex: isHovered ? 5 : 1,
                     position: 'relative',
                     display: 'flex',
@@ -1228,24 +1294,24 @@ export const DigitalEngineeringPage: React.FC<DigitalEngineeringProps> = ({ onNa
                     style={{
                       background: group.headerBg,
                       color: group.headerTextColor,
-                      padding: '16px 22px',
+                      padding: '12px 18px',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'space-between',
                     }}
                   >
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                       {/* 3 Cyan Dots */}
                       <div style={{ display: 'flex', gap: '4px' }}>
                         <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#52E0CB' }} />
                         <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#52E0CB', opacity: 0.7 }} />
                         <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#52E0CB', opacity: 0.4 }} />
                       </div>
-                      <h3 style={{ fontSize: '17px', fontWeight: 800, margin: 0, lineHeight: 1.1 }}>
+                      <h3 style={{ fontSize: '15.5px', fontWeight: 800, margin: 0, lineHeight: 1.1 }}>
                         {group.title}
                       </h3>
                     </div>
-                    <span style={{ fontSize: '13px', fontWeight: 800, color: group.numColor }}>
+                    <span style={{ fontSize: '12.5px', fontWeight: 800, color: group.numColor }}>
                       {group.num}
                     </span>
                   </div>
@@ -1253,10 +1319,10 @@ export const DigitalEngineeringPage: React.FC<DigitalEngineeringProps> = ({ onNa
                   {/* Card Body Description */}
                   <p
                     style={{
-                      fontSize: '13.5px',
+                      fontSize: '12.5px',
                       color: '#475569',
-                      lineHeight: 1.5,
-                      margin: '18px 22px 16px',
+                      lineHeight: 1.4,
+                      margin: '8px 18px 8px',
                       fontWeight: 500,
                     }}
                   >
@@ -1264,7 +1330,7 @@ export const DigitalEngineeringPage: React.FC<DigitalEngineeringProps> = ({ onNa
                   </p>
 
                   {/* Capability List Items */}
-                  <div style={{ borderTop: '1px solid #F1F5F9', marginTop: 'auto' }}>
+                  <div style={{ borderTop: '1px solid #F1F5F9' }}>
                     {group.items.map((item, itemIdx) => {
                       const itemNum = (itemIdx + 1).toString().padStart(2, '0');
 
@@ -1272,17 +1338,17 @@ export const DigitalEngineeringPage: React.FC<DigitalEngineeringProps> = ({ onNa
                         <div
                           key={itemIdx}
                           style={{
-                            padding: '13px 22px',
+                            padding: '8px 18px',
                             borderBottom: itemIdx < group.items.length - 1 ? '1px solid #F1F5F9' : 'none',
                             display: 'flex',
                             alignItems: 'center',
-                            gap: '12px',
+                            gap: '10px',
                           }}
                         >
-                          <span style={{ fontSize: '12px', fontWeight: 700, color: '#94A3B8', width: '22px' }}>
+                          <span style={{ fontSize: '11.5px', fontWeight: 700, color: '#94A3B8', width: '20px' }}>
                             {itemNum}
                           </span>
-                          <span style={{ fontSize: '14px', fontWeight: 700, color: '#0B1739' }}>
+                          <span style={{ fontSize: '13px', fontWeight: 700, color: '#0B1739' }}>
                             {item}
                           </span>
                         </div>
@@ -1324,7 +1390,7 @@ export const DigitalEngineeringPage: React.FC<DigitalEngineeringProps> = ({ onNa
           }}
         />
 
-        <div className="section-container" style={{ position: 'relative', zIndex: 2, maxWidth: '850px' }}>
+        <div ref={calloutRef} className="section-container" style={{ position: 'relative', zIndex: 2, maxWidth: '850px' }}>
           {/* Top Mint Sub-tag (Appears first at step >= 1) */}
           <div
             style={{

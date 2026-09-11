@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { ArrowRight, Check, ChevronRight, Layers, ShieldCheck, Zap, Server, Cloud, Cpu, Globe, ArrowUpRight } from 'lucide-react';
 
 interface CloudTechnologyModernizationProps {
@@ -27,13 +27,15 @@ export const CloudTechnologyModernization: React.FC<CloudTechnologyModernization
   const [hoveredExploreBtn, setHoveredExploreBtn] = useState<boolean>(false);
   const [hoveredTalkBtn, setHoveredTalkBtn] = useState<boolean>(false);
 
-  // State for ONE ECOSYSTEM section reveal & buttons
+  // State for ONE ECOSYSTEM section reveal & buttons (Scroll-triggered only)
+  const ecosystemRef = useRef<HTMLElement>(null);
   const [activeEcosystemStep, setActiveEcosystemStep] = useState<number>(0);
   const [hoveredEcosystemBtn, setHoveredEcosystemBtn] = useState<boolean>(false);
   const [hoveredContactBtn, setHoveredContactBtn] = useState<boolean>(false);
   const [hoveredEcosystemPill, setHoveredEcosystemPill] = useState<number | null>(null);
 
-  // State for WHAT CLOUD IS ACTUALLY FOR section step reveal
+  // State for WHAT CLOUD IS ACTUALLY FOR section step reveal (Scroll-triggered only)
+  const whatCloudRef = useRef<HTMLElement>(null);
   const [activeWhatCloudStep, setActiveWhatCloudStep] = useState<number>(0);
 
   // State for hovered capability tag pill
@@ -42,14 +44,40 @@ export const CloudTechnologyModernization: React.FC<CloudTechnologyModernization
   // State for hovered platform ecosystem card index
   const [hoveredPlatformIndex, setHoveredPlatformIndex] = useState<number | null>(null);
 
+  // Section 3 (WHAT CLOUD IS ACTUALLY FOR) Scroll-triggered sequence (One time only)
   useEffect(() => {
-    const timer = setInterval(() => {
-      setActiveWhatCloudStep((prev) => (prev + 1) % 9);
-    }, 1600);
-    return () => clearInterval(timer);
+    let timeouts: ReturnType<typeof setTimeout>[] = [];
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          if (whatCloudRef.current) observer.unobserve(whatCloudRef.current);
+          timeouts.push(setTimeout(() => setActiveWhatCloudStep(1), 200));
+          timeouts.push(setTimeout(() => setActiveWhatCloudStep(2), 600));
+          timeouts.push(setTimeout(() => setActiveWhatCloudStep(3), 1000));
+          timeouts.push(setTimeout(() => setActiveWhatCloudStep(4), 1400));
+          timeouts.push(setTimeout(() => setActiveWhatCloudStep(5), 1800));
+          timeouts.push(setTimeout(() => setActiveWhatCloudStep(6), 2200));
+          timeouts.push(setTimeout(() => setActiveWhatCloudStep(7), 2600));
+          timeouts.push(setTimeout(() => setActiveWhatCloudStep(8), 3000));
+        }
+      },
+      { threshold: 0.2 }
+    );
+
+    if (whatCloudRef.current) {
+      observer.observe(whatCloudRef.current);
+    }
+
+    return () => {
+      timeouts.forEach(clearTimeout);
+      if (whatCloudRef.current) {
+        observer.unobserve(whatCloudRef.current);
+      }
+    };
   }, []);
 
-  // Automated loop for hero diagram node highlight
+  // Automated loop for hero diagram node highlight (Hero stays animated)
   useEffect(() => {
     const timer = setInterval(() => {
       setActiveHeroNode((prev) => (prev + 1) % 5);
@@ -57,12 +85,34 @@ export const CloudTechnologyModernization: React.FC<CloudTechnologyModernization
     return () => clearInterval(timer);
   }, []);
 
-  // Automated loop for ONE ECOSYSTEM section
+  // Section 6 (ONE ECOSYSTEM) Scroll-triggered sequence (One time only)
   useEffect(() => {
-    const timer = setInterval(() => {
-      setActiveEcosystemStep((prev) => (prev + 1) % 6);
-    }, 1800);
-    return () => clearInterval(timer);
+    let timeouts: ReturnType<typeof setTimeout>[] = [];
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          if (ecosystemRef.current) observer.unobserve(ecosystemRef.current);
+          timeouts.push(setTimeout(() => setActiveEcosystemStep(1), 200));
+          timeouts.push(setTimeout(() => setActiveEcosystemStep(2), 600));
+          timeouts.push(setTimeout(() => setActiveEcosystemStep(3), 1000));
+          timeouts.push(setTimeout(() => setActiveEcosystemStep(4), 1400));
+          timeouts.push(setTimeout(() => setActiveEcosystemStep(5), 1800));
+        }
+      },
+      { threshold: 0.2 }
+    );
+
+    if (ecosystemRef.current) {
+      observer.observe(ecosystemRef.current);
+    }
+
+    return () => {
+      timeouts.forEach(clearTimeout);
+      if (ecosystemRef.current) {
+        observer.unobserve(ecosystemRef.current);
+      }
+    };
   }, []);
 
   const sixArenas = [
@@ -749,6 +799,7 @@ export const CloudTechnologyModernization: React.FC<CloudTechnologyModernization
 
       {/* 3. SECTION: WHAT CLOUD IS ACTUALLY FOR (EXACT UPLOADED DESIGN) */}
       <section
+        ref={whatCloudRef}
         style={{
           padding: '110px 0 120px',
           background: '#FFFFFF',
@@ -1541,6 +1592,7 @@ export const CloudTechnologyModernization: React.FC<CloudTechnologyModernization
 
       {/* 6. ONE ECOSYSTEM, END TO END SECTION (EXACT FIGMA DESIGN) */}
       <section
+        ref={ecosystemRef}
         style={{
           padding: '110px 0 120px',
           background: 'linear-gradient(135deg, #0A1230 0%, #0D2A75 50%, #1942B2 100%)',

@@ -81,28 +81,27 @@ export const HowWeWorkPage: React.FC<HowWeWorkPageProps> = ({ onNavigate }) => {
     if (!s3El) return;
 
     let timer3: any = null;
-    const startS3Loop = () => {
+    const startS3Sequence = () => {
       if (timer3) clearInterval(timer3);
       let step = 0;
       setSection3SeqStep(0);
 
       timer3 = setInterval(() => {
         step++;
-        if (step > 12) {
-          step = 0;
+        setSection3SeqStep(step);
+        if (step >= 4) {
+          clearInterval(timer3);
+          timer3 = null;
         }
-        setSection3SeqStep(step > 4 ? 4 : step);
-      }, 1000);
+      }, 700);
     };
 
     const observer3 = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            startS3Loop();
-          } else {
-            if (timer3) clearInterval(timer3);
-            setSection3SeqStep(0);
+            observer3.unobserve(entry.target);
+            startS3Sequence();
           }
         });
       },

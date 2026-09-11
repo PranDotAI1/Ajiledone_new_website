@@ -31,28 +31,27 @@ export const AjiledoneIntelligentEnterprisePage: React.FC<AjiledoneIntelligentEn
 
     let timer: any = null;
 
-    const startContinuousLoop = () => {
+    const startLayersSequence = () => {
       if (timer) clearInterval(timer);
       let step = 0;
       setLayersSeqStep(0);
 
       timer = setInterval(() => {
         step++;
-        if (step > 6) {
-          step = 0; // Reset back to 0 (blank) to restart top-to-bottom wave loop
+        setLayersSeqStep(step);
+        if (step >= 5) {
+          clearInterval(timer);
+          timer = null;
         }
-        setLayersSeqStep(step > 5 ? 5 : step);
-      }, 1100); // Slower, smoother 1100ms timing per step
+      }, 700);
     };
 
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            startContinuousLoop();
-          } else {
-            if (timer) clearInterval(timer);
-            setLayersSeqStep(0);
+            observer.unobserve(entry.target);
+            startLayersSequence();
           }
         });
       },
@@ -67,12 +66,11 @@ export const AjiledoneIntelligentEnterprisePage: React.FC<AjiledoneIntelligentEn
     };
   }, []);
 
-  // Convergence Funnel Continuous Looping Sequence State (0..4)
+  // Convergence Funnel Scroll-triggered Sequence State (0..3)
   // 0: blank (top cards, lines, lower card hidden)
   // 1: Top 5 Cards appear ALL AT ONCE
   // 2: Connecting SVG lines draw down
   // 3: Central card & 4 badges appear
-  // 4: Pause phase displaying full funnel, then reset to 0 and repeat loop continuously!
   const [funnelStep, setFunnelStep] = useState<number>(0);
   const funnelSectionRef = useRef<HTMLDivElement | null>(null);
 
@@ -82,28 +80,27 @@ export const AjiledoneIntelligentEnterprisePage: React.FC<AjiledoneIntelligentEn
 
     let timer: any = null;
 
-    const startContinuousFunnelLoop = () => {
+    const startFunnelSequence = () => {
       if (timer) clearInterval(timer);
       let step = 0;
       setFunnelStep(0);
 
       timer = setInterval(() => {
         step++;
-        if (step > 4) {
-          step = 0; // Reset to 0 to restart top-to-bottom funnel wave continuously
+        setFunnelStep(step);
+        if (step >= 3) {
+          clearInterval(timer);
+          timer = null;
         }
-        setFunnelStep(step > 3 ? 3 : step);
-      }, 1050); // Smooth 1050ms timing per step
+      }, 700);
     };
 
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            startContinuousFunnelLoop();
-          } else {
-            if (timer) clearInterval(timer);
-            setFunnelStep(0);
+            observer.unobserve(entry.target);
+            startFunnelSequence();
           }
         });
       },

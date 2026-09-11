@@ -72,6 +72,8 @@ export const IndustriesPage: React.FC<IndustriesPageProps> = ({ onNavigate }) =>
     };
   }, []);
 
+  const ctaRef = React.useRef<HTMLElement>(null);
+
   useEffect(() => {
     let c1: ReturnType<typeof setTimeout>;
     let c2: ReturnType<typeof setTimeout>;
@@ -85,27 +87,34 @@ export const IndustriesPage: React.FC<IndustriesPageProps> = ({ onNavigate }) =>
       setCtaStep(0);
 
       // Step 1: Ribbon appears first
-      c1 = setTimeout(() => setCtaStep(1), 400);
+      c1 = setTimeout(() => setCtaStep(1), 200);
       // Step 2: Main Heading appears
-      c2 = setTimeout(() => setCtaStep(2), 1100);
+      c2 = setTimeout(() => setCtaStep(2), 600);
       // Step 3: Cyan underline bar appears
-      c3 = setTimeout(() => setCtaStep(3), 1800);
+      c3 = setTimeout(() => setCtaStep(3), 1000);
       // Step 4: Pill 1 (Processes) appears
-      c4 = setTimeout(() => setCtaStep(4), 2500);
+      c4 = setTimeout(() => setCtaStep(4), 1400);
       // Step 5: Pill 2 (Operating models) appears
-      c5 = setTimeout(() => setCtaStep(5), 3100);
+      c5 = setTimeout(() => setCtaStep(5), 1800);
       // Step 6: Pill 3 (Regulation) appears
-      c6 = setTimeout(() => setCtaStep(6), 3700);
+      c6 = setTimeout(() => setCtaStep(6), 2200);
       // Step 7: Pill 4 (Value chains) appears
-      c7 = setTimeout(() => setCtaStep(7), 4300);
+      c7 = setTimeout(() => setCtaStep(7), 2600);
     };
 
-    startCtaSequence();
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          if (ctaRef.current) observer.unobserve(ctaRef.current);
+          startCtaSequence();
+        }
+      },
+      { threshold: 0.2 }
+    );
 
-    // Extended hold time: stays displayed for 12+ seconds before loop refresh (16.5s total)
-    const ctaInterval = setInterval(() => {
-      startCtaSequence();
-    }, 16500);
+    if (ctaRef.current) {
+      observer.observe(ctaRef.current);
+    }
 
     return () => {
       clearTimeout(c1);
@@ -115,7 +124,9 @@ export const IndustriesPage: React.FC<IndustriesPageProps> = ({ onNavigate }) =>
       clearTimeout(c5);
       clearTimeout(c6);
       clearTimeout(c7);
-      clearInterval(ctaInterval);
+      if (ctaRef.current) {
+        observer.unobserve(ctaRef.current);
+      }
     };
   }, []);
 
@@ -1028,6 +1039,7 @@ export const IndustriesPage: React.FC<IndustriesPageProps> = ({ onNavigate }) =>
 
       {/* 4. DEEP INDUSTRY EXPERTISE BANNER (EXACT FIGMA COLORS: #0A1230 -> #0D2A75 -> #1942B2 & #67DFCB GLOW) */}
       <section
+        ref={ctaRef}
         style={{
           background: 'linear-gradient(135deg, #0A1230 0%, #0D2A75 48%, #1942B2 100%)',
           color: '#FFFFFF',
