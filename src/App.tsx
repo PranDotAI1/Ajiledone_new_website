@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { WhoWeArePage } from './WhoWeAre';
 import { PurposeandValuesPage } from './PurposeandValues';
 import { WhatWeDoPage } from './WhatWeDo';
@@ -40,6 +40,122 @@ import {
   Search,
   X,
 } from 'lucide-react';
+
+function HeroOrbCanvas() {
+
+  const [isHovered, setIsHovered] = useState(false);
+
+  return (
+    <div
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      className="hero-orb-interactive-wrapper"
+      style={{
+        position: 'relative',
+        width: '100%',
+        maxWidth: '520px',
+        aspectRatio: '1/1',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        margin: '0 auto',
+        cursor: 'pointer',
+      }}
+    >
+      {/* Figma Layer Blur 220px: rgba(103, 223, 203, 0.24) - 600px x 600px */}
+      <div
+        style={{
+          position: 'absolute',
+          width: '600px',
+          height: '600px',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          borderRadius: '50%',
+          background: 'rgba(103, 223, 203, 0.24)',
+          filter: 'blur(220px)',
+          pointerEvents: 'none',
+          zIndex: 0,
+        }}
+      />
+
+      {/* Figma Layer Blur 190px: rgba(31, 165, 255, 0.4) */}
+      <div
+        style={{
+          position: 'absolute',
+          width: '540px',
+          height: '540px',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          borderRadius: '50%',
+          background: 'rgba(31, 165, 255, 0.4)',
+          filter: 'blur(190px)',
+          pointerEvents: 'none',
+          zIndex: 1,
+        }}
+      />
+
+      {/* SVG Single Outer Dashed Circle */}
+      <svg
+        width="100%"
+        height="100%"
+        viewBox="0 0 520 520"
+        style={{
+          position: 'absolute',
+          inset: 0,
+          animation: 'spinSlow 90s linear infinite',
+          pointerEvents: 'none',
+          zIndex: 3,
+        }}
+      >
+        <circle
+          cx="260"
+          cy="260"
+          r="250"
+          fill="none"
+          stroke="rgba(255, 255, 255, 0.45)"
+          strokeWidth="1.5"
+          strokeDasharray="5 7"
+        />
+      </svg>
+
+      {/* Main Artwork Orb Image Circle */}
+      <div
+        style={{
+          position: 'relative',
+          width: '79%',
+          height: '79%',
+          borderRadius: '50%',
+          overflow: 'hidden',
+          boxShadow: '0 0 70px rgba(103, 223, 203, 0.35)',
+          zIndex: 2,
+          transform: isHovered ? 'scale(1.02)' : 'scale(1)',
+          transition: 'transform 0.4s ease',
+        }}
+      >
+        <img
+          src="/images/Ellipse.png"
+          alt="Getting it done artwork"
+          style={{
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            display: 'block',
+            borderRadius: '50%',
+          }}
+        />
+      </div>
+
+    </div>
+  );
+}
+
+
+
+
+
+
 
 function AjileDoneLogo({ variant = 'default' }: { variant?: 'default' | 'footer' }) {
   return (
@@ -883,11 +999,26 @@ function App() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Helper to cleanly return to home and strip any leftover hash from URL
+  const handleGoHome = () => {
+    if (window.location.hash) {
+      window.history.pushState(null, '', window.location.pathname + window.location.search);
+    }
+    setCurrentPage('home');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   // Browser Back / Forward button navigation history handler (popstate & hashchange)
   useEffect(() => {
     const handleLocationChange = () => {
-      const rawHash = window.location.hash || '#home';
-      const hash = decodeURIComponent(rawHash).toLowerCase();
+      const rawHash = window.location.hash || '';
+      const hash = decodeURIComponent(rawHash).toLowerCase().trim();
+
+      if (!hash || hash === '#' || hash === '#home' || hash === '#top') {
+        setCurrentPage('home');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        return;
+      }
 
       if (hash.includes('energy-resources-oil-gas') || hash.includes('energy-resources') || hash.includes('energy')) {
         setCurrentPage('energy-resources-oil-gas');
@@ -1605,8 +1736,7 @@ function App() {
             href="#top"
             onClick={(e) => {
               e.preventDefault();
-              setCurrentPage('home');
-              window.scrollTo({ top: 0, behavior: 'smooth' });
+              handleGoHome();
             }}
             className="brand"
             aria-label="Ajile Done Home"
@@ -2015,34 +2145,22 @@ function App() {
       {currentPage === 'who-we-are' ? (
         <WhoWeArePage
           onNavigate={handleNavigate}
-          onGoHome={() => {
-            setCurrentPage('home');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-          }}
+          onGoHome={handleGoHome}
         />
       ) : currentPage === 'purpose-and-vision' ? (
         <PurposeandValuesPage
           onNavigate={handleNavigate}
-          onGoHome={() => {
-            setCurrentPage('home');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-          }}
+          onGoHome={handleGoHome}
         />
       ) : currentPage === 'what-we-do' ? (
         <WhatWeDoPage
           onNavigate={handleNavigate}
-          onGoHome={() => {
-            setCurrentPage('home');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-          }}
+          onGoHome={handleGoHome}
         />
       ) : currentPage === 'our-vision' ? (
         <OurVisionPage
           onNavigate={handleNavigate}
-          onGoHome={() => {
-            setCurrentPage('home');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-          }}
+          onGoHome={handleGoHome}
         />
       ) : currentPage === 'ai-intelligent-enterprise' ? (
         <AIAndIntelligentEnterprisePage
@@ -2117,50 +2235,32 @@ function App() {
       ) : currentPage === 'insights' ? (
         <InsightsPage
           onNavigate={handleNavigate}
-          onGoHome={() => {
-            setCurrentPage('home');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-          }}
+          onGoHome={handleGoHome}
         />
       ) : currentPage === 'transformation' ? (
         <TransformationPage
           onNavigate={handleNavigate}
-          onGoHome={() => {
-            setCurrentPage('home');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-          }}
+          onGoHome={handleGoHome}
         />
       ) : currentPage === 'contact-us' ? (
         <ContactUsPage
           onNavigate={handleNavigate}
-          onGoHome={() => {
-            setCurrentPage('home');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-          }}
+          onGoHome={handleGoHome}
         />
       ) : currentPage === 'products' ? (
         <ProductsPage
           onNavigate={handleNavigate}
-          onGoHome={() => {
-            setCurrentPage('home');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-          }}
+          onGoHome={handleGoHome}
         />
       ) : currentPage === 'products-hmis' ? (
         <HMISPage
           onNavigate={handleNavigate}
-          onGoHome={() => {
-            setCurrentPage('home');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-          }}
+          onGoHome={handleGoHome}
         />
       ) : currentPage === 'products-lmis' ? (
         <LMISPage
           onNavigate={handleNavigate}
-          onGoHome={() => {
-            setCurrentPage('home');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-          }}
+          onGoHome={handleGoHome}
         />
       ) : currentPage === 'careers' ? (
         <CareersPage
@@ -2173,15 +2273,13 @@ function App() {
       ) : currentPage === 'questions-shaping-business' ? (
         <QuestionsShapingBusinessPage
           onNavigate={handleNavigate}
-          onGoHome={() => {
-            setCurrentPage('home');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-          }}
+          onGoHome={handleGoHome}
         />
       ) : (
         <main>
           {/* 2. HERO SECTION */}
-          <section className="hero" style={{ background: 'linear-gradient(135deg, #07184A 0%, #0D2B78 45%, #1A4ED0 100%)', position: 'relative', overflow: 'hidden' }}>
+          <section className="hero" style={{ background: 'linear-gradient(135deg, rgba(8, 25, 74, 1) 0%, rgba(13, 42, 117, 1) 45%, rgba(27, 74, 199, 1) 100%)', minHeight: '740px', display: 'flex', alignItems: 'center', position: 'relative', overflow: 'hidden' }}>
+
             {/* Subtle Vertical Background Grid Lines Overlay */}
             <div
               style={{
@@ -2199,6 +2297,7 @@ function App() {
             </div>
 
             <div className="section-container hero-layout" style={{ position: 'relative', zIndex: 2 }}>
+
               <div className="hero-content">
                 {/* Top Tag */}
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '20px' }}>
@@ -2216,7 +2315,7 @@ function App() {
 
                 {/* Subhead */}
                 <p className="hero-description" style={{ fontSize: '16.5px', color: 'rgba(255, 255, 255, 0.82)', lineHeight: 1.65, maxWidth: '540px', marginBottom: '36px' }}>
-                  AjileDone Technologies connects businesses with specialist SAP, AI and engineering teams — through consulting, delivery and dedicated resource supply across India, Dubai and the United States.
+                  AjileDone Technologies connects businesses with specialist SAP, AI and engineering teams through consulting, delivery and dedicated resource supply across India, Dubai and the United States.
                 </p>
 
                 {/* CTA Buttons */}
@@ -2243,46 +2342,15 @@ function App() {
                 </div>
               </div>
 
-              {/* Right Side Visual Artwork with Opaque Small Dashed Ring */}
+              {/* Right Side Visual Artwork Orb */}
               <div className="hero-visual-wrapper">
-                <div className="orb-container" style={{ position: 'relative' }}>
-                  {/* SVG Outer Circle with Refined Small Opaque Dashes */}
-                  <svg
-                    width="470"
-                    height="470"
-                    viewBox="0 0 470 470"
-                    style={{
-                      position: 'absolute',
-                      top: '-15px',
-                      left: '-15px',
-                      animation: 'spinSlow 90s linear infinite',
-                      pointerEvents: 'none',
-                    }}
-                  >
-                    <circle
-                      cx="235"
-                      cy="235"
-                      r="228"
-                      fill="none"
-                      stroke="rgba(255, 255, 255, 0.38)"
-                      strokeWidth="1.4"
-                      strokeDasharray="7 7"
-                    />
-                  </svg>
-
-                  <img
-                    src="/images/Ellipse.png"
-                    alt="Getting it done artwork"
-                    className="orb-image-graphic"
-                    style={{
-                      borderRadius: '50%',
-                      boxShadow: '0 0 60px rgba(103, 223, 203, 0.3)',
-                    }}
-                  />
-                </div>
+                <HeroOrbCanvas />
               </div>
             </div>
           </section>
+
+
+
 
           {/* 3. INTRO BANNER SECTION */}
           <section
@@ -2402,33 +2470,39 @@ function App() {
             id="questions-shaping-business"
             style={{
               position: 'relative',
-              backgroundColor: '#0A1230',
+              backgroundColor: 'rgba(10, 18, 48, 1)',
               color: '#FFFFFF',
-              padding: '100px 0 90px',
+              padding: '80px 0 70px',
+              minHeight: '580px',
               overflow: 'hidden',
               fontFamily: "'Inter', sans-serif",
             }}
           >
-            {/* Background Grid Lines */}
+            {/* Subtle Vertical Background Grid Lines Overlay */}
             <div
               style={{
                 position: 'absolute',
                 inset: 0,
-                backgroundImage: `linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px)`,
-                backgroundSize: '140px 140px',
+                display: 'grid',
+                gridTemplateColumns: 'repeat(12, 1fr)',
                 pointerEvents: 'none',
+                opacity: 0.08,
               }}
-            />
+            >
+              {Array.from({ length: 12 }).map((_, i) => (
+                <div key={i} style={{ borderRight: '1px solid #FFFFFF', height: '100%' }} />
+              ))}
+            </div>
 
             {/* Figma Exact Ambient Spotlight Glow Ellipses */}
-            {/* Ellipse 1: #67DFCB 18% Opacity 500x500 blur(220px) per Figma inspect image 4 */}
+            {/* Ellipse 1: #67DFCB 18% Opacity 500x500 blur(220px) - Top -160px, Left 1020px */}
             <div
               style={{
                 position: 'absolute',
                 width: '500px',
                 height: '500px',
                 top: '-160px',
-                right: '8%',
+                right: '5%',
                 background: 'rgba(103, 223, 203, 0.18)',
                 filter: 'blur(220px)',
                 WebkitFilter: 'blur(220px)',
@@ -2436,7 +2510,7 @@ function App() {
                 pointerEvents: 'none',
               }}
             />
-            {/* Ellipse 2: #265CF4 42% Opacity 640x640 Layer blur 240px per Figma inspect image 5 */}
+            {/* Ellipse 2: #265CF4 42% Opacity 640x640 Layer blur 240px - Top 180px, Left 300px */}
             <div
               style={{
                 position: 'absolute',
@@ -2461,24 +2535,24 @@ function App() {
                 </span>
               </div>
 
-              {/* Section Header Grid: Title + Stat Badge */}
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '32px', marginBottom: '56px' }}>
-                <div style={{ maxWidth: '720px' }}>
+              {/* Section Header Grid: Title + Stat Badge 07 */}
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '32px', marginBottom: '48px' }}>
+                <div style={{ maxWidth: '740px' }}>
                   <h2
                     style={{
-                      fontSize: 'clamp(32px, 3.8vw, 48px)',
+                      fontSize: 'clamp(32px, 3.8vw, 46px)',
                       fontWeight: 800,
                       color: '#FFFFFF',
-                      lineHeight: 1.12,
-                      letterSpacing: '-0.03em',
-                      margin: '0 0 20px 0',
+                      lineHeight: 1.14,
+                      letterSpacing: '-0.025em',
+                      margin: '0 0 16px 0',
                     }}
                   >
-                    The technology conversation has become a business conversation.
+                    The technology conversation<br />has become a business conversation.
                   </h2>
                   <p
                     style={{
-                      fontSize: '16px',
+                      fontSize: '15.5px',
                       color: 'rgba(255, 255, 255, 0.72)',
                       lineHeight: 1.6,
                       margin: 0,
@@ -2490,179 +2564,184 @@ function App() {
                 </div>
 
                 {/* Stat Badge 07 */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: '16px', alignSelf: 'flex-start' }}>
-                  <span style={{ fontSize: 'clamp(44px, 5vw, 56px)', fontWeight: 800, color: '#67DFCB', lineHeight: 1, letterSpacing: '-0.03em' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '16px', alignSelf: 'flex-start', paddingTop: '8px' }}>
+                  <span style={{ fontSize: 'clamp(48px, 5.5vw, 60px)', fontWeight: 800, color: '#67DFCB', lineHeight: 1, letterSpacing: '-0.03em' }}>
                     07
                   </span>
-                  <span style={{ fontSize: '13.5px', fontWeight: 500, color: 'rgba(255, 255, 255, 0.65)', lineHeight: 1.35, maxWidth: '170px' }}>
+                  <span style={{ fontSize: '13.5px', fontWeight: 500, color: 'rgba(255, 255, 255, 0.7)', lineHeight: 1.35, maxWidth: '170px' }}>
                     questions that no single function can answer alone
                   </span>
                 </div>
               </div>
 
-              {/* 4 Question Cards Grid matching Figma Image 1 & 5 */}
-              <div
-                style={{
-                  display: 'grid',
-                  gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-                  gap: '24px',
-                  marginBottom: '48px',
-                }}
-              >
-                {/* Card 1: AI (Active Solid Mint Card) */}
+              {/* 4 Question Cards Grid matching Figma Image (Responsive: 4 on desktop, 2 on tablet, 1 on mobile) */}
+              <div className="questions-cards-grid">
+
+                {/* Card 1: AI (Solid Mint Card) */}
                 <div
                   onClick={() => handleNavigate('#questions-shaping-business')}
                   style={{
                     backgroundColor: '#67DFCB',
-                    borderRadius: '20px',
-                    padding: '32px 28px',
+                    borderRadius: '16px',
+                    padding: '22px 20px',
                     display: 'flex',
                     flexDirection: 'column',
-                    justifyContent: 'space-between',
-                    minHeight: '220px',
-                    boxShadow: '0 12px 28px rgba(103, 223, 203, 0.25)',
-                    transition: 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), boxShadow 0.3s ease',
+                    justifyContent: 'flex-start',
+                    gap: '14px',
+                    minHeight: '140px',
+                    height: 'auto',
+                    minWidth: 0,
+                    boxSizing: 'border-box',
+                    boxShadow: '0 10px 24px rgba(103, 223, 203, 0.25)',
+                    transition: 'transform 0.3s ease, box-shadow 0.3s ease',
                     cursor: 'pointer',
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = 'translateY(-6px)';
-                    e.currentTarget.style.boxShadow = '0 16px 36px rgba(103, 223, 203, 0.4)';
+                    e.currentTarget.style.transform = 'translateY(-4px)';
+                    e.currentTarget.style.boxShadow = '0 14px 30px rgba(103, 223, 203, 0.4)';
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.transform = 'translateY(0)';
-                    e.currentTarget.style.boxShadow = '0 12px 28px rgba(103, 223, 203, 0.25)';
+                    e.currentTarget.style.boxShadow = '0 10px 24px rgba(103, 223, 203, 0.25)';
                   }}
                 >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '24px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                     <div
                       style={{
-                        width: '32px',
-                        height: '32px',
+                        width: '24px',
+                        height: '24px',
                         borderRadius: '50%',
                         backgroundColor: '#0A1230',
                         color: '#67DFCB',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        fontSize: '14px',
+                        fontSize: '12px',
                         fontWeight: 800,
+                        flexShrink: 0,
                       }}
                     >
                       ?
                     </div>
-                    <span style={{ fontSize: '12px', fontWeight: 800, color: '#0A1230', letterSpacing: '0.12em', textTransform: 'uppercase' }}>
+                    <span style={{ fontSize: '11px', fontWeight: 800, color: '#0A1230', letterSpacing: '0.12em', textTransform: 'uppercase', whiteSpace: 'nowrap' }}>
                       AI
                     </span>
                   </div>
-                  <h3 style={{ fontSize: '20px', fontWeight: 800, color: '#0A1230', lineHeight: 1.3, margin: 0 }}>
+                  <h3 style={{ fontSize: 'clamp(14px, 1.15vw, 16.5px)', fontWeight: 700, color: '#0A1230', lineHeight: 1.25, margin: 0 }}>
                     How do we make AI real?
                   </h3>
                 </div>
 
-                {/* Card 2: DIGITAL CORE */}
+                {/* Card 2: DIGITAL CORE (Translucent Card) */}
                 <div
                   onClick={() => handleNavigate('#questions-shaping-business')}
                   style={{
-                    backgroundColor: 'rgba(255, 255, 255, 0.06)',
-                    border: '1px solid rgba(255, 255, 255, 0.14)',
-                    borderRadius: '20px',
-                    padding: '32px 28px',
+                    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                    border: '1px solid rgba(255, 255, 255, 0.12)',
+                    borderRadius: '16px',
+                    padding: '22px 20px',
                     display: 'flex',
                     flexDirection: 'column',
-                    justifyContent: 'space-between',
-                    minHeight: '220px',
-                    transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                    justifyContent: 'flex-start',
+                    gap: '14px',
+                    minHeight: '140px',
+                    height: 'auto',
+                    minWidth: 0,
+                    boxSizing: 'border-box',
+                    transition: 'transform 0.3s ease, background-color 0.3s ease, border-color 0.3s ease',
                     cursor: 'pointer',
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = 'translateY(-6px)';
-                    e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.12)';
-                    e.currentTarget.style.borderColor = '#67DFCB';
-                    e.currentTarget.style.boxShadow = '0 16px 36px rgba(0, 0, 0, 0.3)';
+                    e.currentTarget.style.transform = 'translateY(-4px)';
+                    e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.09)';
+                    e.currentTarget.style.borderColor = 'rgba(103, 223, 203, 0.5)';
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.transform = 'translateY(0)';
-                    e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.06)';
-                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.14)';
-                    e.currentTarget.style.boxShadow = 'none';
+                    e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.05)';
+                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.12)';
                   }}
                 >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '24px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                     <div
                       style={{
-                        width: '32px',
-                        height: '32px',
+                        width: '24px',
+                        height: '24px',
                         borderRadius: '50%',
-                        backgroundColor: 'rgba(255, 255, 255, 0.12)',
+                        backgroundColor: 'rgba(255, 255, 255, 0.14)',
                         color: '#FFFFFF',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        fontSize: '14px',
+                        fontSize: '12px',
                         fontWeight: 800,
+                        flexShrink: 0,
                       }}
                     >
                       ?
                     </div>
-                    <span style={{ fontSize: '12px', fontWeight: 800, color: '#67DFCB', letterSpacing: '0.12em', textTransform: 'uppercase' }}>
+                    <span style={{ fontSize: '11px', fontWeight: 800, color: '#67DFCB', letterSpacing: '0.12em', textTransform: 'uppercase', whiteSpace: 'nowrap' }}>
                       DIGITAL CORE
                     </span>
                   </div>
-                  <h3 style={{ fontSize: '20px', fontWeight: 800, color: '#FFFFFF', lineHeight: 1.3, margin: 0 }}>
+                  <h3 style={{ fontSize: 'clamp(14px, 1.15vw, 16.5px)', fontWeight: 600, color: '#FFFFFF', lineHeight: 1.25, margin: 0 }}>
                     How do we modernize our digital core?
                   </h3>
                 </div>
 
-                {/* Card 3: DATA */}
+                {/* Card 3: DATA (Translucent Card) */}
                 <div
                   onClick={() => handleNavigate('#questions-shaping-business')}
                   style={{
-                    backgroundColor: 'rgba(255, 255, 255, 0.06)',
-                    border: '1px solid rgba(255, 255, 255, 0.14)',
-                    borderRadius: '20px',
-                    padding: '32px 28px',
+                    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                    border: '1px solid rgba(255, 255, 255, 0.12)',
+                    borderRadius: '16px',
+                    padding: '22px 20px',
                     display: 'flex',
                     flexDirection: 'column',
-                    justifyContent: 'space-between',
-                    minHeight: '220px',
-                    transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                    justifyContent: 'flex-start',
+                    gap: '14px',
+                    minHeight: '140px',
+                    height: 'auto',
+                    minWidth: 0,
+                    boxSizing: 'border-box',
+                    transition: 'transform 0.3s ease, background-color 0.3s ease, border-color 0.3s ease',
                     cursor: 'pointer',
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = 'translateY(-6px)';
-                    e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.12)';
-                    e.currentTarget.style.borderColor = '#67DFCB';
-                    e.currentTarget.style.boxShadow = '0 16px 36px rgba(0, 0, 0, 0.3)';
+                    e.currentTarget.style.transform = 'translateY(-4px)';
+                    e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.09)';
+                    e.currentTarget.style.borderColor = 'rgba(103, 223, 203, 0.5)';
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.transform = 'translateY(0)';
-                    e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.06)';
-                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.14)';
-                    e.currentTarget.style.boxShadow = 'none';
+                    e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.05)';
+                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.12)';
                   }}
                 >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '24px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                     <div
                       style={{
-                        width: '32px',
-                        height: '32px',
+                        width: '24px',
+                        height: '24px',
                         borderRadius: '50%',
-                        backgroundColor: 'rgba(255, 255, 255, 0.12)',
+                        backgroundColor: 'rgba(255, 255, 255, 0.14)',
                         color: '#FFFFFF',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        fontSize: '14px',
+                        fontSize: '12px',
                         fontWeight: 800,
+                        flexShrink: 0,
                       }}
                     >
                       ?
                     </div>
-                    <span style={{ fontSize: '12px', fontWeight: 800, color: '#67DFCB', letterSpacing: '0.12em', textTransform: 'uppercase' }}>
+                    <span style={{ fontSize: '11px', fontWeight: 800, color: '#67DFCB', letterSpacing: '0.12em', textTransform: 'uppercase', whiteSpace: 'nowrap' }}>
                       DATA
                     </span>
                   </div>
-                  <h3 style={{ fontSize: '20px', fontWeight: 800, color: '#FFFFFF', lineHeight: 1.3, margin: 0 }}>
+                  <h3 style={{ fontSize: 'clamp(14px, 1.15vw, 16.5px)', fontWeight: 600, color: '#FFFFFF', lineHeight: 1.25, margin: 0 }}>
                     How do we unlock the value of our data?
                   </h3>
                 </div>
@@ -2671,54 +2750,60 @@ function App() {
                 <div
                   onClick={() => handleNavigate('#questions-shaping-business')}
                   style={{
-                    backgroundColor: '#265CF4',
-                    borderRadius: '20px',
-                    padding: '32px 28px',
+                    backgroundColor: '#225CF5',
+                    borderRadius: '16px',
+                    padding: '22px 20px',
                     display: 'flex',
                     flexDirection: 'column',
-                    justifyContent: 'space-between',
-                    minHeight: '220px',
-                    boxShadow: '0 12px 28px rgba(38, 92, 244, 0.35)',
-                    transition: 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), boxShadow 0.3s ease',
+                    justifyContent: 'flex-start',
+                    gap: '14px',
+                    minHeight: '140px',
+                    height: 'auto',
+                    minWidth: 0,
+                    boxSizing: 'border-box',
+                    boxShadow: '0 10px 24px rgba(34, 92, 245, 0.3)',
+                    transition: 'transform 0.3s ease, box-shadow 0.3s ease',
                     cursor: 'pointer',
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = 'translateY(-6px)';
-                    e.currentTarget.style.boxShadow = '0 16px 36px rgba(38, 92, 244, 0.5)';
+                    e.currentTarget.style.transform = 'translateY(-4px)';
+                    e.currentTarget.style.boxShadow = '0 14px 30px rgba(34, 92, 245, 0.45)';
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.transform = 'translateY(0)';
-                    e.currentTarget.style.boxShadow = '0 12px 28px rgba(38, 92, 244, 0.35)';
+                    e.currentTarget.style.boxShadow = '0 10px 24px rgba(34, 92, 245, 0.3)';
                   }}
                 >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '24px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                     <div
                       style={{
-                        width: '32px',
-                        height: '32px',
+                        width: '24px',
+                        height: '24px',
                         borderRadius: '50%',
-                        backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                        backgroundColor: 'rgba(255, 255, 255, 0.22)',
                         color: '#FFFFFF',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        fontSize: '14px',
+                        fontSize: '12px',
                         fontWeight: 800,
+                        flexShrink: 0,
                       }}
                     >
                       ?
                     </div>
-                    <span style={{ fontSize: '12px', fontWeight: 800, color: '#9ECAFF', letterSpacing: '0.12em', textTransform: 'uppercase' }}>
+                    <span style={{ fontSize: '11px', fontWeight: 800, color: '#67DFCB', letterSpacing: '0.12em', textTransform: 'uppercase', whiteSpace: 'nowrap' }}>
                       CONTINUOUS CHANGE
                     </span>
                   </div>
-                  <h3 style={{ fontSize: '20px', fontWeight: 800, color: '#FFFFFF', lineHeight: 1.3, margin: 0 }}>
+                  <h3 style={{ fontSize: 'clamp(14px, 1.15vw, 16.5px)', fontWeight: 700, color: '#FFFFFF', lineHeight: 1.25, margin: 0 }}>
                     How do we continuously transform?
                   </h3>
                 </div>
               </div>
 
-              {/* Bottom Footer Bar: Link + Category Pills matching Figma Image 1 */}
+
+              {/* Bottom Footer Bar: Link + Category List matching Figma Specs */}
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '20px' }}>
                 <a
                   href="#questions-shaping-business"
@@ -2728,7 +2813,7 @@ function App() {
                   }}
                   style={{
                     color: '#67DFCB',
-                    fontSize: '15px',
+                    fontSize: '14.5px',
                     fontWeight: 700,
                     textDecoration: 'none',
                     display: 'flex',
@@ -2746,10 +2831,12 @@ function App() {
                 <div
                   style={{
                     fontSize: '11px',
-                    fontWeight: 700,
-                    color: 'rgba(255, 255, 255, 0.45)',
-                    letterSpacing: '0.15em',
+                    fontWeight: 800,
+                    color: '#67DFCB',
+                    letterSpacing: '0.14em',
                     textTransform: 'uppercase',
+                    opacity: 0.85,
+                    lineHeight: 1.6,
                   }}
                 >
                   AI &nbsp;·&nbsp; DIGITAL CORE &nbsp;·&nbsp; DATA &nbsp;·&nbsp; SUPPLY CHAIN &nbsp;·&nbsp; ECONOMICS &nbsp;·&nbsp; WORKFORCE &nbsp;·&nbsp; CONTINUOUS CHANGE
@@ -2758,400 +2845,8 @@ function App() {
             </div>
           </section>
 
-          {/* 5. CAPABILITIES SECTION (WHAT WE DO) */}
-          <section className="section-pad capabilities-section" id="capabilities" style={{ background: '#F4F7FC', padding: '96px 0' }}>
-            <div className="section-container">
-              {/* Header */}
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '48px', flexWrap: 'wrap', gap: '20px' }}>
-                <div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
-                    <div style={{ width: '24px', height: '2px', backgroundColor: '#265CF4', borderRadius: '1px' }} />
-                    <span style={{ color: '#265CF4', fontSize: '12px', fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase' }}>
-                      WHAT WE DO
-                    </span>
-                  </div>
-                  <h2 style={{ fontSize: 'clamp(32px, 4vw, 44px)', fontWeight: 800, color: '#0A1128', lineHeight: 1.15, margin: '0 0 12px 0', fontFamily: "'Inter', sans-serif" }}>
-                    Services built around your roadmap.
-                  </h2>
-                  <p style={{ fontSize: '16px', color: '#64748B', margin: 0 }}>
-                    Six capability areas — engaged individually, or as one connected programme.
-                  </p>
-                </div>
-                <a
-                  href="#what-we-do"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setCurrentPage('what-we-do');
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                  }}
-                  style={{
-                    color: '#265CF4',
-                    fontSize: '15px',
-                    fontWeight: 700,
-                    textDecoration: 'none',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '6px',
-                    transition: 'gap 0.2s ease',
-                  }}
-                  onMouseEnter={(e) => (e.currentTarget.style.gap = '10px')}
-                  onMouseLeave={(e) => (e.currentTarget.style.gap = '6px')}
-                >
-                  <span>All services</span>
-                  <ArrowRight size={16} />
-                </a>
-              </div>
 
-              {/* 6 Capabilities Grid */}
-              <div className="responsive-3col-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '24px' }}>
-                {[
-                  {
-                    num: '01',
-                    title: 'Web Development',
-                    text: 'Websites and web applications for online interaction, information sharing and e-commerce.',
-                    dashColor: '#67DFCB',
-                    defaultBg: '#090F24',
-                    defaultTitleColor: '#FFFFFF',
-                    defaultTextColor: 'rgba(255, 255, 255, 0.72)',
-                    defaultLinkColor: '#67DFCB',
-                    hoverBg: '#265CF4',
-                    hoverTitleColor: '#FFFFFF',
-                    hoverTextColor: 'rgba(255, 255, 255, 0.95)',
-                    hoverLinkColor: '#67DFCB',
-                  },
-                  {
-                    num: '02',
-                    title: 'SAP & ERP',
-                    text: 'Integrating business functions so resources and data are managed efficiently across the organisation.',
-                    dashColor: '#265CF4',
-                    defaultBg: '#FFFFFF',
-                    defaultTitleColor: '#0A1128',
-                    defaultTextColor: '#64748B',
-                    defaultLinkColor: '#265CF4',
-                    hoverBg: '#090F24',
-                    hoverTitleColor: '#FFFFFF',
-                    hoverTextColor: 'rgba(255, 255, 255, 0.8)',
-                    hoverLinkColor: '#67DFCB',
-                  },
-                  {
-                    num: '03',
-                    title: 'AI & Machine Learning',
-                    text: 'Systems that learn from data and improve performance without explicit programming.',
-                    dashColor: '#67DFCB',
-                    defaultBg: '#265CF4',
-                    defaultTitleColor: '#FFFFFF',
-                    defaultTextColor: 'rgba(255, 255, 255, 0.88)',
-                    defaultLinkColor: '#67DFCB',
-                    hoverBg: '#090F24',
-                    hoverTitleColor: '#FFFFFF',
-                    hoverTextColor: 'rgba(255, 255, 255, 0.9)',
-                    hoverLinkColor: '#67DFCB',
-                  },
-                  {
-                    num: '04',
-                    title: 'Blockchain Solutions',
-                    text: 'Distributed ledger builds for traceable, tamper-evident business processes.',
-                    dashColor: '#265CF4',
-                    defaultBg: '#FFFFFF',
-                    defaultTitleColor: '#0A1128',
-                    defaultTextColor: '#64748B',
-                    defaultLinkColor: '#265CF4',
-                    hoverBg: '#265CF4',
-                    hoverTitleColor: '#FFFFFF',
-                    hoverTextColor: 'rgba(255, 255, 255, 0.9)',
-                    hoverLinkColor: '#67DFCB',
-                  },
-                  {
-                    num: '05',
-                    title: 'Resource Augmentation',
-                    text: 'Vetted specialists supplied on demand — embedded into your team, managed by ours.',
-                    dashColor: '#1D4ED8',
-                    defaultBg: '#52E0CB',
-                    defaultTitleColor: '#0A1128',
-                    defaultTextColor: 'rgba(10, 17, 40, 0.85)',
-                    defaultLinkColor: '#1D4ED8',
-                    hoverBg: '#265CF4',
-                    hoverTitleColor: '#FFFFFF',
-                    hoverTextColor: 'rgba(255, 255, 255, 0.95)',
-                    hoverLinkColor: '#67DFCB',
-                  },
-                  {
-                    num: '06',
-                    title: 'Support & Production',
-                    text: 'Keeping your business safe and ensuring high availability once you are live.',
-                    dashColor: '#265CF4',
-                    defaultBg: '#FFFFFF',
-                    defaultTitleColor: '#0A1128',
-                    defaultTextColor: '#64748B',
-                    defaultLinkColor: '#265CF4',
-                    hoverBg: '#52E0CB',
-                    hoverTitleColor: '#0A1128',
-                    hoverTextColor: 'rgba(10, 17, 40, 0.85)',
-                    hoverLinkColor: '#1D4ED8',
-                  },
-                ].map((c) => (
-                  <div
-                    key={c.num}
-                    style={{
-                      background: c.defaultBg,
-                      borderRadius: '18px',
-                      padding: '32px',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      justifyContent: 'space-between',
-                      minHeight: '260px',
-                      boxShadow: '0 4px 16px rgba(0,0,0,0.04)',
-                      transition: 'all 0.35s cubic-bezier(0.4, 0, 0.2, 1)',
-                      cursor: 'pointer',
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.background = c.hoverBg;
-                      e.currentTarget.style.transform = 'translateY(-6px)';
-                      e.currentTarget.style.boxShadow = '0 18px 36px rgba(38, 92, 244, 0.2)';
-                      const titleEl = e.currentTarget.querySelector('.card-title') as HTMLElement;
-                      const textEl = e.currentTarget.querySelector('.card-text') as HTMLElement;
-                      const linkEl = e.currentTarget.querySelector('.card-link') as HTMLElement;
-                      if (titleEl) titleEl.style.color = c.hoverTitleColor;
-                      if (textEl) textEl.style.color = c.hoverTextColor;
-                      if (linkEl) linkEl.style.color = c.hoverLinkColor;
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.background = c.defaultBg;
-                      e.currentTarget.style.transform = 'none';
-                      e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.04)';
-                      const titleEl = e.currentTarget.querySelector('.card-title') as HTMLElement;
-                      const textEl = e.currentTarget.querySelector('.card-text') as HTMLElement;
-                      const linkEl = e.currentTarget.querySelector('.card-link') as HTMLElement;
-                      if (titleEl) titleEl.style.color = c.defaultTitleColor;
-                      if (textEl) textEl.style.color = c.defaultTextColor;
-                      if (linkEl) linkEl.style.color = c.defaultLinkColor;
-                    }}
-                  >
-                    <div>
-                      {/* Top Accent Dash & Number */}
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
-                        <div style={{ width: '32px', height: '3px', backgroundColor: c.dashColor, borderRadius: '2px' }} />
-                        <span style={{ fontSize: '13px', fontWeight: 800, color: c.defaultTitleColor, opacity: 0.6, letterSpacing: '0.05em' }}>
-                          {c.num}
-                        </span>
-                      </div>
 
-                      {/* Title */}
-                      <h3
-                        className="card-title"
-                        style={{
-                          fontSize: '20px',
-                          fontWeight: 800,
-                          color: c.defaultTitleColor,
-                          margin: '0 0 12px 0',
-                          lineHeight: 1.25,
-                          transition: 'color 0.3s ease',
-                          fontFamily: "'Inter', sans-serif",
-                        }}
-                      >
-                        {c.title}
-                      </h3>
-
-                      {/* Description Text */}
-                      <p
-                        className="card-text"
-                        style={{
-                          fontSize: '14.5px',
-                          color: c.defaultTextColor,
-                          margin: '0 0 24px 0',
-                          lineHeight: 1.55,
-                          transition: 'color 0.3s ease',
-                        }}
-                      >
-                        {c.text}
-                      </p>
-                    </div>
-
-                    {/* Learn More Link */}
-                    <div
-                      className="card-link"
-                      style={{
-                        color: c.defaultLinkColor,
-                        fontSize: '14px',
-                        fontWeight: 700,
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '6px',
-                        transition: 'color 0.3s ease',
-                      }}
-                    >
-                      <span>Learn more</span>
-                      <ArrowRight size={15} />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </section>
-
-          {/* 6. OUR THINKING SECTION */}
-          <section className="section-pad" id="our-thinking" style={{ background: '#FFFFFF', padding: '88px 0 96px' }}>
-            <div className="section-container">
-              {/* Header */}
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '48px', flexWrap: 'wrap', gap: '20px' }}>
-                <div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
-                    <div style={{ width: '24px', height: '2px', backgroundColor: '#265CF4', borderRadius: '1px' }} />
-                    <span style={{ color: '#265CF4', fontSize: '12px', fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase' }}>
-                      OUR THINKING
-                    </span>
-                  </div>
-                  <h2 style={{ fontSize: 'clamp(32px, 4vw, 44px)', fontWeight: 800, color: '#0A1128', lineHeight: 1.15, margin: 0, fontFamily: "'Inter', sans-serif" }}>
-                    The latest from AjileDone.
-                  </h2>
-                </div>
-                <a
-                  href="#our-thinking"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleNavigate('#our-thinking');
-                  }}
-                  style={{
-                    color: '#265CF4',
-                    fontSize: '15px',
-                    fontWeight: 700,
-                    textDecoration: 'none',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '6px',
-                    transition: 'gap 0.2s ease',
-                  }}
-                  onMouseEnter={(e) => (e.currentTarget.style.gap = '10px')}
-                  onMouseLeave={(e) => (e.currentTarget.style.gap = '6px')}
-                >
-                  <span>View all insights</span>
-                  <ArrowRight size={16} />
-                </a>
-              </div>
-
-              {/* 3 Insight Cards */}
-              <div className="responsive-3col-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '28px', marginBottom: '48px' }}>
-                {[
-                  {
-                    tag: 'ANALYSIS · 5 MIN READ',
-                    title: 'Agentic AI in the enterprise',
-                    text: 'How autonomous agents are reshaping service delivery — and what it means for your operating model.',
-                    img: '/images/insights1.png',
-                  },
-                  {
-                    tag: 'PERSPECTIVE · 4 MIN READ',
-                    title: 'SAP S/4HANA migration playbook',
-                    text: 'A pragmatic sequence for moving off legacy ERP without stalling the business.',
-                    img: '/images/insights2.png',
-                  },
-                  {
-                    tag: 'RESEARCH · 6 MIN READ',
-                    title: 'The distributed team advantage',
-                    text: 'Why resource augmentation outperforms traditional outsourcing on speed and retention.',
-                    img: '/images/insights3.png',
-                  },
-                ].map((card, i) => (
-                  <div
-                    key={i}
-                    style={{
-                      background: '#FFFFFF',
-                      borderRadius: '16px',
-                      border: '1px solid #E2E8F0',
-                      overflow: 'hidden',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      boxShadow: '0 2px 10px rgba(0,0,0,0.02)',
-                      transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                      cursor: 'pointer',
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.transform = 'translateY(-6px)';
-                      e.currentTarget.style.boxShadow = '0 16px 32px rgba(38, 92, 244, 0.12)';
-                      e.currentTarget.style.borderColor = 'rgba(38, 92, 244, 0.25)';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.transform = 'none';
-                      e.currentTarget.style.boxShadow = '0 2px 10px rgba(0,0,0,0.02)';
-                      e.currentTarget.style.borderColor = '#E2E8F0';
-                    }}
-                  >
-                    {/* Card Header Image with Floating Badge */}
-                    <div style={{ position: 'relative', width: '100%', height: '210px', overflow: 'hidden' }}>
-                      <img
-                        src={card.img}
-                        alt={card.title}
-                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                      />
-                      <div
-                        style={{
-                          position: 'absolute',
-                          bottom: '12px',
-                          left: '16px',
-                          background: '#FFFFFF',
-                          color: '#265CF4',
-                          fontSize: '11px',
-                          fontWeight: 800,
-                          letterSpacing: '0.08em',
-                          padding: '6px 14px',
-                          borderRadius: '20px',
-                          boxShadow: '0 4px 12px rgba(0,0,0,0.08)',
-                        }}
-                      >
-                        {card.tag}
-                      </div>
-                    </div>
-
-                    {/* Card Body */}
-                    <div style={{ padding: '24px 28px 28px 28px', display: 'flex', flexDirection: 'column', flexGrow: 1, justifyContent: 'space-between' }}>
-                      <div>
-                        <h3
-                          style={{
-                            fontSize: '20px',
-                            fontWeight: 800,
-                            color: '#0F172A',
-                            margin: '0 0 12px 0',
-                            lineHeight: 1.3,
-                            fontFamily: "'Inter', sans-serif",
-                          }}
-                        >
-                          {card.title}
-                        </h3>
-                        <p
-                          style={{
-                            fontSize: '14px',
-                            color: '#64748B',
-                            margin: '0 0 24px 0',
-                            lineHeight: 1.55,
-                          }}
-                        >
-                          {card.text}
-                        </p>
-                      </div>
-
-                      <div
-                        style={{
-                          color: '#265CF4',
-                          fontSize: '14px',
-                          fontWeight: 700,
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: '6px',
-                        }}
-                      >
-                        <span>Read</span>
-                        <ArrowRight size={15} />
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              {/* Bottom Subtext */}
-              <p style={{ fontSize: '14px', fontWeight: 700, color: '#475569', margin: 0 }}>
-                Perspectives across technology, industries and business transformation.
-              </p>
-            </div>
-          </section>
 
           {/* 8. OUR WORK SECTION */}
           <section
@@ -3370,177 +3065,297 @@ function App() {
           </section>
 
 
-
-          {/* 8.5 OUR THINKING / INSIGHTS HOME SECTION per uploaded Image 2 */}
-          <section
-            id="our-thinking"
-            style={{
-              padding: '96px 0',
-              backgroundColor: '#FFFFFF',
-              borderTop: '1px solid #E2E8F0',
-            }}
-          >
+          {/* OUR PRODUCTS SECTION */}
+          <section className="section-pad" id="our-products" style={{ background: '#F4F7FC', padding: '96px 0' }}>
             <div className="section-container">
-              {/* Header Row */}
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '20px', marginBottom: '48px' }}>
-                <div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
-                    <div style={{ width: '24px', height: '2.5px', backgroundColor: '#265CF4', borderRadius: '1px' }} />
-                    <span style={{ fontSize: '11.5px', fontWeight: 800, color: '#265CF4', letterSpacing: '0.18em', textTransform: 'uppercase' }}>
-                      OUR THINKING
-                    </span>
-                  </div>
-                  <h2 style={{ fontSize: 'clamp(32px, 4vw, 48px)', fontWeight: 800, color: '#0B1739', margin: 0, letterSpacing: '-0.025em' }}>
-                    The latest from AjileDone.
-                  </h2>
+              {/* Header */}
+              <div style={{ marginBottom: '44px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '14px' }}>
+                  <div style={{ width: '24px', height: '2px', backgroundColor: '#265CF4', borderRadius: '1px' }} />
+                  <span style={{ color: '#265CF4', fontSize: '12px', fontWeight: 800, letterSpacing: '0.14em', textTransform: 'uppercase' }}>
+                    OUR PRODUCTS
+                  </span>
                 </div>
-
-                <a
-                  href="#insights"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleNavigate('#insights');
-                  }}
-                  style={{
-                    color: '#265CF4',
-                    fontWeight: 700,
-                    fontSize: '14.5px',
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '6px',
-                    textDecoration: 'none',
-                    transition: 'gap 0.2s ease',
-                  }}
-                >
-                  View all insights <ArrowRight size={15} />
-                </a>
+                <h2 style={{ fontSize: 'clamp(32px, 3.8vw, 44px)', fontWeight: 800, color: '#0A1128', lineHeight: 1.15, margin: '0 0 14px 0', fontFamily: "'Inter', sans-serif" }}>
+                  Platforms we built, not just projects we delivered.
+                </h2>
+                <p style={{ fontSize: '15.5px', color: '#64748B', lineHeight: 1.6, margin: 0, maxWidth: '820px' }}>
+                  Four enterprise-grade platforms across decentralized finance, hospital operations, diagnostics and multi-jurisdictional tax — built, operated and supported by the same teams that deliver our client work.
+                </p>
               </div>
 
-              {/* 3 Cards Grid */}
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '28px' }}>
-                {[
-                  {
-                    id: 1,
-                    tag: 'AI',
-                    title: 'The Agentic Enterprise: What Comes After Generative AI?',
-                    desc: 'Why the next shift in enterprise software is from copilot tools to autonomous agents that act and orchestrate across systems.',
-                    bg: 'linear-gradient(135deg, #1B4AC7 0%, #0D2A75 100%)',
-                    tagBg: 'rgba(255, 255, 255, 0.2)',
-                    tagColor: '#FFFFFF',
-                    textColor: '#FFFFFF',
-                    descColor: 'rgba(255, 255, 255, 0.8)',
-                    btnColor: '#67DFCB',
-                  },
-                  {
-                    id: 2,
-                    tag: 'ERP',
-                    title: 'Beyond ERP: Building the Intelligent Enterprise',
-                    desc: 'How modernizing your SAP ERP core enables real-time decision making and continuous transformation across business functions.',
-                    bg: '#0B1739',
-                    tagBg: 'rgba(38, 92, 244, 0.3)',
-                    tagColor: '#67DFCB',
-                    textColor: '#FFFFFF',
-                    descColor: 'rgba(255, 255, 255, 0.78)',
-                    btnColor: '#67DFCB',
-                  },
-                  {
-                    id: 3,
-                    tag: 'DATA',
-                    title: 'Why Your Data Architecture Will Determine Your AI Strategy',
-                    desc: 'Without unified data governance and real-time data pipelines, AI models cannot deliver sustainable enterprise value.',
-                    bg: '#67DFCB',
-                    tagBg: 'rgba(10, 18, 48, 0.15)',
-                    tagColor: '#0A1230',
-                    textColor: '#0A1230',
-                    descColor: 'rgba(10, 18, 48, 0.85)',
-                    btnColor: '#265CF4',
-                  },
-                ].map((card) => (
-                  <div
-                    key={card.id}
-                    onClick={() => handleNavigate('#insights')}
-                    style={{
-                      background: card.bg,
-                      borderRadius: '24px',
-                      padding: '38px 32px',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      justifyContent: 'space-between',
-                      minHeight: '340px',
-                      cursor: 'pointer',
-                      boxShadow: '0 12px 32px rgba(11, 23, 57, 0.08)',
-                      transition: 'all 0.3s ease',
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.transform = 'translateY(-4px)';
-                      e.currentTarget.style.boxShadow = '0 18px 40px rgba(11, 23, 57, 0.15)';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.transform = 'none';
-                      e.currentTarget.style.boxShadow = '0 12px 32px rgba(11, 23, 57, 0.08)';
-                    }}
-                  >
-                    <div>
-                      <span
-                        style={{
-                          display: 'inline-block',
-                          backgroundColor: card.tagBg,
-                          color: card.tagColor,
-                          fontSize: '11px',
-                          fontWeight: 800,
-                          letterSpacing: '0.12em',
-                          padding: '6px 14px',
-                          borderRadius: '16px',
-                          textTransform: 'uppercase',
-                          marginBottom: '20px',
-                        }}
-                      >
-                        {card.tag}
+              {/* 2 Products Grid */}
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))', gap: '28px' }}>
+                {/* Product Card 1: HMIS */}
+                <div
+                  style={{
+                    background: '#FFFFFF',
+                    borderRadius: '20px',
+                    border: '1px solid #E2E8F0',
+                    overflow: 'hidden',
+                    boxShadow: '0 8px 28px rgba(10, 17, 40, 0.05)',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = 'translateY(-4px)';
+                    e.currentTarget.style.boxShadow = '0 16px 36px rgba(38, 92, 244, 0.12)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = 'translateY(0)';
+                    e.currentTarget.style.boxShadow = '0 8px 28px rgba(10, 17, 40, 0.05)';
+                  }}
+                >
+                  {/* Browser Window Preview */}
+                  <div style={{ background: '#F8FAFC', borderBottom: '1px solid #E2E8F0', padding: '14px 16px 0 16px' }}>
+                    {/* Browser Header Bar */}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
+                      <div style={{ display: 'flex', gap: '5px' }}>
+                        <div style={{ width: '7px', height: '7px', borderRadius: '50%', backgroundColor: '#CBD5E1' }} />
+                        <div style={{ width: '7px', height: '7px', borderRadius: '50%', backgroundColor: '#CBD5E1' }} />
+                        <div style={{ width: '7px', height: '7px', borderRadius: '50%', backgroundColor: '#CBD5E1' }} />
+                      </div>
+                      <span style={{ fontSize: '10.5px', fontWeight: 700, color: '#64748B', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+                        OPD · PATIENT DASHBOARD
                       </span>
-
-                      <h3
-                        style={{
-                          fontSize: '21px',
-                          fontWeight: 800,
-                          color: card.textColor,
-                          lineHeight: 1.3,
-                          marginBottom: '14px',
-                          letterSpacing: '-0.015em',
-                        }}
-                      >
-                        {card.title}
-                      </h3>
-
-                      <p
-                        style={{
-                          fontSize: '14px',
-                          color: card.descColor,
-                          lineHeight: 1.6,
-                          margin: 0,
-                        }}
-                      >
-                        {card.desc}
-                      </p>
                     </div>
-
-                    <div
-                      style={{
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: '8px',
-                        color: card.btnColor,
-                        fontSize: '14px',
-                        fontWeight: 800,
-                        marginTop: '28px',
-                      }}
-                    >
-                      Read perspective <ArrowRight size={15} />
+                    {/* Image Area */}
+                    <div style={{ height: '220px', borderRadius: '10px 10px 0 0', overflow: 'hidden', border: '1px solid #E2E8F0', borderBottom: 'none', background: '#FFFFFF' }}>
+                      <img
+                        src="/images/hmismain.png"
+                        alt="HMIS OPD Patient Dashboard"
+                        style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top left', display: 'block' }}
+                      />
                     </div>
                   </div>
-                ))}
+
+                  {/* Card Content Body */}
+                  <div style={{ padding: '24px 28px 22px', display: 'flex', flexDirection: 'column', flex: 1, justifyContent: 'space-between' }}>
+                    <div>
+                      {/* Badge HM */}
+                      <div
+                        style={{
+                          width: '38px',
+                          height: '38px',
+                          borderRadius: '10px',
+                          backgroundColor: '#265CF4',
+                          color: '#FFFFFF',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          fontWeight: 800,
+                          fontSize: '13.5px',
+                          marginBottom: '16px',
+                          boxShadow: '0 4px 12px rgba(38, 92, 244, 0.25)',
+                        }}
+                      >
+                        HM
+                      </div>
+
+                      <div style={{ color: '#265CF4', fontSize: '11px', fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '6px' }}>
+                        HOSPITAL MANAGEMENT
+                      </div>
+
+                      <h3 style={{ fontSize: '24px', fontWeight: 800, color: '#0A1128', margin: '0 0 10px 0', fontFamily: "'Inter', sans-serif" }}>
+                        HMIS
+                      </h3>
+
+                      <p style={{ fontSize: '14.5px', color: '#64748B', lineHeight: 1.55, margin: '0 0 18px 0' }}>
+                        Front desk to ward on one live record — ABDM-native onboarding, AI triage and ambient clinical notes.
+                      </p>
+
+                      {/* Feature Pills */}
+                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '22px' }}>
+                        {['ABHA workflows', 'AI triage', 'Ambient SOAP', 'OT centre'].map((tag) => (
+                          <span
+                            key={tag}
+                            style={{
+                              backgroundColor: '#F1F5F9',
+                              padding: '5px 12px',
+                              borderRadius: '20px',
+                              fontSize: '12px',
+                              fontWeight: 600,
+                              color: '#334155',
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: '6px',
+                            }}
+                          >
+                            <span style={{ color: '#265CF4', fontSize: '14px', lineHeight: 1 }}>•</span>
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Bottom Action Link */}
+                    <div style={{ borderTop: '1px solid #E2E8F0', paddingTop: '16px', display: 'flex', justifyContent: 'flex-end' }}>
+                      <a
+                        href="#products-hmis"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleNavigate('products-hmis');
+                        }}
+                        style={{
+                          color: '#265CF4',
+                          fontSize: '14.5px',
+                          fontWeight: 700,
+                          textDecoration: 'none',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '6px',
+                          cursor: 'pointer',
+                          transition: 'gap 0.2s ease',
+                        }}
+                        onMouseEnter={(e) => (e.currentTarget.style.gap = '10px')}
+                        onMouseLeave={(e) => (e.currentTarget.style.gap = '6px')}
+                      >
+                        <span>Explore HMIS</span>
+                        <ArrowRight size={16} />
+                      </a>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Product Card 2: LMIS */}
+                <div
+                  style={{
+                    background: '#FFFFFF',
+                    borderRadius: '20px',
+                    border: '1px solid #E2E8F0',
+                    overflow: 'hidden',
+                    boxShadow: '0 8px 28px rgba(10, 17, 40, 0.05)',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = 'translateY(-4px)';
+                    e.currentTarget.style.boxShadow = '0 16px 36px rgba(38, 92, 244, 0.12)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = 'translateY(0)';
+                    e.currentTarget.style.boxShadow = '0 8px 28px rgba(10, 17, 40, 0.05)';
+                  }}
+                >
+                  {/* Browser Window Preview */}
+                  <div style={{ background: '#F8FAFC', borderBottom: '1px solid #E2E8F0', padding: '14px 16px 0 16px' }}>
+                    {/* Browser Header Bar */}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
+                      <div style={{ display: 'flex', gap: '5px' }}>
+                        <div style={{ width: '7px', height: '7px', borderRadius: '50%', backgroundColor: '#CBD5E1' }} />
+                        <div style={{ width: '7px', height: '7px', borderRadius: '50%', backgroundColor: '#CBD5E1' }} />
+                        <div style={{ width: '7px', height: '7px', borderRadius: '50%', backgroundColor: '#CBD5E1' }} />
+                      </div>
+                      <span style={{ fontSize: '10.5px', fontWeight: 700, color: '#64748B', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+                        LAB · TECHNICIAN VIEW
+                      </span>
+                    </div>
+                    {/* Image Area */}
+                    <div style={{ height: '220px', borderRadius: '10px 10px 0 0', overflow: 'hidden', border: '1px solid #E2E8F0', borderBottom: 'none', background: '#FFFFFF' }}>
+                      <img
+                        src="/images/Lmismain.png"
+                        alt="LMIS Lab Technician View"
+                        style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top left', display: 'block' }}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Card Content Body */}
+                  <div style={{ padding: '24px 28px 22px', display: 'flex', flexDirection: 'column', flex: 1, justifyContent: 'space-between' }}>
+                    <div>
+                      {/* Badge BL */}
+                      <div
+                        style={{
+                          width: '38px',
+                          height: '38px',
+                          borderRadius: '10px',
+                          backgroundColor: '#0A1128',
+                          color: '#FFFFFF',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          fontWeight: 800,
+                          fontSize: '13.5px',
+                          marginBottom: '16px',
+                          boxShadow: '0 4px 12px rgba(10, 17, 40, 0.2)',
+                        }}
+                      >
+                        BL
+                      </div>
+
+                      <div style={{ color: '#265CF4', fontSize: '11px', fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '6px' }}>
+                        LABORATORY INFORMATION
+                      </div>
+
+                      <h3 style={{ fontSize: '24px', fontWeight: 800, color: '#0A1128', margin: '0 0 10px 0', fontFamily: "'Inter', sans-serif" }}>
+                        LMIS
+                      </h3>
+
+                      <p style={{ fontSize: '14.5px', color: '#64748B', lineHeight: 1.55, margin: '0 0 18px 0' }}>
+                        Sample to signed report, with the clinical safety guardrails, imaging and AI agents built in.
+                      </p>
+
+                      {/* Feature Pills */}
+                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '22px' }}>
+                        {['AI TRF intake', 'Tube scanning', 'DICOM viewer', 'AI agents'].map((tag) => (
+                          <span
+                            key={tag}
+                            style={{
+                              backgroundColor: '#F1F5F9',
+                              padding: '5px 12px',
+                              borderRadius: '20px',
+                              fontSize: '12px',
+                              fontWeight: 600,
+                              color: '#334155',
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: '6px',
+                            }}
+                          >
+                            <span style={{ color: '#265CF4', fontSize: '14px', lineHeight: 1 }}>•</span>
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Bottom Action Link */}
+                    <div style={{ borderTop: '1px solid #E2E8F0', paddingTop: '16px', display: 'flex', justifyContent: 'flex-end' }}>
+                      <a
+                        href="#products-lmis"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleNavigate('products-lmis');
+                        }}
+                        style={{
+                          color: '#265CF4',
+                          fontSize: '14.5px',
+                          fontWeight: 700,
+                          textDecoration: 'none',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '6px',
+                          cursor: 'pointer',
+                          transition: 'gap 0.2s ease',
+                        }}
+                        onMouseEnter={(e) => (e.currentTarget.style.gap = '10px')}
+                        onMouseLeave={(e) => (e.currentTarget.style.gap = '6px')}
+                      >
+                        <span>Explore LMIS</span>
+                        <ArrowRight size={16} />
+                      </a>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </section>
+
+
+
+
 
           {/* 9. CAREERS SECTION */}
           <section
@@ -3738,59 +3553,387 @@ function App() {
       )}
 
       {/* 12. FOOTER */}
-      <footer className="site-footer">
+      <footer style={{ background: '#070D22', color: '#8DA4C4', padding: '72px 0 36px 0', borderTop: '1px solid rgba(255, 255, 255, 0.08)', fontFamily: "'Inter', sans-serif" }}>
         <div className="section-container">
-          <div className="footer-top-grid">
-            <div className="footer-brand-col">
-              <a href="#top" className="brand brand--footer">
-                <AjileDoneLogo variant="footer" />
-              </a>
-              <p>
-                Let's connect. Whether you're just starting out or an experienced professional, your future starts here.
-              </p>
+          {/* Top Row: Logo Lockup & Slogan */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '28px', flexWrap: 'wrap' }}>
+            <a
+              href="#top"
+              onClick={(e) => {
+                e.preventDefault();
+                handleGoHome();
+              }}
+              style={{ display: 'inline-block' }}
+              aria-label="Ajile Done Home"
+            >
+              <AjileDoneLogo variant="footer" />
+            </a>
+            <p style={{ color: '#8DA4C4', fontSize: '14.5px', margin: 0, lineHeight: 1.5 }}>
+              Let's connect. Whether you're just starting out or an experienced professional, your future starts here.
+            </p>
+          </div>
+
+          {/* Top Divider */}
+          <div style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.1)', margin: '28px 0 44px 0' }} />
+
+          {/* 6-Column Navigation Links Grid */}
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(170px, 1fr))',
+              gap: '32px',
+              marginBottom: '52px',
+            }}
+          >
+            {/* Column 1: Who We Are */}
+            <div>
+              <h4 style={{ fontSize: '15px', fontWeight: 800, color: '#FFFFFF', margin: '0 0 12px 0', letterSpacing: '-0.01em' }}>
+                Who We Are
+              </h4>
+              <div style={{ width: '100%', height: '2px', backgroundColor: '#67DFCB', marginBottom: '18px' }} />
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                {[
+                  { name: 'About Ajiledone', href: '#who-we-are' },
+                  { name: 'Purpose & Values', href: '#purpose-and-vision' },
+                  { name: 'Our People', href: '#who-we-are' },
+                  { name: 'Our Vision', href: '#our-vision' },
+                  { name: 'Global Presence', href: '#global-presence' },
+                ].map((item) => (
+                  <a
+                    key={item.name}
+                    href={item.href}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleNavigate(item.href);
+                    }}
+                    style={{
+                      color: '#8DA4C4',
+                      fontSize: '13.5px',
+                      textDecoration: 'none',
+                      transition: 'color 0.2s ease',
+                      cursor: 'pointer',
+                    }}
+                    onMouseEnter={(e) => (e.currentTarget.style.color = '#FFFFFF')}
+                    onMouseLeave={(e) => (e.currentTarget.style.color = '#8DA4C4')}
+                  >
+                    {item.name}
+                  </a>
+                ))}
+              </div>
             </div>
 
-            <div className="footer-nav-col">
-              <h4 className="footer-col-header">What we do</h4>
-              <ul className="footer-links-list">
-                <li><a href="#capabilities">Web Development</a></li>
-                <li><a href="#capabilities">SAP &amp; ERP</a></li>
-                <li><a href="#capabilities">AI &amp; Machine Learning</a></li>
-                <li><a href="#capabilities">Blockchain</a></li>
-                <li><a href="#capabilities">Resource Augmentation</a></li>
-              </ul>
+            {/* Column 2: What We Do */}
+            <div>
+              <h4 style={{ fontSize: '15px', fontWeight: 800, color: '#FFFFFF', margin: '0 0 12px 0', letterSpacing: '-0.01em' }}>
+                What We Do
+              </h4>
+              <div style={{ width: '100%', height: '2px', backgroundColor: '#67DFCB', marginBottom: '18px' }} />
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                {[
+                  { name: 'Business & Technology Transformation', href: '#business-functions' },
+                  { name: 'AI & Intelligent Enterprise', href: '#ai-intelligent-enterprise' },
+                  { name: 'Data & Intelligence', href: '#data-intelligence' },
+                  { name: 'Enterprise Platforms', href: '#enterprise-platforms' },
+                  { name: 'Cloud & Modernization', href: '#cloud-technology-modernization' },
+                  { name: 'Digital Engineering', href: '#digital-engineering' },
+                ].map((item) => (
+                  <a
+                    key={item.name}
+                    href={item.href}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleNavigate(item.href);
+                    }}
+                    style={{
+                      color: '#8DA4C4',
+                      fontSize: '13.5px',
+                      textDecoration: 'none',
+                      transition: 'color 0.2s ease',
+                      cursor: 'pointer',
+                    }}
+                    onMouseEnter={(e) => (e.currentTarget.style.color = '#FFFFFF')}
+                    onMouseLeave={(e) => (e.currentTarget.style.color = '#8DA4C4')}
+                  >
+                    {item.name}
+                  </a>
+                ))}
+              </div>
             </div>
 
-            <div className="footer-nav-col">
-              <h4 className="footer-col-header">Who we are</h4>
-              <ul className="footer-links-list">
-                <li><a href="#who-we-are" onClick={(e) => { e.preventDefault(); handleNavigate('#who-we-are'); }}>About us</a></li>
-                <li><a href="#who-we-are" onClick={(e) => { e.preventDefault(); handleNavigate('#who-we-are'); }}>Our people</a></li>
-                <li><a href="#stories" onClick={(e) => { e.preventDefault(); handleNavigate('#transformation'); }}>Portfolio</a></li>
-                <li><a href="#careers" onClick={(e) => { e.preventDefault(); handleNavigate('#careers'); }}>Careers</a></li>
-                <li><a href="#insights" onClick={(e) => { e.preventDefault(); handleNavigate('#insights'); }}>Press room</a></li>
-              </ul>
+            {/* Column 3: Industries */}
+            <div>
+              <h4 style={{ fontSize: '15px', fontWeight: 800, color: '#FFFFFF', margin: '0 0 12px 0', letterSpacing: '-0.01em' }}>
+                Industries
+              </h4>
+              <div style={{ width: '100%', height: '2px', backgroundColor: '#67DFCB', marginBottom: '18px' }} />
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                {[
+                  { name: 'Energy & Resources', href: '#energy-resources-oil-gas' },
+                  { name: 'Manufacturing', href: '#manufacturing' },
+                  { name: 'Life Sciences & Healthcare', href: '#life-sciences' },
+                  { name: 'Financial Services', href: '#financial-services' },
+                  { name: 'Consumer & Retail', href: '#consumer-retail' },
+                  { name: 'Automotive', href: '#automotive' },
+                  { name: 'Mining & Metals', href: '#mining-metals' },
+                  { name: 'Utilities', href: '#utilities' },
+                  { name: 'Chemicals', href: '#chemicals' },
+                  { name: 'Engineering & Construction', href: '#engineering-construction' },
+                ].map((item) => (
+                  <a
+                    key={item.name}
+                    href={item.href}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleNavigate(item.href);
+                    }}
+                    style={{
+                      color: '#8DA4C4',
+                      fontSize: '13.5px',
+                      textDecoration: 'none',
+                      transition: 'color 0.2s ease',
+                      cursor: 'pointer',
+                    }}
+                    onMouseEnter={(e) => (e.currentTarget.style.color = '#FFFFFF')}
+                    onMouseLeave={(e) => (e.currentTarget.style.color = '#8DA4C4')}
+                  >
+                    {item.name}
+                  </a>
+                ))}
+              </div>
             </div>
 
-            <div className="footer-nav-col">
-              <h4 className="footer-col-header">Connect</h4>
-              <ul className="footer-links-list">
-                <li><a href="#contact" onClick={(e) => { e.preventDefault(); handleNavigate('#contact'); }}>Get in touch</a></li>
-                <li><a href="#contact" onClick={(e) => { e.preventDefault(); handleNavigate('#contact'); }}>Submit RFP</a></li>
-                <li><a href="#contact" onClick={(e) => { e.preventDefault(); handleNavigate('#contact'); }}>View locations</a></li>
-                <li><a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
-              </ul>
+            {/* Column 4: Technology */}
+            <div>
+              <h4 style={{ fontSize: '15px', fontWeight: 800, color: '#FFFFFF', margin: '0 0 12px 0', letterSpacing: '-0.01em' }}>
+                Technology
+              </h4>
+              <div style={{ width: '100%', height: '2px', backgroundColor: '#67DFCB', marginBottom: '18px' }} />
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                {[
+                  { name: 'SAP', href: '#sap-transformation' },
+                  { name: 'AI', href: '#ai-intelligent-enterprise' },
+                  { name: 'Data', href: '#data-intelligence' },
+                  { name: 'Cloud', href: '#cloud-technology-modernization' },
+                  { name: 'Oracle', href: '#oracle-section' },
+                  { name: 'ServiceNow', href: '#servicenow-section' },
+                  { name: 'Digital Engineering', href: '#digital-engineering' },
+                ].map((item) => (
+                  <a
+                    key={item.name}
+                    href={item.href}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleNavigate(item.href);
+                    }}
+                    style={{
+                      color: '#8DA4C4',
+                      fontSize: '13.5px',
+                      textDecoration: 'none',
+                      transition: 'color 0.2s ease',
+                      cursor: 'pointer',
+                    }}
+                    onMouseEnter={(e) => (e.currentTarget.style.color = '#FFFFFF')}
+                    onMouseLeave={(e) => (e.currentTarget.style.color = '#8DA4C4')}
+                  >
+                    {item.name}
+                  </a>
+                ))}
+              </div>
+            </div>
+
+            {/* Column 5: Insights */}
+            <div>
+              <h4 style={{ fontSize: '15px', fontWeight: 800, color: '#FFFFFF', margin: '0 0 12px 0', letterSpacing: '-0.01em' }}>
+                Insights
+              </h4>
+              <div style={{ width: '100%', height: '2px', backgroundColor: '#67DFCB', marginBottom: '18px' }} />
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                {[
+                  { name: 'Research & Perspectives', href: '#insights' },
+                  { name: 'Technology Insights', href: '#insights' },
+                  { name: 'Industry Insights', href: '#insights' },
+                ].map((item) => (
+                  <a
+                    key={item.name}
+                    href={item.href}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleNavigate(item.href);
+                    }}
+                    style={{
+                      color: '#8DA4C4',
+                      fontSize: '13.5px',
+                      textDecoration: 'none',
+                      transition: 'color 0.2s ease',
+                      cursor: 'pointer',
+                    }}
+                    onMouseEnter={(e) => (e.currentTarget.style.color = '#FFFFFF')}
+                    onMouseLeave={(e) => (e.currentTarget.style.color = '#8DA4C4')}
+                  >
+                    {item.name}
+                  </a>
+                ))}
+              </div>
+            </div>
+
+            {/* Column 6: Direct links */}
+            <div>
+              <h4 style={{ fontSize: '15px', fontWeight: 800, color: '#FFFFFF', margin: '0 0 12px 0', letterSpacing: '-0.01em' }}>
+                Direct links
+              </h4>
+              <div style={{ width: '100%', height: '2px', backgroundColor: '#265CF4', marginBottom: '18px' }} />
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                {[
+                  { name: 'Transformation Stories', href: '#transformation' },
+                  { name: 'Careers', href: '#careers' },
+                  { name: 'Contact', href: '#contact' },
+                ].map((item) => (
+                  <a
+                    key={item.name}
+                    href={item.href}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleNavigate(item.href);
+                    }}
+                    style={{
+                      color: '#8DA4C4',
+                      fontSize: '13.5px',
+                      textDecoration: 'none',
+                      transition: 'color 0.2s ease',
+                      cursor: 'pointer',
+                    }}
+                    onMouseEnter={(e) => (e.currentTarget.style.color = '#FFFFFF')}
+                    onMouseLeave={(e) => (e.currentTarget.style.color = '#8DA4C4')}
+                  >
+                    {item.name}
+                  </a>
+                ))}
+              </div>
             </div>
           </div>
 
-          <div className="footer-bottom-bar" style={{ borderTop: '1px solid rgba(255, 255, 255, 0.1)', paddingTop: '32px' }}>
-            <p style={{ color: 'rgba(255, 255, 255, 0.5)' }}>© 2026 AjileDone Technologies Private Limited. All rights reserved.</p>
-            <div className="footer-legal-links" style={{ gap: '16px', color: 'rgba(255, 255, 255, 0.5)' }}>
-              <a href="#top" style={{ color: 'rgba(255, 255, 255, 0.6)' }}>Terms of Use</a>
-              <span style={{ opacity: 0.4 }}>·</span>
-              <a href="#top" style={{ color: 'rgba(255, 255, 255, 0.6)' }}>Cookies</a>
-              <span style={{ opacity: 0.4 }}>·</span>
-              <a href="#top" style={{ color: 'rgba(255, 255, 255, 0.6)' }}>Privacy</a>
+          {/* Products Bar Row (with BartPay and Audit Pro removed) */}
+          <div
+            style={{
+              borderTop: '1px solid rgba(255, 255, 255, 0.1)',
+              padding: '24px 0',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexWrap: 'wrap',
+              gap: '16px',
+            }}
+          >
+            <span style={{ color: '#67DFCB', fontSize: '11.5px', fontWeight: 800, letterSpacing: '0.14em', textTransform: 'uppercase' }}>
+              PRODUCTS (NEW)
+            </span>
+            <span style={{ color: 'rgba(255, 255, 255, 0.35)', fontSize: '13px' }}>·</span>
+            <a
+              href="#products-hmis"
+              onClick={(e) => {
+                e.preventDefault();
+                handleNavigate('products-hmis');
+              }}
+              style={{
+                color: '#8DA4C4',
+                fontSize: '13.5px',
+                fontWeight: 600,
+                textDecoration: 'none',
+                transition: 'color 0.2s ease',
+                cursor: 'pointer',
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.color = '#FFFFFF')}
+              onMouseLeave={(e) => (e.currentTarget.style.color = '#8DA4C4')}
+            >
+              HMIS
+            </a>
+            <span style={{ color: 'rgba(255, 255, 255, 0.35)', fontSize: '13px' }}>·</span>
+            <a
+              href="#products-lmis"
+              onClick={(e) => {
+                e.preventDefault();
+                handleNavigate('products-lmis');
+              }}
+              style={{
+                color: '#8DA4C4',
+                fontSize: '13.5px',
+                fontWeight: 600,
+                textDecoration: 'none',
+                transition: 'color 0.2s ease',
+                cursor: 'pointer',
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.color = '#FFFFFF')}
+              onMouseLeave={(e) => (e.currentTarget.style.color = '#8DA4C4')}
+            >
+              Biosynthesis LMIS
+            </a>
+            <span style={{ color: 'rgba(255, 255, 255, 0.35)', fontSize: '13px' }}>·</span>
+            <a
+              href="#products"
+              onClick={(e) => {
+                e.preventDefault();
+                handleNavigate('products');
+              }}
+              style={{
+                color: '#8DA4C4',
+                fontSize: '13.5px',
+                fontWeight: 600,
+                textDecoration: 'none',
+                transition: 'color 0.2s ease',
+                cursor: 'pointer',
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.color = '#FFFFFF')}
+              onMouseLeave={(e) => (e.currentTarget.style.color = '#8DA4C4')}
+            >
+              Product overview
+            </a>
+          </div>
+
+          {/* Bottom Copyright and Legal Links Row */}
+          <div
+            style={{
+              borderTop: '1px solid rgba(255, 255, 255, 0.08)',
+              paddingTop: '24px',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              flexWrap: 'wrap',
+              gap: '16px',
+            }}
+          >
+            <p style={{ color: 'rgba(255, 255, 255, 0.45)', fontSize: '13px', margin: 0 }}>
+              © 2026 AjileDone Technologies Private Limited. All rights reserved.
+            </p>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '16px', color: 'rgba(255, 255, 255, 0.5)', fontSize: '13px' }}>
+              <a
+                href="#top"
+                onClick={(e) => e.preventDefault()}
+                style={{ color: 'rgba(255, 255, 255, 0.55)', textDecoration: 'none', transition: 'color 0.2s' }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = '#FFFFFF')}
+                onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(255, 255, 255, 0.55)')}
+              >
+                Terms of Use
+              </a>
+              <span style={{ opacity: 0.35 }}>·</span>
+              <a
+                href="#top"
+                onClick={(e) => e.preventDefault()}
+                style={{ color: 'rgba(255, 255, 255, 0.55)', textDecoration: 'none', transition: 'color 0.2s' }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = '#FFFFFF')}
+                onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(255, 255, 255, 0.55)')}
+              >
+                Cookies
+              </a>
+              <span style={{ opacity: 0.35 }}>·</span>
+              <a
+                href="#top"
+                onClick={(e) => e.preventDefault()}
+                style={{ color: 'rgba(255, 255, 255, 0.55)', textDecoration: 'none', transition: 'color 0.2s' }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = '#FFFFFF')}
+                onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(255, 255, 255, 0.55)')}
+              >
+                Privacy
+              </a>
             </div>
           </div>
         </div>
