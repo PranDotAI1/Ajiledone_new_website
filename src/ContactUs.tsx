@@ -19,6 +19,7 @@ export function ContactUsPage({ onNavigate, onGoHome }: ContactUsProps) {
   });
   const [submitted, setSubmitted] = useState(false);
   const [hoveredScenarioId, setHoveredScenarioId] = useState<string | null>(null);
+  const [hoveredHubIdx, setHoveredHubIdx] = useState<number | null>(null);
 
   const [animStep, setAnimStep] = useState(0);
   const processRef = useRef<HTMLElement | null>(null);
@@ -367,27 +368,16 @@ export function ContactUsPage({ onNavigate, onGoHome }: ContactUsProps) {
                   Email us directly
                 </button>
               </div>
-
-
-
-              {/* Bottom Category Row */}
-              <div style={{ fontSize: '11.5px', fontWeight: 800, color: 'rgba(255, 255, 255, 0.65)', letterSpacing: '0.16em', marginTop: '44px' }}>
-                AI &nbsp;·&nbsp; SAP &nbsp;·&nbsp; DATA &nbsp;·&nbsp; CLOUD &nbsp;·&nbsp; SUPPLY CHAIN &nbsp;·&nbsp; DIGITAL PRODUCTS &nbsp;·&nbsp; AUTOMATION
-              </div>
             </div>
 
-            {/* Right Side Card with START ANYWHERE Header */}
+            {/* Right Side Card */}
             <div>
-              <div style={{ fontSize: '11px', fontWeight: 800, color: 'rgba(255, 255, 255, 0.55)', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '14px', textAlign: 'left' }}>
-                START ANYWHERE
-              </div>
-
               <div
                 style={{
                   backgroundColor: '#FFFFFF',
                   color: '#0B1739',
-                  borderRadius: '28px',
-                  padding: '38px 36px 32px 36px',
+                  borderRadius: '24px',
+                  padding: '36px 36px 36px 36px',
                   boxShadow: '0 25px 60px rgba(0, 0, 0, 0.28)',
                   position: 'relative',
                 }}
@@ -395,7 +385,7 @@ export function ContactUsPage({ onNavigate, onGoHome }: ContactUsProps) {
                 <div style={{ fontSize: '11px', fontWeight: 800, color: '#265CF4', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '6px' }}>
                   DIRECT LINES
                 </div>
-                <h3 style={{ fontSize: '26px', fontWeight: 800, margin: '0 0 24px 0', color: '#0B1739', letterSpacing: '-0.015em' }}>
+                <h3 style={{ fontSize: '24px', fontWeight: 800, margin: '0 0 24px 0', color: '#0B1739', letterSpacing: '-0.015em' }}>
                   Talk to Ajiledone.
                 </h3>
 
@@ -407,30 +397,38 @@ export function ContactUsPage({ onNavigate, onGoHome }: ContactUsProps) {
                     </div>
                     <div>
                       <div style={{ fontSize: '11px', fontWeight: 700, color: '#64748B', letterSpacing: '0.06em', textTransform: 'uppercase', marginBottom: '2px' }}>Email</div>
-                      <a href="mailto:info@ajiledone.com" style={{ fontSize: '15.5px', fontWeight: 700, color: '#0B1739', textDecoration: 'none' }}>
-                        info@ajiledone.com
+                      <a href="mailto:Info@agiledone.com" style={{ fontSize: '15.5px', fontWeight: 700, color: '#0B1739', textDecoration: 'none' }}>
+                        Info@agiledone.com
                       </a>
                     </div>
                   </div>
 
-                  {/* Offices Item */}
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '16px', padding: '16px 0' }}>
+                  {/* Phone Item */}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '16px', padding: '16px 0', borderBottom: '1px solid #F1F5F9' }}>
                     <div style={{ width: '44px', height: '44px', borderRadius: '12px', backgroundColor: '#EFF6FF', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#265CF4', flexShrink: 0 }}>
+                      <Phone size={20} />
+                    </div>
+                    <div>
+                      <div style={{ fontSize: '11px', fontWeight: 700, color: '#64748B', letterSpacing: '0.06em', textTransform: 'uppercase', marginBottom: '2px' }}>Phone</div>
+                      <div style={{ fontSize: '15.5px', fontWeight: 700, color: '#0B1739' }}>
+                        +1 405-865-9491
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Offices Item */}
+                  <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px', padding: '16px 0' }}>
+                    <div style={{ width: '44px', height: '44px', borderRadius: '12px', backgroundColor: '#EFF6FF', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#265CF4', flexShrink: 0, marginTop: '2px' }}>
                       <MapPin size={20} />
                     </div>
                     <div>
                       <div style={{ fontSize: '11px', fontWeight: 700, color: '#64748B', letterSpacing: '0.06em', textTransform: 'uppercase', marginBottom: '2px' }}>Offices</div>
-                      <div style={{ fontSize: '15.5px', fontWeight: 700, color: '#0B1739' }}>
-                        United States &nbsp;·&nbsp; Dubai &nbsp;·&nbsp; Bengaluru
+                      <div style={{ fontSize: '15px', fontWeight: 700, color: '#0B1739', lineHeight: 1.45 }}>
+                        United State, Dubai, India, Singapore, Australia
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-
-              {/* Text under card */}
-              <div style={{ marginTop: '16px', fontSize: '12.5px', color: 'rgba(255, 255, 255, 0.65)', fontWeight: 500, textAlign: 'left', paddingLeft: '4px' }}>
-                Or use the form below — it reaches the same people.
               </div>
             </div>
           </div>
@@ -572,7 +570,7 @@ export function ContactUsPage({ onNavigate, onGoHome }: ContactUsProps) {
         </div>
       </section>
 
-      {/* 3. CONTACT FORM & DIRECT REACH SECTION (Exact Uploaded Design & Figma Specs) */}
+      {/* 3. CONTACT FORM & DIRECT REACH SECTION (Exact Uploaded Design) */}
       <section id="contact-form-section" style={{ padding: '100px 0', backgroundColor: '#FFFFFF' }}>
         <div className="section-container" style={{ maxWidth: '1440px', margin: '0 auto', padding: '0 32px' }}>
           <div style={{ textAlign: 'left', marginBottom: '44px' }}>
@@ -586,7 +584,7 @@ export function ContactUsPage({ onNavigate, onGoHome }: ContactUsProps) {
               Tell us what you're trying to solve.
             </h2>
             <p style={{ fontSize: '16px', color: '#475569', maxWidth: '600px', marginTop: '16px', lineHeight: 1.6 }}>
-              A few details are enough. The right architect or industry lead will come back to you — not a generic mailbox.
+              A few details are enough. The right architect or industry lead will come back to you not a generic mailbox.
             </p>
           </div>
 
@@ -602,7 +600,7 @@ export function ContactUsPage({ onNavigate, onGoHome }: ContactUsProps) {
                     Thank you! Message Received.
                   </h3>
                   <p style={{ fontSize: '15.5px', color: '#475569', maxWidth: '480px', margin: '0 auto 24px', lineHeight: 1.6 }}>
-                    A solution architect specializing in <strong>{selectedScenario}</strong> has been notified and will respond to <strong>{formData.workEmail}</strong> within 24 hours.
+                    A solution architect specializing in <strong>{selectedScenario}</strong> has been notified and will respond to <strong>{formData.workEmail}</strong>.
                   </p>
                   <button
                     onClick={() => {
@@ -721,12 +719,12 @@ export function ContactUsPage({ onNavigate, onGoHome }: ContactUsProps) {
                         }}
                       >
                         <option value="" disabled>Select a region</option>
-                        <option value="North America">North America</option>
-                        <option value="Europe">Europe</option>
-                        <option value="Middle East">Middle East</option>
-                        <option value="Asia Pacific">Asia Pacific</option>
+                        <option value="United States">United States</option>
+                        <option value="UAE">UAE</option>
+                        <option value="Singapore">Singapore</option>
+                        <option value="Australia">Australia</option>
                         <option value="India">India</option>
-                        <option value="Latin America">Latin America</option>
+                        <option value="Europe">Europe</option>
                       </select>
                     </div>
                   </div>
@@ -752,9 +750,11 @@ export function ContactUsPage({ onNavigate, onGoHome }: ContactUsProps) {
                         cursor: 'pointer',
                       }}
                     >
-                      {scenarios.map((s) => (
-                        <option key={s.id} value={s.title}>{s.title}</option>
-                      ))}
+                      <option value="AI transformation">AI transformation</option>
+                      <option value="SAP clean core modernization">SAP clean core modernization</option>
+                      <option value="Cloud & data platform build">Cloud & data platform build</option>
+                      <option value="Enterprise architecture roadmap">Enterprise architecture roadmap</option>
+                      <option value="Dedicated engineering team scale">Dedicated engineering team scale</option>
                     </select>
                   </div>
 
@@ -765,7 +765,7 @@ export function ContactUsPage({ onNavigate, onGoHome }: ContactUsProps) {
                     </label>
                     <textarea
                       required
-                      rows={4}
+                      rows={5}
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                       placeholder="Where it hurts today, what you've already tried, and what a good outcome looks like..."
@@ -780,7 +780,7 @@ export function ContactUsPage({ onNavigate, onGoHome }: ContactUsProps) {
                         outline: 'none',
                         resize: 'vertical',
                         boxSizing: 'border-box',
-                        minHeight: '120px',
+                        minHeight: '130px',
                       }}
                     />
                   </div>
@@ -800,7 +800,7 @@ export function ContactUsPage({ onNavigate, onGoHome }: ContactUsProps) {
                   </div>
 
                   {/* Action Row */}
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '28px', flexWrap: 'wrap' }}>
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
                     <button
                       type="submit"
                       style={{
@@ -826,108 +826,97 @@ export function ContactUsPage({ onNavigate, onGoHome }: ContactUsProps) {
                     >
                       Talk to Ajiledone
                     </button>
-
-                    <div style={{ fontSize: '13.5px', color: '#475569' }}>
-                      Prefer email?{' '}
-                      <a href="mailto:info@ajiledone.com" style={{ color: '#2563EB', fontWeight: 700, textDecoration: 'none' }}>
-                        info@ajiledone.com
-                      </a>
-                    </div>
                   </div>
                 </form>
               )}
             </div>
 
-            {/* Right Side Direct Reach Info Card (Exact Figma Specs: 432px width, 664px height, 22px radius, rgba(10,18,48,1) to rgba(13,42,117,1) linear gradient) */}
+            {/* Right Side Direct Reach Info Card (Exact Figma Specs with rgba(103, 223, 203, 0.22) Blur 150) */}
             <div
               style={{
-                background: 'linear-gradient(180deg, rgba(10, 18, 48, 1) 0%, rgba(13, 42, 117, 1) 100%)',
+                position: 'relative',
+                background: 'linear-gradient(175deg, #06102B 0%, #0A1C48 55%, #0E296D 100%)',
                 color: '#FFFFFF',
-                borderRadius: '22px',
-                padding: '38px 36px 32px 36px',
+                borderRadius: '24px',
+                padding: '38px 32px 32px 32px',
                 width: '100%',
-                maxWidth: '432px',
-                minHeight: '664px',
+                maxWidth: '400px',
+                minHeight: '620px',
                 boxSizing: 'border-box',
-                boxShadow: '0 20px 50px rgba(10, 18, 48, 0.35)',
+                boxShadow: '0 20px 50px rgba(6, 16, 43, 0.38)',
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'space-between',
+                overflow: 'hidden',
               }}
             >
-              <div>
-                <div style={{ fontSize: '11px', fontWeight: 800, color: '#5EEAD4', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '6px' }}>
+              {/* Figma Layer Blur: rgba(103, 223, 203, 0.22), Blur 150 */}
+              <div
+                style={{
+                  position: 'absolute',
+                  bottom: '-40px',
+                  right: '-40px',
+                  width: '320px',
+                  height: '320px',
+                  borderRadius: '50%',
+                  background: 'rgba(103, 223, 203, 0.22)',
+                  filter: 'blur(150px)',
+                  pointerEvents: 'none',
+                  zIndex: 0,
+                }}
+              />
+
+              <div style={{ position: 'relative', zIndex: 1 }}>
+                <div style={{ fontSize: '11px', fontWeight: 800, color: 'rgba(103, 223, 203, 1)', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '8px' }}>
                   CONTACT
                 </div>
-                <h3 style={{ fontSize: '26px', fontWeight: 800, color: '#FFFFFF', margin: '0 0 28px 0', letterSpacing: '-0.015em' }}>
+                <h3 style={{ fontSize: '26px', fontWeight: 800, color: '#FFFFFF', margin: '0 0 32px 0', letterSpacing: '-0.015em' }}>
                   Reach us directly.
                 </h3>
 
-                {/* Location 1: United States */}
-                <div style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.1)', paddingBottom: '16px', marginBottom: '16px' }}>
-                  <div style={{ fontSize: '11px', fontWeight: 800, color: '#5EEAD4', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '4px' }}>
+                {/* Location 1: UNITED STATES */}
+                <div style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.12)', paddingBottom: '18px', marginBottom: '18px' }}>
+                  <div style={{ fontSize: '18px', fontWeight: 800, color: '#FFFFFF', letterSpacing: '0.04em' }}>
                     UNITED STATES
                   </div>
-                  <div style={{ fontSize: '20px', fontWeight: 800, color: '#FFFFFF', letterSpacing: '-0.01em' }}>
-                    United States
-                  </div>
-                  <div style={{ fontSize: '13px', color: 'rgba(255, 255, 255, 0.65)', marginTop: '2px' }}>
-                    North America
+                </div>
+
+                {/* Location 2: UAE */}
+                <div style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.12)', paddingBottom: '18px', marginBottom: '18px' }}>
+                  <div style={{ fontSize: '18px', fontWeight: 800, color: '#FFFFFF', letterSpacing: '0.04em' }}>
+                    UAE
                   </div>
                 </div>
 
-                {/* Location 2: United Arab Emirates */}
-                <div style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.1)', paddingBottom: '16px', marginBottom: '16px' }}>
-                  <div style={{ fontSize: '11px', fontWeight: 800, color: '#5EEAD4', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '4px' }}>
-                    UNITED ARAB EMIRATES
-                  </div>
-                  <div style={{ fontSize: '20px', fontWeight: 800, color: '#FFFFFF', letterSpacing: '-0.01em' }}>
-                    Dubai
-                  </div>
-                  <div style={{ fontSize: '13px', color: 'rgba(255, 255, 255, 0.65)', marginTop: '2px' }}>
-                    Middle East
+                {/* Location 3: SINGAPORE */}
+                <div style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.12)', paddingBottom: '18px', marginBottom: '18px' }}>
+                  <div style={{ fontSize: '18px', fontWeight: 800, color: '#FFFFFF', letterSpacing: '0.04em' }}>
+                    SINGAPORE
                   </div>
                 </div>
 
-                {/* Location 3: India */}
-                <div style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.1)', paddingBottom: '16px', marginBottom: '20px' }}>
-                  <div style={{ fontSize: '11px', fontWeight: 800, color: '#5EEAD4', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '4px' }}>
+                {/* Location 4: AUSTRALIA */}
+                <div style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.12)', paddingBottom: '18px', marginBottom: '18px' }}>
+                  <div style={{ fontSize: '18px', fontWeight: 800, color: '#FFFFFF', letterSpacing: '0.04em' }}>
+                    AUSTRALIA
+                  </div>
+                </div>
+
+                {/* Location 5: INDIA */}
+                <div style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.12)', paddingBottom: '18px', marginBottom: '24px' }}>
+                  <div style={{ fontSize: '18px', fontWeight: 800, color: '#FFFFFF', letterSpacing: '0.04em' }}>
                     INDIA
-                  </div>
-                  <div style={{ fontSize: '20px', fontWeight: 800, color: '#FFFFFF', letterSpacing: '-0.01em' }}>
-                    Bengaluru
-                  </div>
-                  <div style={{ fontSize: '13px', color: 'rgba(255, 255, 255, 0.65)', marginTop: '2px' }}>
-                    India · Asia-Pacific
                   </div>
                 </div>
               </div>
 
-              {/* Bottom Info & Sub-badge */}
-              <div>
-                <a href="mailto:info@ajiledone.com" style={{ fontSize: '16px', fontWeight: 700, color: '#5EEAD4', textDecoration: 'none', display: 'block', marginBottom: '12px' }}>
-                  info@ajiledone.com
+              {/* Bottom Info */}
+              <div style={{ position: 'relative', zIndex: 1 }}>
+                <a href="mailto:Info@agiledone.com" style={{ fontSize: '16px', fontWeight: 700, color: 'rgba(103, 223, 203, 1)', textDecoration: 'none', display: 'block', marginBottom: '6px' }}>
+                  Info@agiledone.com
                 </a>
-
-                <div style={{ fontSize: '11.5px', color: 'rgba(255, 255, 255, 0.6)', lineHeight: 1.4, marginBottom: '16px' }}>
-                  Serving North America · Europe · Middle East · India · Asia-Pacific
-                </div>
-
-                <div
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '8px',
-                    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                    border: '1px solid rgba(255, 255, 255, 0.2)',
-                    padding: '8px 16px',
-                    borderRadius: '9999px',
-                    fontSize: '10.5px',
-                    fontWeight: 800,
-                    color: '#FFFFFF',
-                    letterSpacing: '0.12em',
-                  }}
-                >
+                <div style={{ fontSize: '12px', color: 'rgba(255, 255, 255, 0.65)', lineHeight: 1.4 }}>
+                  United State, Dubai, India, Singapore, Australia
                 </div>
               </div>
             </div>
@@ -1264,7 +1253,7 @@ export function ContactUsPage({ onNavigate, onGoHome }: ContactUsProps) {
 
             {/* Secondary Outlined Pill Button */}
             <a
-              href="mailto:info@ajiledone.com"
+              href="mailto:Info@agiledone.com"
               style={{
                 backgroundColor: 'rgba(255, 255, 255, 0.08)',
                 border: '1.5px solid rgba(255, 255, 255, 0.45)',
@@ -1286,38 +1275,54 @@ export function ContactUsPage({ onNavigate, onGoHome }: ContactUsProps) {
                 e.currentTarget.style.color = '#FFFFFF';
               }}
             >
-              info@ajiledone.com
+              Info@agiledone.com
             </a>
           </div>
 
-          {/* 3 Regional Hub Glass Cards Grid (Exact matching uploaded design) */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '20px', maxWidth: '1080px', margin: '0 auto' }}>
-            {/* Hub 1: United States */}
-            <div style={{ backgroundColor: 'rgba(255, 255, 255, 0.08)', border: '1.2px solid rgba(255, 255, 255, 0.18)', backdropFilter: 'blur(12px)', borderRadius: '18px', padding: '20px 24px', textAlign: 'left' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '2px' }}>
-                <span style={{ color: '#5EEAD4', fontSize: '14px' }}>•</span>
-                <span style={{ fontSize: '16px', fontWeight: 800, color: '#FFFFFF', letterSpacing: '-0.01em' }}>United States</span>
-              </div>
-              <div style={{ fontSize: '12.5px', color: 'rgba(255, 255, 255, 0.65)', paddingLeft: '14px' }}>North America</div>
-            </div>
-
-            {/* Hub 2: Dubai */}
-            <div style={{ backgroundColor: 'rgba(255, 255, 255, 0.08)', border: '1.2px solid rgba(255, 255, 255, 0.18)', backdropFilter: 'blur(12px)', borderRadius: '18px', padding: '20px 24px', textAlign: 'left' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '2px' }}>
-                <span style={{ color: '#5EEAD4', fontSize: '14px' }}>•</span>
-                <span style={{ fontSize: '16px', fontWeight: 800, color: '#FFFFFF', letterSpacing: '-0.01em' }}>Dubai</span>
-              </div>
-              <div style={{ fontSize: '12.5px', color: 'rgba(255, 255, 255, 0.65)', paddingLeft: '14px' }}>Middle East</div>
-            </div>
-
-            {/* Hub 3: Bengaluru */}
-            <div style={{ backgroundColor: 'rgba(255, 255, 255, 0.08)', border: '1.2px solid rgba(255, 255, 255, 0.18)', backdropFilter: 'blur(12px)', borderRadius: '18px', padding: '20px 24px', textAlign: 'left' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '2px' }}>
-                <span style={{ color: '#5EEAD4', fontSize: '14px' }}>•</span>
-                <span style={{ fontSize: '16px', fontWeight: 800, color: '#FFFFFF', letterSpacing: '-0.01em' }}>Bengaluru</span>
-              </div>
-              <div style={{ fontSize: '12.5px', color: 'rgba(255, 255, 255, 0.65)', paddingLeft: '14px' }}>India · Asia-Pacific</div>
-            </div>
+          {/* 5 Regional Hub Glass Cards Grid with Hover Enlarge Effect */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px', maxWidth: '1280px', margin: '0 auto' }}>
+            {[
+              { name: 'America', phone: '+1 405-865-9491' },
+              { name: 'Dubai', phone: '+971 5-542-81396' },
+              { name: 'Singapore', phone: '+61 4682 88351' },
+              { name: 'Australia', phone: '+61 4682 88351' },
+              { name: 'India', phone: '' },
+            ].map((hub, idx) => {
+              const isHovered = hoveredHubIdx === idx;
+              return (
+                <div
+                  key={hub.name}
+                  onMouseEnter={() => setHoveredHubIdx(idx)}
+                  onMouseLeave={() => setHoveredHubIdx(null)}
+                  style={{
+                    backgroundColor: isHovered ? 'rgba(255, 255, 255, 0.14)' : 'rgba(255, 255, 255, 0.08)',
+                    border: isHovered ? '1.5px solid rgba(103, 223, 203, 0.5)' : '1.2px solid rgba(255, 255, 255, 0.18)',
+                    backdropFilter: 'blur(12px)',
+                    borderRadius: '16px',
+                    padding: '22px 20px',
+                    textAlign: 'left',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    transform: isHovered ? 'scale(1.06) translateY(-5px)' : 'scale(1) translateY(0)',
+                    boxShadow: isHovered ? '0 18px 36px rgba(0, 0, 0, 0.35), 0 0 25px rgba(103, 223, 203, 0.22)' : '0 6px 16px rgba(0, 0, 0, 0.12)',
+                    transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                    cursor: 'pointer',
+                    zIndex: isHovered ? 10 : 1,
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: hub.phone ? '4px' : '0' }}>
+                    <span style={{ color: '#67DFCB', fontSize: '14px', transform: isHovered ? 'scale(1.2)' : 'scale(1)', transition: 'transform 0.3s ease' }}>•</span>
+                    <span style={{ fontSize: '16px', fontWeight: 700, color: '#FFFFFF' }}>{hub.name}</span>
+                  </div>
+                  {hub.phone && (
+                    <div style={{ fontSize: '13.5px', color: isHovered ? '#FFFFFF' : 'rgba(255, 255, 255, 0.75)', paddingLeft: '14px', transition: 'color 0.3s ease' }}>
+                      {hub.phone}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>

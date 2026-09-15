@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef } from 'react';
-import { HeroOrb3D } from './HeroOrb3D';
 import { WhoWeArePage } from './WhoWeAre';
 import { PurposeandValuesPage } from './PurposeandValues';
 import { WhatWeDoPage } from './WhatWeDo';
@@ -44,75 +43,129 @@ import {
 
 function HeroOrbCanvas() {
   const [isHovered, setIsHovered] = useState(false);
+  const [mouseOffset, setMouseOffset] = useState({ x: 0, y: 0 });
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = (e.clientX - rect.left - rect.width / 2) / (rect.width / 2);
+    const y = (e.clientY - rect.top - rect.height / 2) / (rect.height / 2);
+    setMouseOffset({ x: x * 8, y: y * 8 });
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+    setMouseOffset({ x: 0, y: 0 });
+  };
 
   return (
     <div
       onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
       className="hero-orb-interactive-wrapper"
       style={{
         position: 'relative',
         width: '100%',
-        maxWidth: '540px',
+        maxWidth: '450px',
         aspectRatio: '1/1',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         margin: '0 auto',
-        cursor: 'grab',
+        cursor: 'pointer',
       }}
     >
-      {/* Ambient Mint Glow: rgba(103, 223, 203, 0.24) */}
+      {/* Ambient Mint Glow */}
       <div
         style={{
           position: 'absolute',
-          width: '580px',
-          height: '580px',
+          width: '480px',
+          height: '480px',
           top: '50%',
           left: '50%',
           transform: 'translate(-50%, -50%)',
           borderRadius: '50%',
           background: 'rgba(103, 223, 203, 0.24)',
-          filter: 'blur(160px)',
+          filter: 'blur(120px)',
           pointerEvents: 'none',
           zIndex: 0,
         }}
       />
 
-      {/* Ambient Blue Glow: rgba(31, 165, 255, 0.35) */}
+      {/* Ambient Blue Glow */}
       <div
         style={{
           position: 'absolute',
-          width: '520px',
-          height: '520px',
+          width: '420px',
+          height: '420px',
           top: '50%',
           left: '50%',
           transform: 'translate(-50%, -50%)',
           borderRadius: '50%',
           background: 'rgba(31, 165, 255, 0.35)',
-          filter: 'blur(140px)',
+          filter: 'blur(100px)',
           pointerEvents: 'none',
           zIndex: 1,
         }}
       />
 
-      {/* Circular Masked 3D WebGL Canvas */}
+      {/* SVG Outer Dashed Rotating Ring */}
+      <svg
+        width="100%"
+        height="100%"
+        viewBox="0 0 460 460"
+        style={{
+          position: 'absolute',
+          inset: 0,
+          animation: 'spinSlow 90s linear infinite',
+          pointerEvents: 'none',
+          zIndex: 3,
+        }}
+      >
+        <circle
+          cx="230"
+          cy="230"
+          r="224"
+          fill="none"
+          stroke="rgba(255, 255, 255, 0.45)"
+          strokeWidth="1.5"
+          strokeDasharray="5 7"
+        />
+      </svg>
+
+      {/* Circular Masked 2D Animated Orb */}
       <div
         style={{
           position: 'relative',
-          width: '100%',
-          height: '100%',
+          width: '90%',
+          height: '90%',
           borderRadius: '50%',
           overflow: 'hidden',
           zIndex: 2,
-          boxShadow: '0 0 60px rgba(103, 223, 203, 0.2)',
+          boxShadow: '0 0 55px rgba(103, 223, 203, 0.28)',
           border: 'none',
-          transform: isHovered ? 'scale(1.02)' : 'scale(1)',
-          transition: 'transform 0.4s ease',
+          transform: `translate3d(${mouseOffset.x}px, ${mouseOffset.y}px, 0) scale(${isHovered ? 1.03 : 1})`,
+          transition: isHovered ? 'transform 0.15s ease-out' : 'transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
           background: 'transparent',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
         }}
       >
-        <HeroOrb3D />
+        <img
+          src="/images/Ellipse.png"
+          alt="AjileDone Orrery"
+          style={{
+            width: '100%',
+            height: '100%',
+            objectFit: 'contain',
+            display: 'block',
+            pointerEvents: 'none',
+            userSelect: 'none',
+            transform: isHovered ? 'scale(1.02)' : 'scale(1)',
+            transition: 'transform 0.4s ease',
+          }}
+        />
       </div>
     </div>
   );
@@ -2303,10 +2356,7 @@ function App() {
                   </a>
                 </div>
 
-                {/* Bottom Sub-tag */}
-                <div style={{ fontSize: '11px', fontWeight: 800, letterSpacing: '0.14em', color: '#67DFCB', textTransform: 'uppercase' }}>
-                  SAP &nbsp;·&nbsp; AI &nbsp;·&nbsp; ENGINEERING &nbsp;·&nbsp; INDIA &nbsp;·&nbsp; DUBAI &nbsp;·&nbsp; UNITED STATES
-                </div>
+
               </div>
 
               {/* Right Side Visual Artwork Orb */}
@@ -3779,82 +3829,7 @@ function App() {
             </div>
           </div>
 
-          {/* Products Bar Row (with BartPay and Audit Pro removed) */}
-          <div
-            style={{
-              borderTop: '1px solid rgba(255, 255, 255, 0.1)',
-              padding: '24px 0',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              flexWrap: 'wrap',
-              gap: '16px',
-            }}
-          >
-            <span style={{ color: '#67DFCB', fontSize: '11.5px', fontWeight: 800, letterSpacing: '0.14em', textTransform: 'uppercase' }}>
-              PRODUCTS (NEW)
-            </span>
-            <span style={{ color: 'rgba(255, 255, 255, 0.35)', fontSize: '13px' }}>·</span>
-            <a
-              href="#products-hmis"
-              onClick={(e) => {
-                e.preventDefault();
-                handleNavigate('products-hmis');
-              }}
-              style={{
-                color: '#8DA4C4',
-                fontSize: '13.5px',
-                fontWeight: 600,
-                textDecoration: 'none',
-                transition: 'color 0.2s ease',
-                cursor: 'pointer',
-              }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = '#FFFFFF')}
-              onMouseLeave={(e) => (e.currentTarget.style.color = '#8DA4C4')}
-            >
-              HMIS
-            </a>
-            <span style={{ color: 'rgba(255, 255, 255, 0.35)', fontSize: '13px' }}>·</span>
-            <a
-              href="#products-lmis"
-              onClick={(e) => {
-                e.preventDefault();
-                handleNavigate('products-lmis');
-              }}
-              style={{
-                color: '#8DA4C4',
-                fontSize: '13.5px',
-                fontWeight: 600,
-                textDecoration: 'none',
-                transition: 'color 0.2s ease',
-                cursor: 'pointer',
-              }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = '#FFFFFF')}
-              onMouseLeave={(e) => (e.currentTarget.style.color = '#8DA4C4')}
-            >
-              Biosynthesis LMIS
-            </a>
-            <span style={{ color: 'rgba(255, 255, 255, 0.35)', fontSize: '13px' }}>·</span>
-            <a
-              href="#products"
-              onClick={(e) => {
-                e.preventDefault();
-                handleNavigate('products');
-              }}
-              style={{
-                color: '#8DA4C4',
-                fontSize: '13.5px',
-                fontWeight: 600,
-                textDecoration: 'none',
-                transition: 'color 0.2s ease',
-                cursor: 'pointer',
-              }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = '#FFFFFF')}
-              onMouseLeave={(e) => (e.currentTarget.style.color = '#8DA4C4')}
-            >
-              Product overview
-            </a>
-          </div>
+
 
           {/* Bottom Copyright and Legal Links Row */}
           <div
