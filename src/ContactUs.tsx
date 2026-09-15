@@ -397,7 +397,7 @@ export function ContactUsPage({ onNavigate, onGoHome }: ContactUsProps) {
                     </div>
                     <div>
                       <div style={{ fontSize: '11px', fontWeight: 700, color: '#64748B', letterSpacing: '0.06em', textTransform: 'uppercase', marginBottom: '2px' }}>Email</div>
-                      <a href="mailto:Info@agiledone.com" style={{ fontSize: '15.5px', fontWeight: 700, color: '#0B1739', textDecoration: 'none' }}>
+                      <a href="mailto:info@ajiledone.com" style={{ fontSize: '15.5px', fontWeight: 700, color: '#0B1739', textDecoration: 'none' }}>
                         info@ajiledone.com
                       </a>
                     </div>
@@ -912,8 +912,8 @@ export function ContactUsPage({ onNavigate, onGoHome }: ContactUsProps) {
 
               {/* Bottom Info */}
               <div style={{ position: 'relative', zIndex: 1 }}>
-                <a href="mailto:Info@agiledone.com" style={{ fontSize: '16px', fontWeight: 700, color: 'rgba(103, 223, 203, 1)', textDecoration: 'none', display: 'block', marginBottom: '6px' }}>
-                  Info@agiledone.com
+                <a href="mailto:info@ajiledone.com" style={{ fontSize: '16px', fontWeight: 700, color: 'rgba(103, 223, 203, 1)', textDecoration: 'none', display: 'block', marginBottom: '6px' }}>
+                  info@ajiledone.com
                 </a>
                 <div style={{ fontSize: '12px', color: 'rgba(255, 255, 255, 0.65)', lineHeight: 1.4 }}>
                   United State, Dubai, India, Singapore, Australia
@@ -1253,7 +1253,7 @@ export function ContactUsPage({ onNavigate, onGoHome }: ContactUsProps) {
 
             {/* Secondary Outlined Pill Button */}
             <a
-              href="mailto:Info@agiledone.com"
+              href="mailto:info@ajiledone.com"
               style={{
                 backgroundColor: 'rgba(255, 255, 255, 0.08)',
                 border: '1.5px solid rgba(255, 255, 255, 0.45)',
