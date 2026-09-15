@@ -368,11 +368,7 @@ export function ContactUsPage({ onNavigate, onGoHome }: ContactUsProps) {
                 </button>
               </div>
 
-              {/* Sub-badge */}
-              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', marginTop: '28px', backgroundColor: 'rgba(255, 255, 255, 0.12)', border: '1px solid rgba(255, 255, 255, 0.22)', padding: '8px 18px', borderRadius: '9999px', fontSize: '11px', fontWeight: 800, color: '#FFFFFF', letterSpacing: '0.14em' }}>
-                <span style={{ color: '#67DFCB', fontSize: '14px' }}>•</span>
-                <span>WE REPLY WITHIN 2 BUSINESS DAYS</span>
-              </div>
+
 
               {/* Bottom Category Row */}
               <div style={{ fontSize: '11.5px', fontWeight: 800, color: 'rgba(255, 255, 255, 0.65)', letterSpacing: '0.16em', marginTop: '44px' }}>
@@ -417,41 +413,15 @@ export function ContactUsPage({ onNavigate, onGoHome }: ContactUsProps) {
                     </div>
                   </div>
 
-                  {/* Phone Item */}
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '16px', padding: '16px 0', borderBottom: '1px solid #F1F5F9' }}>
-                    <div style={{ width: '44px', height: '44px', borderRadius: '12px', backgroundColor: '#EFF6FF', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#265CF4', flexShrink: 0 }}>
-                      <Phone size={20} />
-                    </div>
-                    <div>
-                      <div style={{ fontSize: '11px', fontWeight: 700, color: '#64748B', letterSpacing: '0.06em', textTransform: 'uppercase', marginBottom: '2px' }}>Phone</div>
-                      <div style={{ fontSize: '15.5px', fontWeight: 700, color: '#0B1739' }}>
-                        +1 202-251-3193
-                      </div>
-                    </div>
-                  </div>
-
                   {/* Offices Item */}
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '16px', padding: '16px 0', borderBottom: '1px solid #F1F5F9' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '16px', padding: '16px 0' }}>
                     <div style={{ width: '44px', height: '44px', borderRadius: '12px', backgroundColor: '#EFF6FF', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#265CF4', flexShrink: 0 }}>
                       <MapPin size={20} />
                     </div>
                     <div>
                       <div style={{ fontSize: '11px', fontWeight: 700, color: '#64748B', letterSpacing: '0.06em', textTransform: 'uppercase', marginBottom: '2px' }}>Offices</div>
                       <div style={{ fontSize: '15.5px', fontWeight: 700, color: '#0B1739' }}>
-                        Vienna VA &nbsp;·&nbsp; Dubai &nbsp;·&nbsp; Bengaluru
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Response Item */}
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '16px', padding: '16px 0' }}>
-                    <div style={{ width: '44px', height: '44px', borderRadius: '12px', backgroundColor: '#EFF6FF', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#265CF4', flexShrink: 0 }}>
-                      <Clock size={20} />
-                    </div>
-                    <div>
-                      <div style={{ fontSize: '11px', fontWeight: 700, color: '#64748B', letterSpacing: '0.06em', textTransform: 'uppercase', marginBottom: '2px' }}>Response</div>
-                      <div style={{ fontSize: '15.5px', fontWeight: 700, color: '#0B1739' }}>
-                        Within 2 business days
+                        United States &nbsp;·&nbsp; Dubai &nbsp;·&nbsp; Bengaluru
                       </div>
                     </div>
                   </div>
@@ -899,7 +869,7 @@ export function ContactUsPage({ onNavigate, onGoHome }: ContactUsProps) {
                     UNITED STATES
                   </div>
                   <div style={{ fontSize: '20px', fontWeight: 800, color: '#FFFFFF', letterSpacing: '-0.01em' }}>
-                    Vienna, Virginia
+                    United States
                   </div>
                   <div style={{ fontSize: '13px', color: 'rgba(255, 255, 255, 0.65)', marginTop: '2px' }}>
                     North America
@@ -935,12 +905,9 @@ export function ContactUsPage({ onNavigate, onGoHome }: ContactUsProps) {
 
               {/* Bottom Info & Sub-badge */}
               <div>
-                <a href="mailto:info@ajiledone.com" style={{ fontSize: '16px', fontWeight: 700, color: '#5EEAD4', textDecoration: 'none', display: 'block', marginBottom: '4px' }}>
+                <a href="mailto:info@ajiledone.com" style={{ fontSize: '16px', fontWeight: 700, color: '#5EEAD4', textDecoration: 'none', display: 'block', marginBottom: '12px' }}>
                   info@ajiledone.com
                 </a>
-                <div style={{ fontSize: '16px', fontWeight: 700, color: '#FFFFFF', marginBottom: '12px' }}>
-                  +1 202-251-3193
-                </div>
 
                 <div style={{ fontSize: '11.5px', color: 'rgba(255, 255, 255, 0.6)', lineHeight: 1.4, marginBottom: '16px' }}>
                   Serving North America · Europe · Middle East · India · Asia-Pacific
@@ -1325,40 +1292,31 @@ export function ContactUsPage({ onNavigate, onGoHome }: ContactUsProps) {
 
           {/* 3 Regional Hub Glass Cards Grid (Exact matching uploaded design) */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '20px', maxWidth: '1080px', margin: '0 auto' }}>
-            {/* Hub 1: Vienna, Virginia */}
-            <div style={{ backgroundColor: 'rgba(255, 255, 255, 0.08)', border: '1.2px solid rgba(255, 255, 255, 0.18)', backdropFilter: 'blur(12px)', borderRadius: '18px', padding: '20px 24px', textAlign: 'left', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '2px' }}>
-                  <span style={{ color: '#5EEAD4', fontSize: '14px' }}>•</span>
-                  <span style={{ fontSize: '16px', fontWeight: 800, color: '#FFFFFF', letterSpacing: '-0.01em' }}>Vienna, Virginia</span>
-                </div>
-                <div style={{ fontSize: '12.5px', color: 'rgba(255, 255, 255, 0.65)', paddingLeft: '14px' }}>North America</div>
+            {/* Hub 1: United States */}
+            <div style={{ backgroundColor: 'rgba(255, 255, 255, 0.08)', border: '1.2px solid rgba(255, 255, 255, 0.18)', backdropFilter: 'blur(12px)', borderRadius: '18px', padding: '20px 24px', textAlign: 'left' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '2px' }}>
+                <span style={{ color: '#5EEAD4', fontSize: '14px' }}>•</span>
+                <span style={{ fontSize: '16px', fontWeight: 800, color: '#FFFFFF', letterSpacing: '-0.01em' }}>United States</span>
               </div>
-              <div style={{ fontSize: '13.5px', fontWeight: 700, color: '#5EEAD4' }}>+1 202-251-3193</div>
+              <div style={{ fontSize: '12.5px', color: 'rgba(255, 255, 255, 0.65)', paddingLeft: '14px' }}>North America</div>
             </div>
 
             {/* Hub 2: Dubai */}
-            <div style={{ backgroundColor: 'rgba(255, 255, 255, 0.08)', border: '1.2px solid rgba(255, 255, 255, 0.18)', backdropFilter: 'blur(12px)', borderRadius: '18px', padding: '20px 24px', textAlign: 'left', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '2px' }}>
-                  <span style={{ color: '#5EEAD4', fontSize: '14px' }}>•</span>
-                  <span style={{ fontSize: '16px', fontWeight: 800, color: '#FFFFFF', letterSpacing: '-0.01em' }}>Dubai</span>
-                </div>
-                <div style={{ fontSize: '12.5px', color: 'rgba(255, 255, 255, 0.65)', paddingLeft: '14px' }}>Middle East</div>
+            <div style={{ backgroundColor: 'rgba(255, 255, 255, 0.08)', border: '1.2px solid rgba(255, 255, 255, 0.18)', backdropFilter: 'blur(12px)', borderRadius: '18px', padding: '20px 24px', textAlign: 'left' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '2px' }}>
+                <span style={{ color: '#5EEAD4', fontSize: '14px' }}>•</span>
+                <span style={{ fontSize: '16px', fontWeight: 800, color: '#FFFFFF', letterSpacing: '-0.01em' }}>Dubai</span>
               </div>
-              <div style={{ fontSize: '13.5px', fontWeight: 700, color: '#5EEAD4' }}>+1 202-251-3193</div>
+              <div style={{ fontSize: '12.5px', color: 'rgba(255, 255, 255, 0.65)', paddingLeft: '14px' }}>Middle East</div>
             </div>
 
             {/* Hub 3: Bengaluru */}
-            <div style={{ backgroundColor: 'rgba(255, 255, 255, 0.08)', border: '1.2px solid rgba(255, 255, 255, 0.18)', backdropFilter: 'blur(12px)', borderRadius: '18px', padding: '20px 24px', textAlign: 'left', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '2px' }}>
-                  <span style={{ color: '#5EEAD4', fontSize: '14px' }}>•</span>
-                  <span style={{ fontSize: '16px', fontWeight: 800, color: '#FFFFFF', letterSpacing: '-0.01em' }}>Bengaluru</span>
-                </div>
-                <div style={{ fontSize: '12.5px', color: 'rgba(255, 255, 255, 0.65)', paddingLeft: '14px' }}>India · Asia-Pacific</div>
+            <div style={{ backgroundColor: 'rgba(255, 255, 255, 0.08)', border: '1.2px solid rgba(255, 255, 255, 0.18)', backdropFilter: 'blur(12px)', borderRadius: '18px', padding: '20px 24px', textAlign: 'left' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '2px' }}>
+                <span style={{ color: '#5EEAD4', fontSize: '14px' }}>•</span>
+                <span style={{ fontSize: '16px', fontWeight: 800, color: '#FFFFFF', letterSpacing: '-0.01em' }}>Bengaluru</span>
               </div>
-              <div style={{ fontSize: '13.5px', fontWeight: 700, color: '#5EEAD4' }}>+1 202-251-3193</div>
+              <div style={{ fontSize: '12.5px', color: 'rgba(255, 255, 255, 0.65)', paddingLeft: '14px' }}>India · Asia-Pacific</div>
             </div>
           </div>
         </div>

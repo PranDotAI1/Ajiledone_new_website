@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { HeroOrb3D } from './HeroOrb3D';
 import { WhoWeArePage } from './WhoWeAre';
 import { PurposeandValuesPage } from './PurposeandValues';
 import { WhatWeDoPage } from './WhatWeDo';
@@ -42,7 +43,6 @@ import {
 } from 'lucide-react';
 
 function HeroOrbCanvas() {
-
   const [isHovered, setIsHovered] = useState(false);
 
   return (
@@ -53,100 +53,67 @@ function HeroOrbCanvas() {
       style={{
         position: 'relative',
         width: '100%',
-        maxWidth: '520px',
+        maxWidth: '540px',
         aspectRatio: '1/1',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         margin: '0 auto',
-        cursor: 'pointer',
+        cursor: 'grab',
       }}
     >
-      {/* Figma Layer Blur 220px: rgba(103, 223, 203, 0.24) - 600px x 600px */}
+      {/* Ambient Mint Glow: rgba(103, 223, 203, 0.24) */}
       <div
         style={{
           position: 'absolute',
-          width: '600px',
-          height: '600px',
+          width: '580px',
+          height: '580px',
           top: '50%',
           left: '50%',
           transform: 'translate(-50%, -50%)',
           borderRadius: '50%',
           background: 'rgba(103, 223, 203, 0.24)',
-          filter: 'blur(220px)',
+          filter: 'blur(160px)',
           pointerEvents: 'none',
           zIndex: 0,
         }}
       />
 
-      {/* Figma Layer Blur 190px: rgba(31, 165, 255, 0.4) */}
+      {/* Ambient Blue Glow: rgba(31, 165, 255, 0.35) */}
       <div
         style={{
           position: 'absolute',
-          width: '540px',
-          height: '540px',
+          width: '520px',
+          height: '520px',
           top: '50%',
           left: '50%',
           transform: 'translate(-50%, -50%)',
           borderRadius: '50%',
-          background: 'rgba(31, 165, 255, 0.4)',
-          filter: 'blur(190px)',
+          background: 'rgba(31, 165, 255, 0.35)',
+          filter: 'blur(140px)',
           pointerEvents: 'none',
           zIndex: 1,
         }}
       />
 
-      {/* SVG Single Outer Dashed Circle */}
-      <svg
-        width="100%"
-        height="100%"
-        viewBox="0 0 520 520"
-        style={{
-          position: 'absolute',
-          inset: 0,
-          animation: 'spinSlow 90s linear infinite',
-          pointerEvents: 'none',
-          zIndex: 3,
-        }}
-      >
-        <circle
-          cx="260"
-          cy="260"
-          r="250"
-          fill="none"
-          stroke="rgba(255, 255, 255, 0.45)"
-          strokeWidth="1.5"
-          strokeDasharray="5 7"
-        />
-      </svg>
-
-      {/* Main Artwork Orb Image Circle */}
+      {/* Circular Masked 3D WebGL Canvas */}
       <div
         style={{
           position: 'relative',
-          width: '79%',
-          height: '79%',
+          width: '100%',
+          height: '100%',
           borderRadius: '50%',
           overflow: 'hidden',
-          boxShadow: '0 0 70px rgba(103, 223, 203, 0.35)',
           zIndex: 2,
+          boxShadow: '0 0 60px rgba(103, 223, 203, 0.2)',
+          border: 'none',
           transform: isHovered ? 'scale(1.02)' : 'scale(1)',
           transition: 'transform 0.4s ease',
+          background: 'transparent',
         }}
       >
-        <img
-          src="/images/Ellipse.png"
-          alt="Getting it done artwork"
-          style={{
-            width: '100%',
-            height: '100%',
-            objectFit: 'cover',
-            display: 'block',
-            borderRadius: '50%',
-          }}
-        />
+        <HeroOrb3D />
       </div>
-
     </div>
   );
 }

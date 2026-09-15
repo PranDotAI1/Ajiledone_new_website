@@ -97,7 +97,7 @@ const ROLES_DATA: RoleItem[] = [
     id: 'enterprise-architect',
     title: 'Enterprise Architect',
     dept: 'Business & Technology Transformation',
-    location: 'Vienna, VA',
+    location: 'United States',
     type: 'Full-time',
     description: 'Target architectures across applications, data, AI, cloud and integration.',
     bgColor: '#0A1128',
@@ -185,7 +185,7 @@ const ROLES_DATA: RoleItem[] = [
     id: 'engagement-manager',
     title: 'Engagement Manager',
     dept: 'Business & Technology Transformation',
-    location: 'Vienna, VA',
+    location: 'United States',
     type: 'Full-time',
     description: 'Own a transformation programme end to end, with the client in the room.',
     bgColor: '#FFFFFF',
@@ -262,7 +262,7 @@ const DEPARTMENT_OPTIONS = [
 const LOCATION_OPTIONS = [
   'All locations',
   'Bengaluru, India',
-  'Vienna, VA',
+  'United States',
   'Dubai, UAE',
   'Remote'
 ];

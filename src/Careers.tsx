@@ -27,7 +27,7 @@ export function CareersPage({ onNavigate }: CareersPageProps) {
       category: 'ai-data',
       title: 'Principal AI Solutions Architect',
       department: 'AI & Data Intelligence',
-      location: 'Vienna, VA (US) / Remote',
+      location: 'United States / Remote',
       type: 'Full-time',
       exp: '8+ years',
       desc: 'Lead enterprise AI transformation programs, architecting agentic workflows, LLM fine-tuning pipelines, and RAG architectures for Fortune 500 clients.',
@@ -60,7 +60,7 @@ export function CareersPage({ onNavigate }: CareersPageProps) {
       category: 'engineering',
       title: 'Cloud Native & DevOps Architect',
       department: 'Digital Engineering',
-      location: 'Vienna, VA (US) / Hybrid',
+      location: 'United States / Hybrid',
       type: 'Full-time',
       exp: '6+ years',
       desc: 'Design resilient multi-cloud infrastructure, automated Kubernetes deployments, and GitOps CI/CD security pipelines.',
@@ -93,7 +93,7 @@ export function CareersPage({ onNavigate }: CareersPageProps) {
       category: 'architecture',
       title: 'Enterprise Cyber & Security Architect',
       department: 'Enterprise Architecture',
-      location: 'Vienna, VA (US) / Remote',
+      location: 'United States / Remote',
       type: 'Full-time',
       exp: '8+ years',
       desc: 'Establish zero-trust security postures, cloud compliance frameworks, and IAM architectures across global hybrid ecosystems.',
@@ -126,7 +126,7 @@ export function CareersPage({ onNavigate }: CareersPageProps) {
       category: 'architecture',
       title: 'Senior Digital Transformation Manager',
       department: 'Transformation Practice',
-      location: 'Vienna, VA (US) / Travel',
+      location: 'United States / Travel',
       type: 'Full-time',
       exp: '8+ years',
       desc: 'Orchestrate end-to-end enterprise modernizations, managing executive client relationships and cross-functional engineering pods.',
@@ -1324,7 +1324,7 @@ export function CareersPage({ onNavigate }: CareersPageProps) {
                           boxSizing: 'border-box',
                         }}
                       >
-                        <option value="United States">Vienna VA (United States)</option>
+                        <option value="United States">United States</option>
                         <option value="Dubai UAE">Dubai (UAE)</option>
                         <option value="Bengaluru India">Bengaluru (India)</option>
                         <option value="Remote">Remote</option>
