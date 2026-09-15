@@ -33,7 +33,6 @@ import { LMISPage } from './LMIS';
 import {
   ArrowRight,
   ChevronDown,
-  Globe,
   Menu,
   Minus,
   Plus,
@@ -1006,8 +1005,6 @@ function App() {
   const [scrolled, setScrolled] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [langOpen, setLangOpen] = useState(false);
-  const [selectedRegion, setSelectedRegion] = useState('IN · EN');
   const [currentPage, setCurrentPage] = useState<'home' | 'who-we-are' | 'purpose-and-vision' | 'what-we-do' | 'our-vision' | 'ai-intelligent-enterprise' | 'data-intelligence' | 'enterprise-platforms' | 'sap-transformation' | 'oracle-transformation' | 'cloud-technology-modernization' | 'digital-engineering' | 'ajiledone-intelligent-enterprise' | 'business-functions' | 'how-we-create-value' | 'outcomes-we-pursue' | 'how-we-work' | 'industries' | 'energy-resources-oil-gas' | 'manufacturing' | 'life-sciences-financial-services' | 'consumer-retail-automotive' | 'mining-utilities-chemicals-ec' | 'global-presence' | 'questions-shaping-business' | 'insights' | 'transformation' | 'contact-us' | 'careers' | 'open-roles' | 'products' | 'products-hmis' | 'products-lmis'>('home');
 
   // Sticky navbar scroll effect
@@ -1750,7 +1747,7 @@ function App() {
   return (
     <div className="site-shell" id="top">
       {/* 1. SITE HEADER */}
-      <header className={`site-header ${scrolled ? 'scrolled' : ''}`} onMouseLeave={() => { setActiveDropdown(null); setLangOpen(false); }}>
+      <header className={`site-header ${scrolled ? 'scrolled' : ''}`} onMouseLeave={() => { setActiveDropdown(null); }}>
         <div className="header-container">
           <a
             href="#top"
@@ -1854,7 +1851,7 @@ function App() {
             })}
           </nav>
 
-          <div className="header-right" style={{ display: 'flex', alignItems: 'center', gap: '16px', position: 'relative' }}>
+          <div className="header-right" style={{ display: 'flex', alignItems: 'center', gap: '12px', position: 'relative' }}>
             <button
               className="nav-link"
               onClick={() => setSearchOpen(true)}
@@ -1863,46 +1860,6 @@ function App() {
             >
               <Search size={19} />
             </button>
-
-            <button
-              className="nav-link"
-              onClick={() => setLangOpen(!langOpen)}
-              aria-label="Language selector"
-              style={{ padding: 0, gap: '4px', fontSize: '13px', fontWeight: 600, color: '#334155' }}
-            >
-              <Globe size={15} /> {selectedRegion} <ChevronDown size={13} style={{ transform: langOpen ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }} />
-            </button>
-
-            {langOpen && (
-              <div className="lang-popover">
-                {[
-                  { code: 'IN · EN', label: 'India (EN)' },
-                  { code: 'US · EN', label: 'United States (EN)' },
-                  { code: 'UK · EN', label: 'United Kingdom (EN)' },
-                  { code: 'EU · DE', label: 'Europe (DE)' },
-                  { code: 'JP · JA', label: 'Japan (JA)' },
-                ].map((reg) => (
-                  <div
-                    key={reg.code}
-                    onClick={() => {
-                      setSelectedRegion(reg.code);
-                      setLangOpen(false);
-                    }}
-                    style={{
-                      padding: '8px 12px',
-                      borderRadius: '6px',
-                      fontSize: '13px',
-                      fontWeight: selectedRegion === reg.code ? 700 : 500,
-                      color: selectedRegion === reg.code ? '#2563EB' : '#0F172A',
-                      background: selectedRegion === reg.code ? '#F2F6FE' : 'transparent',
-                      cursor: 'pointer',
-                    }}
-                  >
-                    {reg.label}
-                  </div>
-                ))}
-              </div>
-            )}
 
             <a
               href="#contact"
@@ -1913,7 +1870,7 @@ function App() {
               style={{
                 background: '#2563EB',
                 color: '#FFFFFF',
-                padding: '10px 24px',
+                padding: '10px 20px',
                 borderRadius: '24px',
                 fontSize: '14px',
                 fontWeight: 700,

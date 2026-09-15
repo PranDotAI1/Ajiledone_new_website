@@ -202,14 +202,18 @@ a {
    1. HEADER / NAVIGATION
    ========================================================================== */
 .site-header {
-  position: sticky;
+  position: fixed;
   top: 0;
-  z-index: 100;
+  left: 0;
+  right: 0;
+  z-index: 200;
   background: #FFFFFF;
   border-bottom: 1px solid #E2E8F0;
   height: 76px;
   display: flex;
   align-items: center;
+  width: 100%;
+  transition: all 0.3s ease;
 }
 
 .header-container {
@@ -227,6 +231,7 @@ a {
   display: flex;
   align-items: center;
   gap: 10px;
+  flex-shrink: 0;
 }
 
 .brand-icon {
@@ -266,15 +271,7 @@ a {
   color: #60A5FA;
 }
 
-.site-header {
-  position: relative;
-  transition: all 0.3s ease;
-  z-index: 200;
-}
-
 .site-header.scrolled {
-  position: sticky;
-  top: 0;
   background: rgba(255, 255, 255, 0.98);
   backdrop-filter: blur(12px);
   box-shadow: 0 4px 20px rgba(15, 23, 42, 0.08);
@@ -1578,6 +1575,28 @@ a {
   .industries-grid {
     grid-template-columns: repeat(2, 1fr) !important;
     gap: 20px !important;
+  }
+}
+
+@media (max-width: 1199px) {
+  .header-container {
+    padding: 0 20px !important;
+  }
+  .desktop-nav, .header-right {
+    display: none !important;
+  }
+  .menu-button {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: #0F172A;
+  }
+  .mobile-menu {
+    top: 76px !important;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15) !important;
   }
 }
 
