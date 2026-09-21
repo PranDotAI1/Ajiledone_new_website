@@ -1572,54 +1572,7 @@ export function TransformationPage({ onNavigate, onGoHome }: TransformationProps
             </div>
           </div>
 
-          {/* Stories Will Span Section */}
-          <div>
-            <div style={{ fontSize: '11px', fontWeight: 800, color: '#94A3B8', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '16px' }}>
-              STORIES WILL SPAN
-            </div>
 
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', alignItems: 'center' }}>
-              {[
-                'Energy & Resources',
-                'Manufacturing',
-                'Life Sciences & Healthcare',
-                'Financial Services',
-                'Consumer & Retail',
-                'Automotive',
-                'Mining & Metals',
-                'Utilities',
-                'Chemicals',
-                'Engineering & Construction',
-              ].map((spanItem) => (
-                <div
-                  key={spanItem}
-                  style={{
-                    backgroundColor: '#FFFFFF',
-                    color: '#475569',
-                    border: '1.2px solid #E2E8F0',
-                    fontSize: '12.5px',
-                    fontWeight: 600,
-                    padding: '8px 18px',
-                    borderRadius: '24px',
-                    transition: 'all 0.2s ease',
-                    cursor: 'pointer',
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.borderColor = '#265CF4';
-                    e.currentTarget.style.color = '#265CF4';
-                    e.currentTarget.style.transform = 'translateY(-2px)';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.borderColor = '#E2E8F0';
-                    e.currentTarget.style.color = '#475569';
-                    e.currentTarget.style.transform = 'none';
-                  }}
-                >
-                  {spanItem}
-                </div>
-              ))}
-            </div>
-          </div>
         </div>
       </section>
 

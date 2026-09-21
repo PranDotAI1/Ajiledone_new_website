@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { WhoWeArePage } from './WhoWeAre';
+import { OurPeoplePage } from './OurPeople';
 import { PurposeandValuesPage } from './PurposeandValues';
 import { WhatWeDoPage } from './WhatWeDo';
 import { OurVisionPage } from './OurVision';
@@ -423,7 +424,7 @@ function MegaMenuDropdown({
               {/* 03 Our People */}
               <div
                 className="mega-card-item"
-                onClick={() => onNavigate('#global')}
+                onClick={() => onNavigate('#our-people')}
                 style={{
                   padding: '24px',
                   borderRadius: '16px',
@@ -1005,7 +1006,7 @@ function App() {
   const [scrolled, setScrolled] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [currentPage, setCurrentPage] = useState<'home' | 'who-we-are' | 'purpose-and-vision' | 'what-we-do' | 'our-vision' | 'ai-intelligent-enterprise' | 'data-intelligence' | 'enterprise-platforms' | 'sap-transformation' | 'oracle-transformation' | 'cloud-technology-modernization' | 'digital-engineering' | 'ajiledone-intelligent-enterprise' | 'business-functions' | 'how-we-create-value' | 'outcomes-we-pursue' | 'how-we-work' | 'industries' | 'energy-resources-oil-gas' | 'manufacturing' | 'life-sciences-financial-services' | 'consumer-retail-automotive' | 'mining-utilities-chemicals-ec' | 'global-presence' | 'questions-shaping-business' | 'insights' | 'transformation' | 'contact-us' | 'careers' | 'open-roles' | 'products' | 'products-hmis' | 'products-lmis'>('home');
+  const [currentPage, setCurrentPage] = useState<'home' | 'who-we-are' | 'our-people' | 'purpose-and-vision' | 'what-we-do' | 'our-vision' | 'ai-intelligent-enterprise' | 'data-intelligence' | 'enterprise-platforms' | 'sap-transformation' | 'oracle-transformation' | 'cloud-technology-modernization' | 'digital-engineering' | 'ajiledone-intelligent-enterprise' | 'business-functions' | 'how-we-create-value' | 'outcomes-we-pursue' | 'how-we-work' | 'industries' | 'energy-resources-oil-gas' | 'manufacturing' | 'life-sciences-financial-services' | 'consumer-retail-automotive' | 'mining-utilities-chemicals-ec' | 'global-presence' | 'questions-shaping-business' | 'insights' | 'transformation' | 'contact-us' | 'careers' | 'open-roles' | 'products' | 'products-hmis' | 'products-lmis'>('home');
 
   // Sticky navbar scroll effect
   useEffect(() => {
@@ -1079,6 +1080,9 @@ function App() {
         window.scrollTo({ top: 0, behavior: 'smooth' });
       } else if (hash.includes('cloud-technology-modernization') || hash.includes('cloud')) {
         setCurrentPage('cloud-technology-modernization');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else if (hash.includes('our-people') || hash.includes('ourpeople') || hash === '#people') {
+        setCurrentPage('our-people');
         window.scrollTo({ top: 0, behavior: 'smooth' });
       } else if (hash.includes('who-we-are') || hash === '#who-we-are') {
         setCurrentPage('who-we-are');
@@ -1171,6 +1175,23 @@ function App() {
         window.history.pushState({ page: 'who-we-are' }, '', '#who-we-are');
       }
       setCurrentPage('who-we-are');
+      setActiveDropdown(null);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+
+    if (
+      anchor === 'our-people' ||
+      anchor === '#our-people' ||
+      anchor === 'our people' ||
+      anchor === '#our people' ||
+      anchor === 'people' ||
+      anchor === '#people'
+    ) {
+      if (window.location.hash !== '#our-people') {
+        window.history.pushState({ page: 'our-people' }, '', '#our-people');
+      }
+      setCurrentPage('our-people');
       setActiveDropdown(null);
       window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
@@ -1944,6 +1965,7 @@ function App() {
                   {isExpanded && item.name === 'Who we are' && (
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', padding: '12px 16px', background: '#F8FAFC', borderRadius: '12px', marginTop: '10px' }}>
                       <div onClick={() => { setCurrentPage('who-we-are'); setMobileOpen(false); window.scrollTo({ top: 0, behavior: 'smooth' }); }} style={{ fontSize: '15px', fontWeight: 700, color: '#0B1739', cursor: 'pointer' }}>Who We Are</div>
+                      <div onClick={() => { setCurrentPage('our-people'); setMobileOpen(false); window.scrollTo({ top: 0, behavior: 'smooth' }); }} style={{ fontSize: '15px', fontWeight: 700, color: '#0B1739', cursor: 'pointer' }}>Our People</div>
                       <div onClick={() => { setCurrentPage('purpose-and-vision'); setMobileOpen(false); window.scrollTo({ top: 0, behavior: 'smooth' }); }} style={{ fontSize: '15px', fontWeight: 700, color: '#0B1739', cursor: 'pointer' }}>Purpose &amp; Values</div>
                       <div onClick={() => { setCurrentPage('our-vision'); setMobileOpen(false); window.scrollTo({ top: 0, behavior: 'smooth' }); }} style={{ fontSize: '15px', fontWeight: 700, color: '#0B1739', cursor: 'pointer' }}>Our Vision</div>
                       <div onClick={() => { setCurrentPage('global-presence'); setMobileOpen(false); window.scrollTo({ top: 0, behavior: 'smooth' }); }} style={{ fontSize: '15px', fontWeight: 700, color: '#0B1739', cursor: 'pointer' }}>Global Presence</div>
@@ -2121,6 +2143,11 @@ function App() {
 
       {currentPage === 'who-we-are' ? (
         <WhoWeArePage
+          onNavigate={handleNavigate}
+          onGoHome={handleGoHome}
+        />
+      ) : currentPage === 'our-people' ? (
+        <OurPeoplePage
           onNavigate={handleNavigate}
           onGoHome={handleGoHome}
         />
@@ -2822,221 +2849,7 @@ function App() {
 
 
 
-          {/* 8. OUR WORK SECTION */}
-          <section
-            className="section-pad stories-section"
-            id="stories"
-            style={{
-              background: 'linear-gradient(180deg, #07132B 0%, #0A1B3D 50%, #081530 100%)',
-              color: '#FFFFFF',
-              padding: '96px 0',
-            }}
-          >
-            <div className="section-container">
-              {/* Header */}
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '60px', flexWrap: 'wrap', gap: '20px' }}>
-                <div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
-                    <div style={{ width: '24px', height: '2px', backgroundColor: '#67DFCB', borderRadius: '1px' }} />
-                    <span style={{ color: '#67DFCB', fontSize: '12px', fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase' }}>
-                      OUR WORK
-                    </span>
-                  </div>
-                  <h2 style={{ fontSize: 'clamp(34px, 4.2vw, 48px)', fontWeight: 800, color: '#FFFFFF', lineHeight: 1.15, margin: '0 0 12px 0', fontFamily: "'Inter', sans-serif" }}>
-                    Client stories that moved the needle.
-                  </h2>
-                  <p style={{ fontSize: '16px', color: 'rgba(255, 255, 255, 0.72)', margin: 0, maxWidth: '620px' }}>
-                    Every story follows the same arc — the challenge, the approach, the technology and what actually changed.
-                  </p>
-                </div>
-                <a
-                  href="#stories"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleNavigate('#stories');
-                  }}
-                  style={{
-                    color: '#67DFCB',
-                    fontSize: '14.5px',
-                    fontWeight: 700,
-                    textDecoration: 'none',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '6px',
-                    transition: 'gap 0.2s ease',
-                  }}
-                  onMouseEnter={(e) => (e.currentTarget.style.gap = '10px')}
-                  onMouseLeave={(e) => (e.currentTarget.style.gap = '6px')}
-                >
-                  <span>All transformation stories</span>
-                  <ArrowRight size={16} />
-                </a>
-              </div>
 
-              {/* 3 Story Rows */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '48px' }}>
-                {[
-                  {
-                    num: '01',
-                    category: 'E-COMMERCE',
-                    title: 'A catering business goes digital',
-                    desc: 'Elegant, modern web presence with an online menu and reservation system that customers actually use.',
-                    img: '/images/ourworkhome1.png',
-                    reverse: false,
-                  },
-                  {
-                    num: '02',
-                    category: 'FITNESS & WELLNESS',
-                    title: 'Booking that keeps up with the workouts',
-                    desc: "A class schedule and booking feature that became a game-changer for a fitness studio's clients.",
-                    img: '/images/ourworkhome2.png',
-                    reverse: true,
-                  },
-                  {
-                    num: '03',
-                    category: 'CREATIVE SERVICES',
-                    title: 'A portfolio that wins clients',
-                    desc: 'Gallery-first design showcasing photography work, with enquiry flows that convert visitors into bookings.',
-                    img: '/images/ourworkhome3.png',
-                    reverse: false,
-                  },
-                ].map((story, i) => (
-                  <div
-                    key={story.num}
-                    style={{
-                      display: 'grid',
-                      gridTemplateColumns: '1fr 1fr',
-                      gap: '48px',
-                      alignItems: 'center',
-                      paddingBottom: i === 2 ? '0' : '48px',
-                      borderBottom: i === 2 ? 'none' : '1px solid rgba(255, 255, 255, 0.08)',
-                      transition: 'transform 0.3s ease',
-                      cursor: 'pointer',
-                    }}
-                    onMouseEnter={(e) => {
-                      const imgEl = e.currentTarget.querySelector('.story-img') as HTMLElement;
-                      const imgCard = e.currentTarget.querySelector('.story-img-card') as HTMLElement;
-                      const badgeEl = e.currentTarget.querySelector('.story-badge') as HTMLElement;
-                      const linkEl = e.currentTarget.querySelector('.story-link') as HTMLElement;
-                      if (imgEl) imgEl.style.transform = 'scale(1.06)';
-                      if (imgCard) imgCard.style.boxShadow = '0 20px 40px rgba(103, 223, 203, 0.25)';
-                      if (badgeEl) {
-                        badgeEl.style.background = '#67DFCB';
-                        badgeEl.style.color = '#07132B';
-                        badgeEl.style.borderColor = '#67DFCB';
-                      }
-                      if (linkEl) linkEl.style.gap = '10px';
-                    }}
-                    onMouseLeave={(e) => {
-                      const imgEl = e.currentTarget.querySelector('.story-img') as HTMLElement;
-                      const imgCard = e.currentTarget.querySelector('.story-img-card') as HTMLElement;
-                      const badgeEl = e.currentTarget.querySelector('.story-badge') as HTMLElement;
-                      const linkEl = e.currentTarget.querySelector('.story-link') as HTMLElement;
-                      if (imgEl) imgEl.style.transform = 'scale(1)';
-                      if (imgCard) imgCard.style.boxShadow = '0 12px 30px rgba(0,0,0,0.3)';
-                      if (badgeEl) {
-                        badgeEl.style.background = 'rgba(255, 255, 255, 0.1)';
-                        badgeEl.style.color = '#FFFFFF';
-                        badgeEl.style.borderColor = 'rgba(255, 255, 255, 0.25)';
-                      }
-                      if (linkEl) linkEl.style.gap = '6px';
-                    }}
-                  >
-                    {/* Image Block (Left if not reversed) */}
-                    {!story.reverse && (
-                      <div
-                        className="story-img-card"
-                        style={{
-                          borderRadius: '18px',
-                          overflow: 'hidden',
-                          height: '280px',
-                          boxShadow: '0 12px 30px rgba(0,0,0,0.3)',
-                          transition: 'box-shadow 0.35s ease',
-                        }}
-                      >
-                        <img
-                          src={story.img}
-                          alt={story.title}
-                          className="story-img"
-                          style={{
-                            width: '100%',
-                            height: '100%',
-                            objectFit: 'cover',
-                            transition: 'transform 0.45s cubic-bezier(0.4, 0, 0.2, 1)',
-                          }}
-                        />
-                      </div>
-                    )}
-
-                    {/* Text Block */}
-                    <div>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
-                        <span style={{ fontSize: '13px', fontWeight: 800, color: '#67DFCB' }}>{story.num}</span>
-                        <span
-                          className="story-badge"
-                          style={{
-                            background: 'rgba(255, 255, 255, 0.1)',
-                            border: '1px solid rgba(255, 255, 255, 0.25)',
-                            color: '#FFFFFF',
-                            fontSize: '11px',
-                            fontWeight: 700,
-                            letterSpacing: '0.08em',
-                            padding: '4px 12px',
-                            borderRadius: '20px',
-                            textTransform: 'uppercase',
-                            transition: 'all 0.3s ease',
-                          }}
-                        >
-                          {story.category}
-                        </span>
-                      </div>
-                      <h3 style={{ fontSize: 'clamp(24px, 3vw, 32px)', fontWeight: 800, color: '#FFFFFF', margin: '0 0 16px 0', lineHeight: 1.25, fontFamily: "'Inter', sans-serif" }}>
-                        {story.title}
-                      </h3>
-                      <p style={{ fontSize: '15px', color: 'rgba(255, 255, 255, 0.72)', margin: '0 0 28px 0', lineHeight: 1.6, maxWidth: '480px' }}>
-                        {story.desc}
-                      </p>
-                      <a
-                        href="#stories"
-                        className="story-link"
-                        onClick={(e) => { e.preventDefault(); handleNavigate('#stories'); }}
-                        style={{ color: '#67DFCB', fontSize: '14.5px', fontWeight: 700, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '6px', transition: 'gap 0.25s ease' }}
-                      >
-                        <span>Read the full story</span>
-                        <ArrowRight size={15} />
-                      </a>
-                    </div>
-
-                    {/* Image Block (Right if reversed) */}
-                    {story.reverse && (
-                      <div
-                        className="story-img-card"
-                        style={{
-                          borderRadius: '18px',
-                          overflow: 'hidden',
-                          height: '280px',
-                          boxShadow: '0 12px 30px rgba(0,0,0,0.3)',
-                          transition: 'box-shadow 0.35s ease',
-                        }}
-                      >
-                        <img
-                          src={story.img}
-                          alt={story.title}
-                          className="story-img"
-                          style={{
-                            width: '100%',
-                            height: '100%',
-                            objectFit: 'cover',
-                            transition: 'transform 0.45s cubic-bezier(0.4, 0, 0.2, 1)',
-                          }}
-                        />
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
-          </section>
 
 
           {/* OUR PRODUCTS SECTION */}
@@ -3569,7 +3382,7 @@ function App() {
                 {[
                   { name: 'About Ajiledone', href: '#who-we-are' },
                   { name: 'Purpose & Values', href: '#purpose-and-vision' },
-                  { name: 'Our People', href: '#who-we-are' },
+                  { name: 'Our People', href: '#our-people' },
                   { name: 'Our Vision', href: '#our-vision' },
                   { name: 'Global Presence', href: '#global-presence' },
                 ].map((item) => (

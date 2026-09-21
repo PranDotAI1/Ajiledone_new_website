@@ -403,18 +403,18 @@ export function ContactUsPage({ onNavigate, onGoHome }: ContactUsProps) {
                     </div>
                   </div>
 
-                  {/* Phone Item
+                  {/* Phone Item */}
                   <div style={{ display: 'flex', alignItems: 'center', gap: '16px', padding: '16px 0', borderBottom: '1px solid #F1F5F9' }}>
                     <div style={{ width: '44px', height: '44px', borderRadius: '12px', backgroundColor: '#EFF6FF', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#265CF4', flexShrink: 0 }}>
                       <Phone size={20} />
                     </div>
                     <div>
                       <div style={{ fontSize: '11px', fontWeight: 700, color: '#64748B', letterSpacing: '0.06em', textTransform: 'uppercase', marginBottom: '2px' }}>Phone</div>
-                      <div style={{ fontSize: '15.5px', fontWeight: 700, color: '#0B1739' }}>
-                        
-                      </div>
+                      <a href="tel:+14058659491" style={{ fontSize: '15.5px', fontWeight: 700, color: '#0B1739', textDecoration: 'none' }}>
+                        +1 405-865-9491
+                      </a>
                     </div>
-                  </div> */}
+                  </div>
 
                   {/* Offices Item */}
                   <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px', padding: '16px 0' }}>
@@ -1282,15 +1282,10 @@ export function ContactUsPage({ onNavigate, onGoHome }: ContactUsProps) {
           {/* 5 Regional Hub Glass Cards Grid with Hover Enlarge Effect */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px', maxWidth: '1280px', margin: '0 auto' }}>
             {[
-              // { name: 'America', phone: '+1 405-865-9491' },
-              // { name: 'Dubai', phone: '+971 5-542-81396' },
-              // { name: 'Singapore', phone: '+61 4682 88351' },
-              // { name: 'Australia', phone: '+61 4682 88351' },
-              // { name: 'India', phone: '' },
-              { name: 'America', phone: '' },
-              { name: 'Dubai', phone: '' },
-              { name: 'Singapore', phone: '' },
-              { name: 'Australia', phone: '' },
+              { name: 'America', phone: '+1 405-865-9491' },
+              { name: 'Dubai', phone: '+971 5-542-81396' },
+              { name: 'Singapore', phone: '+61 4682 88351' },
+              { name: 'Australia', phone: '+61 4682 88351' },
               { name: 'India', phone: '' },
             ].map((hub, idx) => {
               const isHovered = hoveredHubIdx === idx;

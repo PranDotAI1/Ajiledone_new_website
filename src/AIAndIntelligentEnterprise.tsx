@@ -482,18 +482,6 @@ export const AIAndIntelligentEnterprisePage: React.FC<AIAndIntelligentEnterprise
                 </a>
               </div>
 
-              {/* Bottom Tag */}
-              <div
-                style={{
-                  fontSize: '11px',
-                  fontWeight: 800,
-                  color: '#52E0CB',
-                  letterSpacing: '0.16em',
-                  textTransform: 'uppercase',
-                }}
-              >
-                FROM PILOT &rarr; TO OPERATING LAYER
-              </div>
             </div>
 
             {/* Right Column: 4-Diamond Architectural Stack Diagram (Only AI Layer Colored & Glowing, Static on Hover) */}

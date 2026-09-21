@@ -41,8 +41,6 @@ export const CloudTechnologyModernization: React.FC<CloudTechnologyModernization
   // State for hovered capability tag pill
   const [hoveredTagKey, setHoveredTagKey] = useState<string | null>(null);
 
-  // State for hovered platform ecosystem card index
-  const [hoveredPlatformIndex, setHoveredPlatformIndex] = useState<number | null>(null);
 
   // Section 3 (WHAT CLOUD IS ACTUALLY FOR) Scroll-triggered sequence (One time only)
   useEffect(() => {
@@ -1492,103 +1490,7 @@ export const CloudTechnologyModernization: React.FC<CloudTechnologyModernization
         </div>
       </section>
 
-      {/* 5. SECTION: PLATFORM-FLUENT, NOT PLATFORM-LOYAL (EXACT UPLOADED DESIGN) */}
-      <section
-        style={{
-          padding: '100px 0 110px',
-          background: '#060D20',
-          color: '#FFFFFF',
-        }}
-      >
-        <div className="section-container">
-          <div style={{ marginBottom: '48px' }}>
-            <div
-              style={{
-                fontSize: '12px',
-                fontWeight: 800,
-                color: '#52E0CB',
-                letterSpacing: '0.16em',
-                textTransform: 'uppercase',
-                marginBottom: '12px',
-              }}
-            >
-              CLOUD ENGINEERING ACROSS
-            </div>
-            <h2
-              style={{
-                fontSize: 'clamp(34px, 4.2vw, 48px)',
-                fontWeight: 800,
-                color: '#FFFFFF',
-                lineHeight: 1.15,
-                margin: 0,
-                letterSpacing: '-0.02em',
-              }}
-            >
-              Platform-fluent, not platform-loyal.
-            </h2>
-          </div>
 
-          {/* 5 Ecosystem Cards Grid (Statically Plain, Dynamic Mint Cyan Highlight ON HOVER) */}
-          <div className="tech-matrix-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '18px' }}>
-            {['Microsoft Azure', 'AWS', 'Google Cloud', 'Oracle Cloud', 'SAP Cloud'].map((platformName, idx) => {
-              const isCardHovered = hoveredPlatformIndex === idx;
-
-              return (
-                <div
-                  key={idx}
-                  onMouseEnter={() => setHoveredPlatformIndex(idx)}
-                  onMouseLeave={() => setHoveredPlatformIndex(null)}
-                  style={{
-                    background: isCardHovered
-                      ? 'linear-gradient(135deg, rgba(82, 224, 203, 0.18) 0%, rgba(13, 42, 117, 0.65) 100%)'
-                      : 'rgba(255, 255, 255, 0.05)',
-                    border: isCardHovered
-                      ? '1px solid #52E0CB'
-                      : '1px solid rgba(255, 255, 255, 0.14)',
-                    borderRadius: '16px',
-                    padding: '22px 24px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '12px',
-                    minHeight: '68px',
-                    transition: 'all 0.35s cubic-bezier(0.4, 0, 0.2, 1)',
-                    transform: isCardHovered ? 'translateY(-6px) scale(1.03)' : 'scale(1)',
-                    boxShadow: isCardHovered
-                      ? '0 14px 32px rgba(82, 224, 203, 0.28)'
-                      : '0 4px 16px rgba(0, 0, 0, 0.2)',
-                    cursor: 'pointer',
-                  }}
-                >
-                  {/* Bullet Dot (Statically grey/dim, turns glowing Mint Cyan #52E0CB ON HOVER) */}
-                  <div
-                    style={{
-                      width: '7px',
-                      height: '7px',
-                      borderRadius: '50%',
-                      backgroundColor: isCardHovered ? '#52E0CB' : 'rgba(255, 255, 255, 0.45)',
-                      boxShadow: isCardHovered ? '0 0 10px #52E0CB' : 'none',
-                      transition: 'all 0.3s ease',
-                      flexShrink: 0,
-                    }}
-                  />
-
-                  <div
-                    style={{
-                      fontSize: '15.5px',
-                      fontWeight: isCardHovered ? 800 : 700,
-                      color: isCardHovered ? '#FFFFFF' : 'rgba(255, 255, 255, 0.88)',
-                      transition: 'color 0.3s ease',
-                      whiteSpace: 'nowrap',
-                    }}
-                  >
-                    {platformName}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
 
       {/* 6. ONE ECOSYSTEM, END TO END SECTION (EXACT FIGMA DESIGN) */}
       <section
