@@ -556,8 +556,9 @@ export function OurPeoplePage({ onNavigate, onGoHome }: OurPeopleProps) {
                     position: 'absolute',
                     left: '280px',
                     top: '168px',
+                    transform: 'translate(-50%, -50%)',
                     zIndex: 10,
-                    animation: 'floatNode1 5.4s ease-in-out infinite',
+                    animation: 'floatNode1 5.4s ease-in-out infinite both',
                   }}
                 >
                   <div
@@ -593,8 +594,9 @@ export function OurPeoplePage({ onNavigate, onGoHome }: OurPeopleProps) {
                     position: 'absolute',
                     left: '72px',
                     top: '145px',
+                    transform: 'translate(-50%, -50%)',
                     zIndex: 9,
-                    animation: 'floatNode2 6.2s ease-in-out infinite 0.3s',
+                    animation: 'floatNode2 6.2s ease-in-out infinite 0.3s both',
                   }}
                 >
                   <div
@@ -629,8 +631,9 @@ export function OurPeoplePage({ onNavigate, onGoHome }: OurPeopleProps) {
                     position: 'absolute',
                     left: '415px',
                     top: '218px',
+                    transform: 'translate(-50%, -50%)',
                     zIndex: 9,
-                    animation: 'floatNode3 5.8s ease-in-out infinite 0.7s',
+                    animation: 'floatNode3 5.8s ease-in-out infinite 0.7s both',
                   }}
                 >
                   <div
@@ -665,8 +668,9 @@ export function OurPeoplePage({ onNavigate, onGoHome }: OurPeopleProps) {
                     position: 'absolute',
                     left: '270px',
                     top: '290px',
+                    transform: 'translate(-50%, -50%)',
                     zIndex: 9,
-                    animation: 'floatNode4 4.9s ease-in-out infinite 0.2s',
+                    animation: 'floatNode4 4.9s ease-in-out infinite 0.2s both',
                   }}
                 >
                   <div
@@ -701,8 +705,9 @@ export function OurPeoplePage({ onNavigate, onGoHome }: OurPeopleProps) {
                     position: 'absolute',
                     left: '190px',
                     top: '84px',
+                    transform: 'translate(-50%, -50%)',
                     zIndex: 8,
-                    animation: 'floatNode5 6.4s ease-in-out infinite 1.1s',
+                    animation: 'floatNode5 6.4s ease-in-out infinite 1.1s both',
                   }}
                 >
                   <div
@@ -739,8 +744,9 @@ export function OurPeoplePage({ onNavigate, onGoHome }: OurPeopleProps) {
                     position: 'absolute',
                     left: '425px',
                     top: '96px',
+                    transform: 'translate(-50%, -50%)',
                     zIndex: 8,
-                    animation: 'floatNode6 5.6s ease-in-out infinite 0.5s',
+                    animation: 'floatNode6 5.6s ease-in-out infinite 0.5s both',
                   }}
                 >
                   <div
@@ -777,8 +783,9 @@ export function OurPeoplePage({ onNavigate, onGoHome }: OurPeopleProps) {
                     position: 'absolute',
                     left: '186px',
                     top: '218px',
+                    transform: 'translate(-50%, -50%)',
                     zIndex: 8,
-                    animation: 'floatNode7 6.1s ease-in-out infinite 1.3s',
+                    animation: 'floatNode7 6.1s ease-in-out infinite 1.3s both',
                   }}
                 >
                   <div
@@ -815,8 +822,9 @@ export function OurPeoplePage({ onNavigate, onGoHome }: OurPeopleProps) {
                     position: 'absolute',
                     left: '72px',
                     top: '252px',
+                    transform: 'translate(-50%, -50%)',
                     zIndex: 8,
-                    animation: 'floatNode8 5.1s ease-in-out infinite 0.8s',
+                    animation: 'floatNode8 5.1s ease-in-out infinite 0.8s both',
                   }}
                 >
                   <div
@@ -853,8 +861,9 @@ export function OurPeoplePage({ onNavigate, onGoHome }: OurPeopleProps) {
                     position: 'absolute',
                     left: '440px',
                     top: '310px',
+                    transform: 'translate(-50%, -50%)',
                     zIndex: 8,
-                    animation: 'floatNode9 5.7s ease-in-out infinite 1.2s',
+                    animation: 'floatNode9 5.7s ease-in-out infinite 1.2s both',
                   }}
                 >
                   <div
